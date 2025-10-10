@@ -8,7 +8,7 @@ Je l'avoue, le but est un peu d'apprendre à utiliser GitHub tout en assurant un
 
 ## 🎯 Fondement Pédagogique : Modèle ABC DL
 L'ABC Design Learning souhaite garantir une approche centrée sur l'activité et l'alignement des objectifs d'apprentissage.
-Le design de ce projet repose sur la taxonomie des 6 types d'apprentissage de l'ABC DL (Diana Laurillard) :
+Le design de ce projet repose sur la taxonomie des 6 types d'apprentissage de l'ABC Learning Desing (Diana Laurillard) :
 
 | Type d'Apprentissage | Rôle de l'Apprenant | Exemples d'Activités Clés |
 | :--- | :--- | :--- |
@@ -24,7 +24,7 @@ Le design de ce projet repose sur la taxonomie des 6 types d'apprentissage de l'
 
 L'outil d'origine est une interface interactive de type **glisser-déposer (Drag and Drop)** conçue pour faciliter la scénarisation pédagogique dans le contexte de **Moodle**.
 
-Il réalise l'opération clé de l'ABC DL : **associer le type d'activité d'apprentissage à l'outil technologique correspondant**.
+Il réalise l'opération clé de l'ABC LD : **associer le type d'activité d'apprentissage à l'outil technologique correspondant**.
 
 **Fonctionnalités Clés de la Version Initiale :**
 
@@ -40,7 +40,7 @@ Il réalise l'opération clé de l'ABC DL : **associer le type d'activité d'app
 
 ## 🏗️ Structure du Projet (Initial)
 
-* **`/images/`** : Contient les ressources multimédias, codes javascript et styles.
+* **`/images/`** : Contient les ressources multimédias, codes javascript et styles. A noter que les libraires sont initialement tirées de cdnjs.cloudflare.com et stockées ici pour informations (non utilisé dans ce projet)
 * **`ABC Learning Design.html`** : Page d'accueil - version interactive du jeu de carte.
 * **`README.md`** : Ce document.
 
@@ -52,6 +52,7 @@ Cette section sert de **liste de contrôle (to-do list)**
 
 - [ ] **Intégration d'API** : Permettre la connexion à des API d'IA
 - [ ] **Génération Automatisée de Séquence** : Génération de séquences de cours basées sur des objectifs d'apprentissages (acquis d'apprentissages) et données du public-cible.
+- [ ] **Restructuration du code**
 
 ### 📝 Révision du Contenu Pédagogique
 
