@@ -53,6 +53,7 @@ Cette section sert de **liste de contrôle (to-do list)**
 - [ ] **Intégration d'API** : Permettre la connexion à des API d'IA
 - [ ] **Génération Automatisée de Séquence** : Génération de séquences de cours basées sur des objectifs d'apprentissages (acquis d'apprentissages) et données du public-cible.
 - [ ] **Restructuration du code**
+- [ ] **Fonction Export/Import** : Génération d'un fichier pouvant être importé pour reprendre un travail inachevé ou partager avec d'autres utilisateurs.
 
 ### 📝 Révision du Contenu Pédagogique
 
