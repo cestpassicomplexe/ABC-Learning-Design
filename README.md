@@ -1,4 +1,4 @@
-# 🚀 ABC Design Learning
+# 🚀 ABC Learning Design
 
 Ce projet vise à maintenir et faire évoluer la page HTML développée par DRANE Grand Est.
 
@@ -7,8 +7,8 @@ Ce projet est mené sans prétention de ma part car réalisé sur du temps libre
 Je l'avoue, le but est un peu d'apprendre à utiliser GitHub tout en assurant un projet sympa.  En espérant que cela puisse servir à certains. 
 
 ## 🎯 Fondement Pédagogique : Modèle ABC DL
-L'ABC Design Learning souhaite garantir une approche centrée sur l'activité et l'alignement des objectifs d'apprentissage.
-Le design de ce projet repose sur la taxonomie des 6 types d'apprentissage de l'ABC Learning Desing (Diana Laurillard) :
+L'ABC Learning Design souhaite garantir une approche centrée sur l'activité et l'alignement des objectifs d'apprentissage.
+Le design de ce projet repose sur la taxonomie des 6 types d'apprentissage de l'ABC Learning Design (Diana Laurillard) :
 
 | Type d'Apprentissage | Rôle de l'Apprenant | Exemples d'Activités Clés |
 | :--- | :--- | :--- |
@@ -64,7 +64,7 @@ Cette section sert de **liste de contrôle (to-do list)**
 
 ## Projet intial
 - Page initiale de la ressource HTML : https://dane.ac-reims.fr/dokiel/moodle/draganddrop_ABC.html
-- Basé sur ABC DL - [abc-ld.org](https://abc-ld.org/)
+- Basé sur ABC LD - [abc-ld.org](https://abc-ld.org/)
 
 ## Licence
 Licensed under CC BY-NC-SA 4.0
