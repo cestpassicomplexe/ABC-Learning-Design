@@ -6,7 +6,7 @@ Ce projet vise à maintenir et faire évoluer la page HTML développée par DRAN
 Ce projet est mené sans prétention de ma part car réalisé sur du temps libre et grandement assisté par IA pour le codage et les améliorations proposées.
 Je l'avoue, le but est un peu d'apprendre à utiliser GitHub tout en assurant un projet sympa.  En espérant que cela puisse servir à certains. 
 
-## 🎯 Fondement Pédagogique : Modèle ABC DL
+## 🎯 Fondement Pédagogique : Modèle ABC LD
 L'ABC Learning Design souhaite garantir une approche centrée sur l'activité et l'alignement des objectifs d'apprentissage.
 Le design de ce projet repose sur la taxonomie des 6 types d'apprentissage de l'ABC Learning Design (Diana Laurillard) :
 
