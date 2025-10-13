@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>ABC Learning Design / Moodle</title>
+  <link rel="shortcut icon" href="./images/carte.png">
+  <meta charset="utf-8">
+  <!-- Déclaration de la source pour bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Déclaration de jQuery et DataTable -->
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.js" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/components/modal/">
+  <!-- FontAwesome -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Déclaration de font-awesome pour les icones -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.css" rel="stylesheet">
+  <!-- ChartJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+  <!-- Excel JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar menu -->
+  <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-end">
+    <!-- Links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link align-self-end mx-2" href="https://moodletoolguide.net/fr/" target="_blank">
+          Guide des outils Moodle
+          <i class="fas fa-graduation-cap"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link align-self-end mx-2" href="https://h5p.org/content-types-and-applications" target="_blank">
+          Exemples H5P
+          <i class="fa-solid fa-book-open"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- Switch entre les deux modes-->
+  <div class="container-fluid pt-2 form-switch">
+
+    <div class="row justify-content-between custom-line">
+      <div class="col-2">
+        <img src="./images/prof.png" style="height:120px" alt=""></i>
+      </div>
+      <div class="col-8">
+        <h2 class="text-center"><label for="switchNoviceExpert" class='navbar-text fw-bold text-primary'
+            id=choixNovice>Novice </label>
+          <input type="checkbox" class="form-check-input m-0" style="vertical-align:super;"
+            id="switchNoviceExpert"></input>
+          <label for="switchNoviceExpert" class="navbar-text" id=choixExpert> Expert</label>
+        </h2>
+        <p class="text-center"><i class="fa-solid fa-triangle-exclamation"></i><span style=" font-size:14px;"> Le
+            changement de mode réinitialise les données</span></p>
+      </div>
+      <div class="col-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+          Aide <i class="fa-solid fa-circle-question"></i>
+        </button>
+
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid p-2 form-switch">
+    <!-- Modal Notice -->
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content line px-3 my-1">
+          <!-- Modal header -->
+          <div class="modal-header row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10 text-center">
+              <h4 class="modal-title">Utilisation de l'outil d'aide à la conception de parcours scénarisé</h4>
+            </div>
+            <div class="col-sm-1">
+              <button type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+            </div>
+          </div>
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-2"><img src="./images/prof.png" style="height:120px" alt=""></i></div>
+                <div class="col-sm-10">
+                  <h5><em>Cet outil vous aide à organiser les tâches d'apprentissages que vous souhaitez mettre en
+                      oeuvre ("Qu'est ce que les élèves vont faire ?"). <br /> Sélectionnez d'abord le type de tâche ;
+                      vous pourrez ensuite identifer l'activité Moodle la plus adaptée.</em></h5>
+                </div>
+              </div>
+              <img src="./images/notice_ABC.png" style="width:100%" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Card-->
+    <div class="card-deck">
+      <!-- front -->
+      <div class="row">
+        <div class="col"> </div>
+        <div class="col-auto d-flex flex-row">
+          <!-- Card 1 Front -->
+          <div class="card card-acquisition cardFront m-1" style="width:16%;" draggable="true" id=card1Front>
+            <!-- Card 1 Front Header -->
+            <div class="card-header d-flex flex-row p-0">
+              <img src="./images/acquisition.png" style="height:30px" ; class="">
+              <p>&nbsp</p>
+              <h6 class='titre-carte'>Acquisition</h6>
+            </div>
+            <!-- Card 1 Front Body -->
+            <div class="card-body p-1">
+              <p class=description>
+                L’apprenant écoute un cours magistral, une conférence, un podcast ; lit un livre, une page web ; regarde
+                des démonstrations, des vidéos.
+              </p>
+            </div>
+            <!-- Card 1 Front Footer -->
+            <div class="card-footer p-1">
+              <p class="w-100"><i>
+                </i></p>
+            </div>
+          </div>
+          <!-- Card 2 Front-->
+          <div class="card card-collaboration cardFront m-1" style="width:16%;" draggable="true" id=card2Front>
+            <!-- Card 2 Front Header -->
+            <div class="card-header d-flex flex-row p-0">
+              <img src="./images/collaboration.png" style="height:30px" ; class="">
+              <p>&nbsp</p>
+              <h6 class='titre-carte'>Collaboration</h6>
+            </div>
+            <!-- Card 2 Front Body -->
+            <div class="card-body p-1">
+              <p class=description>
+                L'apprentissage par collaboration comprend surtout des activités de discussion, de pratique et de
+                production en équipe. Il s'agit de participer activement, dans un collectif, au processus de
+                construction de la connaissance.
+              </p>
+
+            </div>
+            <!-- Card 2 Front Footer -->
+            <div class="card-footer p-1">
+              <p class="text-licence align-bottom"><i>
+
+                </i></p>
+            </div>
+          </div>
+          <!-- Carte 3 Front -->
+          <div class="card card-discussion cardFront m-1" style="width:16%;" draggable="true" id=card3Front>
+            <!-- Card 3 Front Head -->
+            <div class="card-header d-flex flex-row p-0">
+              <img src="./images/discussion.png" style="height:30px" ; class="">
+              <p>&nbsp</p>
+              <h6 class='titre-carte'>Discussion</h6>
+            </div>
+            <!-- Card 3 Front Body -->
+            <div class="card-body p-1">
+              <p class="description mt-1">
+                Apprendre par la discussion exige de l'apprenant qu'il formule ses idées et questions, qu'il écoute,
+                remette en cause, réponde aux arguments et questions de l'enseignant et/ou de ses pairs.
+              </p>
+            </div>
+            <!-- Card 3 Front Footer -->
+            <div class="card-footer p-1">
+              <p class="text-licence align-bottom"><i>
+                </i></p>
+            </div>
+          </div>
+          <!-- Carte 4 Front -->
+          <div class="card card-enquete cardFront m-1" style="width:16%;" draggable="true" id=card4Front>
+            <!-- Card 4 Front Head -->
+            <div class="card-header d-flex flex-row p-0">
+              <img src="./images/enquete.png" style="height:30px" ; class="">
+              <p>&nbsp</p>
+              <h6 class='titre-carte'>Enquête</h6>
+            </div>
+            <!-- Card 4 Front Body -->
+            <div class="card-body p-1">
+              <p class=description>
+                Apprendre par enquête aide l’apprenant à explorer, comparer et critiquer les textes, documents et autres
+                ressources qui renvoient aux concepts et idées enseignées.
+              </p>
+            </div>
+            <!-- Card 4 Front Footer -->
+            <div class="card-footer p-1">
+              <p class="text-licence align-bottom"><i>
+                </i></p>
+            </div>
+          </div>
+          <!-- Card 5 Front-->
+          <div class="card card-pratique cardFront m-1" style="width:16%;" draggable="true" id=card5Front>
+            <!-- Card 5 Front Header -->
+            <div class="card-header d-flex flex-row p-0">
+              <img src="./images/pratique.png" style="height:30px" ; class="">
+              <p>&nbsp</p>
+              <h6 class='titre-carte'>Pratique - Entrainement</h6>
+            </div>
+            <!-- Card 5 Front Body -->
+            <div class="card-body p-1">
+              <p class='description'>
+                L’apprentissage par la pratique permet à l’apprenant de s'entraîner et d'utiliser la rétroaction pour
+                améliorer ses connaissances ou les actions suivantes.
+                La rétroaction peut venir de l’autoréflexion, des pairs, de l’enseignant ou de l’activité elle-même.
+              </p>
+            </div>
+            <!-- Card 5 Front Footer -->
+            <div class="card-footer p-1">
+              <p class="text-licence align-bottom"><i>
+                </i></p>
+            </div>
+          </div>
+          <!-- Card 6 Front-->
+          <div class="card card-production cardFront m-1" style="width:16%;" draggable="true" id=card6Front>
+            <!-- Card 6 Front Head -->
+            <div class="card-header d-flex flex-row p-0">
+              <img src="./images/production.png" style="height:30px" ; class="">
+              <p>&nbsp</p>
+              <h6 class='titre-carte'>Production</h6>
+            </div>
+            <!-- Card 6 Front Body -->
+            <div class="card-body p-1">
+              <p class='description'>
+                L'apprenant consolide ce qu'il a appris par une production sur des supports variés. <br>
+                Le formateur accompagne le processus en mettant à disposition des références ou en questionnant les
+                choix opérés.
+              </p>
+            </div>
+            <!-- Card 6 Front Footer -->
+            <div class="card-footer p-1">
+              <p class="text-licence align-bottom"><i>
+                </i></p>
+            </div>
+          </div>
+        </div>
+        <div class="col"> </div>
+      </div>
+      <!-- back Classique-->
+      <div class="row m-auto d-none">
+        <div class="col"> </div>
+        <div class="col-auto">
+          <!-- Card 1 Back Cliquable-->
+          <div class="card card-acquisitionVerso cardBackCliquable d-none" id=card1BackCliquable>
+            <!-- Card 1 Back Header -->
+            <div class="row cardBackHead card-acquisition" id=card1BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/acquisition.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Acquisition</h3>
+              </div>
+            </div>
+            <!-- Card 1 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li>Ecouter l'enseignant, suivre des cours, des conférences</li>
+                  <li>Consulter des documents, articles</li>
+                  <li>Lire des ressources numériques, multimédia, des sites web</li>
+                  <li>Regarder des vidéos, des animations</li>
+                  <li>Suivre des démonstrations, master classes</li>
+                </ul>
+                <p class="basColonneAcquisition mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <p>
+                  <button type="button" id=card1Btn1 draggable="true" class="btn textVerso btnCliquable"><strong>Tubes,
+                      PodEduc </strong></button>
+                  <button type="button" id=card1Btn2 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Youtube</strong></button>
+                </p>
+                <hr class="hr-acquisition">
+                <p>
+                  <button type="button" id=card1Btn3 draggable="true" class="btn textVerso btnCliquable"><strong>Classe
+                      virtuelle BBB</strong></button>
+                </p>
+                <hr class="hr-acquisition">
+                <p>
+                  <button type="button" id=card1Btn4 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Etiquette</strong> </button>
+                  <button type="button" id=card1Btn5 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Fichier</strong> </button>
+                  <button type="button" id=card1Btn6 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Page</strong> </button>
+                  <button type="button" id=card1Btn7 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Glossaire</strong> </button>
+                  <button type="button" id=card1Btn8 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Livre</strong> </button>
+                  <button type="button" id=card1Btn9 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Galerie d'images</strong> </button>
+                  <button type="button" id=card1Btn10 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      H5P</strong> </button>
+                  <button type="button" id=card1Btn11 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Leçon</strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <p>
+                  <button type="button" id=card1Btn12 draggable="true" class="btn textVerso btnCliquable"><strong> Blog
+                    </strong> </button>
+                  <button type="button" id=card1Btn13 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Documents partagés </strong> </button>
+                  <button type="button" id=card1Btn14 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Parcours péda. </strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <p>
+                  <button type="button" id=card1Btn15 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Bureautique </strong> </button>
+                  <button type="button" id=card1Btn16 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Application multimédia </strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <p>
+                  <button type="button" id=card1Btn17 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Annotation PDF </strong> </button>
+                </p>
+                <p class="basColonneAcquisition">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 2 Back Cliquable-->
+          <div class="card card-collaborationVerso cardBackCliquable d-none" id=card2BackCliquable>
+            <!-- Card 2 Back Header -->
+            <div class="row cardBackHead card-collaboration" id=card2BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/collaboration.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Collaboration</h3>
+              </div>
+            </div>
+            <!-- Card 2 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li>Projets en petits groupes</li>
+                  <li>Construction / Elaboration d'une production commune</li>
+                  <li>Ciscussion autour des productions de tiers</li>
+                </ul>
+                <p class="basColonneCollaboration mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <p>
+                  <button type="button" id=card2Btn1 draggable="true" class="btn textVerso btnCliquable"><strong> Carte
+                      mentale </strong> </button>
+                </p>
+                <hr class="hr-collaboration">
+                <p>
+                  <button type="button" id=card2Btn2 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Bureautique collaborative </strong></button>
+                </p>
+                <hr class="hr-collaboration">
+                <p>
+                  <button type="button" id=card2Btn3 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Devoir</strong> </button>
+                  <button type="button" id=card2Btn4 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Wiki</strong></button>
+                  <button type="button" id=card2Btn5 draggable="true" class="btn textVerso btnCliquable"><strong>Choix
+                      de groupes</strong> </button>
+                  <button type="button" id=card2Btn6 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Atelier</strong> </button>
+                  <button type="button" id=card2Btn7 draggable="true" class="btn textVerso btnCliquable"><strong>Galerie
+                      d'images collaborative</strong> </button>
+                  <button type="button" id=card2Btn8 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Partage</strong> </button>
+                </p>
+                <hr class="hr-collaboration">
+                <p>
+                  <button type="button" id=card2Btn9 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Espaces collaboratifs de l'ENT</strong> </button>
+                  <button type="button" id=card2Btn10 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Pad</strong> </button>
+                  <button type="button" id=card2Btn11 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Documents partagés </strong> </button>
+                </p>
+                <hr class="hr-collaboration">
+                <p>
+                  <button type="button" id=card2Btn12 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Application externe </strong> </button>
+                </p>
+                <p class="basColonneCollaboration">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Carte 3 Back Cliquable -->
+          <div class="card card-discussionVerso cardBackCliquable d-none" id=card3BackCliquable>
+            <!-- Card 3 Back Header -->
+            <div class="row cardBackHead card-discussion" id=card3BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/discussion.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Discussion</h3>
+              </div>
+            </div>
+            <!-- Card 3 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li>Communication</li>
+                  <li>Groupes de discussion synchrones et asynchrones</li>
+                  <li>Discussion en classe ou lors d'un séminaire</li>
+                  <li>Remue-méninges, nuages de mots</li>
+                  <li>Commentaires</li>
+                </ul>
+                <p class="basColonneDiscussion mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <p>
+                  <button type="button" id=card3Btn1 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Messagerie </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <p>
+                  <button type="button" id=card3Btn2 draggable="true" class="btn textVerso btnCliquable"><strong> Outil
+                      de commentaire </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <p>
+                  <button type="button" id=card3Btn3 draggable="true" class="btn textVerso btnCliquable"><strong> Classe
+                      virtuelle </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <p>
+                  <button type="button" id=card3Btn4 draggable="true" class="btn textVerso btnCliquable"><strong> Forum
+                    </strong> </button>
+                  <button type="button" id=card3Btn5 draggable="true" class="btn textVerso btnCliquable"><strong> Chat
+                    </strong> </button>
+                  <button type="button" id=card3Btn6 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Post-it </strong> </button>
+                  <button type="button" id=card3Btn7 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Galerie d'images collaborative </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <p>
+                  <button type="button" id=card3Btn8 draggable="true" class="btn textVerso btnCliquable"><strong> Pad
+                    </strong> </button>
+                  <button type="button" id=card3Btn9 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Chat</strong> </button>
+                  <button type="button" id=card3Btn10 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Documents partagés </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <p>
+                  <button type="button" id=card3Btn11 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Application externe </strong> </button>
+                </p>
+                <p class="basColonneDiscussion">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 4 Back cliquable -->
+          <div class="card card-enqueteVerso cardBackCliquable d-none" id=card4BackCliquable>
+            <!-- Card 4 Back Header -->
+            <div class="row cardBackHead card-enquete" id=card4BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/enquete.png" alt="" style="max-height:50px;" class="center-block">
+                <h3 class="titre-carte"> Enquête</h3>
+              </div>
+            </div>
+            <!-- Card 4 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li>Comparaison de textes</li>
+                  <li>Analyse des informations et idées dans une gamme de documents et de ressources</li>
+                  <li>Recherche et évaluation d'informations et d'idées</li>
+                  <li>Collecte et analyse de données à l'aide d'outils numériques</li>
+                  <li>Observations lors d'un TP ou sur le terrain</li>
+                  <li>Mise en relation des informations trouvées sous la forme d'un arbre de concept</li>
+                </ul>
+                <p class="basColonneEnquete mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <p>
+                  <button type="button" id=card4Btn1 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Annotation PDF </strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <p>
+                  <button type="button" id=card4Btn2 draggable="true" class="btn textVerso btnCliquable"><strong>Réseaux
+                      sociaux</strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <p>
+                  <button type="button" id=card4Btn3 draggable="true" class="btn textVerso btnCliquable"><strong>Tubes,
+                      PodEduc </strong></button>
+                  <button type="button" id=card4Btn4 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Youtube</strong></button>
+                </p>
+                <hr class="hr-enquete">
+                <p>
+                  <button type="button" id=card4Btn5 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Questionnaire</strong> </button>
+                  <button type="button" id=card4Btn6 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Sondage</strong> </button>
+                  <button type="button" id=card4Btn7 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Tableau</strong> </button>
+                  <button type="button" id=card4Btn8 draggable="true" class="btn textVerso btnCliquable"><strong> Base
+                      de données</strong> </button>
+                  <button type="button" id=card4Btn9 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Galerie d'images</strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <p>
+                  <button type="button" id=card4Btn10 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Bureautique </strong> </button>
+                  <button type="button" id=card4Btn11 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Documents partagés </strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <p>
+                  <button type="button" id=card4Btn12 draggable="true" class="btn textVerso btnCliquable"><strong> Carte
+                      conceptuelle </strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <p>
+                  <button type="button" id=card4Btn13 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Application multimédia </strong> </button>
+                </p>
+                <p class="basColonneEnquete">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 5 Back Cliquable-->
+          <div class="card card-pratiqueVerso cardBackCliquable d-none" id=card5BackCliquable>
+            <!-- Card 5 Back Header -->
+            <div class="row cardBackHead card-pratique" id=card5BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/pratique.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Pratique - Entrainement</h3>
+              </div>
+            </div>
+            <!-- Card 5 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li>Faire des exercices, des tests formatifs</li>
+                  <li>Réaliser de sprojets basés sur la pratique</li>
+                  <li>Laboratoires</li>
+                  <li>Sorties de terrain, activités de jeu de rôles</li>
+                  <li>Etude de cas</li>
+                  <li>Simulations</li>
+                </ul>
+                <p class="basColonnePratique mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <p>
+                  <button type="button" id=card5Btn1 draggable="true" class="btn textVerso btnCliquable"><strong> Test
+                    </strong> </button>
+                  <button type="button" id=card5Btn2 draggable="true" class="btn textVerso btnCliquable"><strong> Jeu
+                    </strong> </button>
+                  <button type="button" id=card5Btn3 draggable="true" class="btn textVerso btnCliquable"><strong> Leçon
+                    </strong> </button>
+                  <button type="button" id=card5Btn4 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Paquetage Scorm </strong> </button>
+                </p>
+                <hr class="hr-pratique">
+                <p>
+                  <button type="button" id=card5Btn5 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>H5P</strong></button>
+                </p>
+                <hr class="hr-pratique">
+                <p>
+                  <button type="button" id=card5Btn6 draggable="true" class="btn textVerso btnCliquable"><strong>Outil
+                      interne à l'ENT</strong> </button>
+                </p>
+                <hr class="hr-pratique">
+                <p>
+                  <button type="button" id=card5Btn7 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Exerciseur en ligne</strong></button>
+                </p>
+                <hr class="hr-pratique">
+                <p>
+                  <button type="button" id=card5Btn8 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Simulateur logiciel</strong> </button>
+                  <button type="button" id=card5Btn9 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Simulateur en ligne</strong> </button>
+                </p>
+                <p class="basColonnePratique">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 6 Back Cliquable -->
+          <div class="card card-productionVerso cardBackCliquable d-none " id=card6BackCliquable>
+            <!-- Card 6 Back Header -->
+            <div class="row cardBackHead card-production" id=card6BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/production.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Production</h3>
+              </div>
+            </div>
+            <!-- Card 6 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li>Bilans, commentaires, compte-rendu</li>
+                  <li>Rapports, mémoires</li>
+                  <li>Modèle (conception, dessins)</li>
+                  <li>Prestations (performance)</li>
+                  <li>Objets</li>
+                  <li>Animations</li>
+                  <li>Maquettes, prototypes</li>
+                  <li>Vidéos</li>
+                </ul>
+                <p class="basColonneProduction mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <p>
+                  <button type="button" id=card6Btn1 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Bureautique </strong> </button>
+                </p>
+                <hr class="hr-production">
+                <p>
+                  <button type="button" id=card6Btn2 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Production sonore </strong></button>
+                  <button type="button" id=card6Btn3 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Production vidéo</strong></button>
+                </p>
+                <hr class="hr-production">
+                <p>
+                  <button type="button" id=card6Btn4 draggable="true" class="btn textVerso btnCliquable"><strong>Classe
+                      virtuelle</strong> </button>
+                </p>
+                <hr class="hr-production">
+                <p>
+                  <button type="button" id=card6Btn5 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Devoir</strong></button>
+                  <button type="button" id=card6Btn6 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Tableau</strong></button>
+                  <button type="button" id=card6Btn7 draggable="true"
+                    class="btn textVerso btnCliquable"><strong>Glossaire</strong></button>
+                </p>
+                <hr class="hr-production">
+                <p>
+                  <button type="button" id=card6Btn8 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      H5P</strong> </button>
+                </p>
+                <hr class="hr-production">
+                <p>
+                  <button type="button" id=card6Btn9 draggable="true" class="btn textVerso btnCliquable"><strong> Remise
+                      de travaux en ligne</strong> </button>
+                  <button type="button" id=card6Btn10 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Documents partagés</strong> </button>
+                </p>
+                <hr class="hr-production">
+                <p>
+                  <button type="button" id=card6Btn11 draggable="true" class="btn textVerso btnCliquable"><strong>
+                      Application externe</strong> </button>
+                </p>
+                <p class="basColonneProduction">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col"> </div>
+      </div>
+      <!-- Card MoodleNovice -->
+      <div class="row">
+        <div class="col"> </div>
+        <div class="col-auto">
+          <!-- Card 1 Back Cliquable-->
+          <div class="card card-acquisitionVerso cardBackCliquable d-none" id=card1NoviceMoodleBackCliquable>
+            <!-- Card 1 Back Header -->
+            <div class="row cardBackHead card-acquisition" id=card1BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/acquisition.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Acquisition</h3>
+              </div>
+            </div>
+            <!-- Card 1 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Ecouter l'enseignant, suivre des cours, des
+                    conférences</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Consulter des documents, articles</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Lire des ressources numériques, multimédia, des
+                    sites web</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Regarder des vidéos, des animations</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Suivre des démonstrations, master classes</li>
+                </ul>
+                <p class="basColonneAcquisition mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-acquisition">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card1NoviceMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Etiquette"><strong>Etiquette </strong></button>
+                  <button type="button" id=card1NoviceMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Fichier"><strong>Fichier</strong></button>
+                  <button type="button" id=card1NoviceMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Dossier"><strong>Dossier</strong></button>
+                  <button type="button" id=card1NoviceMoodleBtn4 class="btn textVerso btnCliquable" value="URL"><strong>
+                      URL</strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <strong class="text-acquisition">Activités Moodle(en consultation)</strong>
+                <p>
+                  <button type="button" id=card1NoviceMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Glossaire"><strong> Glossaire</strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <strong class="text-acquisition">H5P</strong>
+                <p>
+                  <button type="button" id=card1NoviceMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Course Presentation"><strong> Course Presentation </strong> </button>
+                  <button type="button" id=card1NoviceMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Dialog Cards"><strong> Dialog Cards </strong> </button>
+                  <button type="button" id=card1NoviceMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Image Hotspots"><strong> Image Slider </strong> </button>
+                  <button type="button" id=card1NoviceMoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong> Autre H5P </strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <strong class="text-acquisition">Activités externes à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card1NoviceMoodleBtn10 class="btn textVerso btnCliquable"
+                    value="PeerTube"><strong> PeerTube, PodEduc </strong> </button>
+                  <button type="button" id=card1NoviceMoodleBtn11 class="btn textVerso btnCliquable"
+                    value="Youtube"><strong> Youtube </strong> </button>
+                  <button type="button" id=card1NoviceMoodleBtn12 class="btn textVerso btnCliquable"
+                    value='Classe Virtuelle'><strong> Classe virtuelle (BBB, VIA) </strong> </button>
+                  <button type="button" id=card1NoviceMoodleBtn13 class="btn textVerso btnCliquable"
+                    value='Autre'><strong> Autre </strong> </button>
+                </p>
+                <p class="basColonneAcquisition">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 2 Back Cliquable-->
+          <div class="card card-collaborationVerso cardBackCliquable d-none" id=card2NoviceMoodleBackCliquable>
+            <!-- Card 2 Back Header -->
+            <div class="row cardBackHead card-collaboration" id=card2BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/collaboration.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Collaboration</h3>
+              </div>
+            </div>
+            <!-- Card 2 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-collaboration">&#8226;&nbsp;</span>Projets en petits groupes</li>
+                  <li><span class="li-collaboration">&#8226;&nbsp;</span>Construction / élaboration d'une production
+                    commune</li>
+                  <li><span class="li-collaboration">&#8226;&nbsp;</span>Discussion autour des productions de tiers</li>
+                </ul>
+                <p class="basColonneCollaboration mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-collaboration">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card2NoviceMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Galerie d'images"><strong> Galerie d'images </strong> </button>
+                </p>
+                <hr class="hr-collaboration">
+                <strong class="text-collaboration">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card2NoviceMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Glossaire"><strong>Glossaire</strong></button>
+                  <button type="button" id=card2NoviceMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Devoir"><strong>Devoir (en groupe)</strong> </button>
+                  <button type="button" id=card2NoviceMoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Partage"><strong>Partage</strong> </button>
+                  <button type="button" id=card2NoviceMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Tableau"><strong>Tableau</strong> </button>
+                </p>
+                <hr class="hr-collaboration">
+                <strong class="text-collaboration">Activités externes à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card2NoviceMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Outils ENT"><strong>Outils ENT</strong> </button>
+                  <button type="button" id=card2NoviceMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Digimindmap"><strong>Digimindmap : Carte mentale collaborative</strong> </button>
+                  <button type="button" id=card2NoviceMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Digiboard"><strong>Digiboard : Tableau blanc collabortif</strong> </button>
+                  <button type="button" id=card2NoviceMoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Autre"><strong> Autre </strong> </button>
+                </p>
+                <p class="basColonneCollaboration">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Carte 3 Back Cliquable -->
+          <div class="card card-discussionVerso cardBackCliquable d-none" id=card3NoviceMoodleBackCliquable>
+            <!-- Card 3 Back Header -->
+            <div class="row cardBackHead card-discussion" id=card3BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/discussion.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Discussion</h3>
+              </div>
+            </div>
+            <!-- Card 3 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Communication</li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Groupes de discussion synchrones et asynchrones
+                  </li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Discussion en classe ou lors d'un séminaire</li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Remue-méninges, nuages de mots</li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Commentaires</li>
+                </ul>
+                <p class="basColonneDiscussion mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-discussion">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card3NoviceMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Outil de commentaire"><strong> Commentaire (ex : galerie d'images) </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <strong class="text-discussion">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card3NoviceMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Forum"><strong> Forum </strong> </button>
+                  <button type="button" id=card3NoviceMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Chat"><strong> Chat </strong> </button>
+                  <button type="button" id=card3NoviceMoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Sticky notes"><strong> Sticky notes </strong> </button>
+                  <button type="button" id=card3NoviceMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Nuage de mots"><strong> Nuage de mots </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <strong class="text-discussion">Activités à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card3NoviceMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Classe virtuelle"><strong> Classe virtuelle (ex:BBB) pour discussions synchrones et
+                      asynchrones </strong> </button>
+                  <button type="button" id=card3NoviceMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="La digitale"><strong> La digitale : Digistorm</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card3NoviceMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Autre"><strong> Autre </strong> </button>
+                </p>
+                <p class="basColonneDiscussion">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 4 Back cliquable -->
+          <div class="card card-enqueteVerso cardBackCliquable d-none" id=card4NoviceMoodleBackCliquable>
+            <!-- Card 4 Back Header -->
+            <div class="row cardBackHead card-enquete" id=card4BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/enquete.png" alt="" style="max-height:50px;" class="center-block">
+                <h3 class="titre-carte"> Enquête</h3>
+              </div>
+            </div>
+            <!-- Card 4 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Comparaison de textes</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Analyse des informations et idées dans une gamme de
+                    documents et de ressources</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Recherche et évaluation d'informations et d'idées
+                  </li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Collecte et analyse de données à l'aide d'outils
+                    numériques</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Observations lors d'un TP ou sur le terrain</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Mise en relation des informations trouvées sous la
+                    forme d'un arbre de concept</li>
+                </ul>
+                <p class="basColonneEnquete mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-enquete">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card4NoviceMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Fichier"><strong> Fichier </strong> </button>
+                  <button type="button" id=card4NoviceMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Dossier"><strong> Dossier </strong> </button>
+                  <button type="button" id=card4NoviceMoodleBtn3 class="btn textVerso btnCliquable" value="URL"><strong>
+                      URL </strong></button>
+                </p>
+                <hr class="hr-enquete">
+                <strong class="text-enquete">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card4NoviceMoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Feedback"><strong>Feedback</strong></button>
+                  <button type="button" id=card4NoviceMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Sondage"><strong> Sondage</strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <strong class="text-enquete">H5P</strong>
+                <p>
+                  <button type="button" id=card4NoviceMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Cornell notes"><strong> Cornell Notes</strong> </button>
+                  <button type="button" id=card4NoviceMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong> Autre H5P</strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <strong class="text-enquete">Activités externes à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card4NoviceMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="PeerTube, PodEduc"><strong> PeerTube, PodEduc</strong> </button>
+                  <button type="button" id=card4NoviceMoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Youtube"><strong> Youtube </strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card4NoviceMoodleBtn10 class="btn textVerso btnCliquable"
+                    value="Autre"><strong> Autre </strong> </button>
+                </p>
+                <p class="basColonneEnquete">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 5 Back Cliquable-->
+          <div class="card card-pratiqueVerso cardBackCliquable d-none" id=card5NoviceMoodleBackCliquable>
+            <!-- Card 5 Back Header -->
+            <div class="row cardBackHead card-pratique" id=card5BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/pratique.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Pratique - Entrainement</h3>
+              </div>
+            </div>
+            <!-- Card 5 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Faire des exercices, des tests formatifs</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Réaliser de sprojets basés sur la pratique</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Laboratoires</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Sorties de terrain, activités de jeu de rôles</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Etude de cas</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Simulations</li>
+                </ul>
+                <p class="basColonnePratique mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-pratique">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card5NoviceMoodleBtn1 class="btn textVerso btnCliquable" value="Jeu"><strong>
+                      Jeu </strong> </button>
+                  <button type="button" id=card5NoviceMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Paquetage Scorm"><strong> Paquetage Scorm </strong> </button>
+                  <button type="button" id=card5NoviceMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Test"><strong>Test (formatif)</strong></button>
+                </p>
+                <hr class="hr-pratique">
+                <strong class="text-pratique">H5P</strong>
+                <p>
+                  <button type="button" id=card5NoviceMoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Question set"><strong>Question Set (ou activités séparées)</strong> </button>
+                  <button type="button" id=card5NoviceMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Course presentation"><strong>Course Presentation</strong></button>
+                  <button type="button" id=card5NoviceMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Interactive video"><strong> Interactive Video</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card5NoviceMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Flashcards"><strong> Flashcards</strong> </button>
+                  <button type="button" id=card5NoviceMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong> Autre H5P</strong> </button>
+                </p>
+                <hr class="hr-pratique">
+                <strong class="text-pratique">Activités externes à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card5NoviceMoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Digistorm"><strong> Digistorm (questionnaire)</strong> </button>
+                  <button type="button" id=card5NoviceMoodleBtn10 class="btn textVerso btnCliquable"
+                    value="Exerciseur en ligne"><strong> Exerciseur en ligne</strong> </button>
+                  <button type="button" id=card5NoviceMoodleBtn11 class="btn textVerso btnCliquable"
+                    value="Simulateur"><strong> Simulateur</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card5NoviceMoodleBtn12 class="btn textVerso btnCliquable"
+                    value="Autre"><strong> Autre</strong> </button>
+                </p>
+                <p class="basColonnePratique">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 6 Back Cliquable -->
+          <div class="card card-productionVerso cardBackCliquable d-none" id=card6NoviceMoodleBackCliquable>
+            <!-- Card 6 Back Header -->
+            <div class="row cardBackHead card-production" id=card6BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/production.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Production</h3>
+              </div>
+            </div>
+            <!-- Card 6 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Bilans, commentaires, compte-rendu</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Rapports, mémoires</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Modèle (conception, dessins)</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Prestations (performance)</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Objets</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Animations</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Maquettes, prototypes</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Vidéos</li>
+                </ul>
+                <p class="basColonneProduction mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-production">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card6NoviceMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Devoir"><strong>Devoir </strong></button>
+                </p>
+                <hr class="hr-production">
+                <strong class="text-production">H5P</strong>
+                <p>
+                  <button type="button" id=card6NoviceMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Audio recorder"><strong>Audio recorder</strong> </button>
+                  <button type="button" id=card6NoviceMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong>Autre H5P</strong></button>
+                </p>
+                <hr class="hr-production">
+                <strong class="text-production">Activités externes à intégrer à votre cours</strong>
+                <p>
+                  <button type="button" id=card6NoviceMoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Classe virtuelle"><strong>Classe virtuelle (ex : BBB) pour présentation et expression
+                      orale</strong></button>
+                  <button type="button" id=card6NoviceMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Carte mentale"><strong>Carte mentale (ex : Digimindmap)</strong></button>
+                </p>
+                <p>
+                  <button type="button" id=card6NoviceMoodleBtn6 class="btn textVerso btnCliquable"
+                    value=""><strong>Autre</strong></button>
+                </p>
+                <p class="basColonneProduction">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col"> </div>
+      </div>
+      <!-- Card MoodleExpert -->
+      <div class="row">
+        <div class="col"> </div>
+        <div class="col-auto">
+          <!-- Card 1 Back Cliquable-->
+          <div class="card card-acquisitionVerso cardBackCliquable d-none" id=card1ExpertMoodleBackCliquable>
+            <!-- Card 1 Back Header -->
+            <div class="row cardBackHead card-acquisition" id=card1BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/acquisition.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Acquisition</h3>
+              </div>
+            </div>
+            <!-- Card 1 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Ecouter l'enseignant, suivre des cours, des
+                    conférences</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Consulter des documents, articles</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Lire des ressources numériques, multimédia, des
+                    sites web</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Regarder des vidéos, des animations</li>
+                  <li><span class="li-acquisition">&#8226;&nbsp;</span>Suivre des démonstrations, master classes</li>
+                </ul>
+                <p class="basColonneAcquisition mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-acquisition">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card1ExpertMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Etiquette"><strong>Etiquette </strong></button>
+                  <button type="button" id=card1ExpertMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Fichier"><strong>Fichier</strong></button>
+                  <button type="button" id=card1ExpertMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Dossier"><strong>Dossier</strong></button>
+                  <button type="button" id=card1ExpertMoodleBtn4 class="btn textVerso btnCliquable" value="URL"><strong>
+                      URL</strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Page"><strong> Page</strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Livre"><strong> Livre</strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Galerie d'image"><strong> Galerie d'image</strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <strong class="text-acquisition">Activités Moodle(en consultation)</strong>
+                <p>
+                  <button type="button" id=card1ExpertMoodleBtn10 class="btn textVerso btnCliquable"
+                    value="Glossaire"><strong> Glossaire</strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Base de données"><strong> Base de données</strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn11 class="btn textVerso btnCliquable"
+                    value="Leçon"><strong> Leçon</strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Geogebra"><strong> Géogébra</strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <strong class="text-acquisition">H5P</strong>
+                <p>
+                  <button type="button" id=card1ExpertMoodleBtn14 class="btn textVerso btnCliquable"
+                    value="Course Presentation"><strong> Course Presentation </strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn15 class="btn textVerso btnCliquable"
+                    value="Dialog Cards"><strong> Dialog Cards </strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn17 class="btn textVerso btnCliquable"
+                    value="Image Slider"><strong> Image Slider </strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card1ExpertMoodleBtn16 class="btn textVerso btnCliquable"
+                    value="Image Hotspots"><strong> Image Hotspots </strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn18 class="btn textVerso btnCliquable"
+                    value="Timeliner"><strong> Timeliner </strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn19 class="btn textVerso btnCliquable"
+                    value="Virtual tour"><strong> Virtual tour </strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card1ExpertMoodleBtn13 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong> Autre H5P </strong> </button>
+                </p>
+                <hr class="hr-acquisition">
+                <strong class="text-acquisition">Activités externes à intégrer à votre cours</strong>
+                <p>
+                  <button type="button" id=card1ExpertMoodleBtn20 class="btn textVerso btnCliquable"
+                    value="PeerTube, PodEduc"><strong> PeerTube, PodEduc </strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn21 class="btn textVerso btnCliquable"
+                    value="Youtube"><strong> Youtube </strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn22 class="btn textVerso btnCliquable"
+                    value='Classe Virtuelle'><strong> Classe virtuelle (BBB, VIA) </strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card1ExpertMoodleBtn23 class="btn textVerso btnCliquable"
+                    value="Annotation PDF"><strong> Annotation PDF </strong> </button>
+                  <button type="button" id=card1ExpertMoodleBtn24 class="btn textVerso btnCliquable"
+                    value="Autre"><strong> Autre </strong> </button>
+                </p>
+                <p class="basColonneAcquisition">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 2 Back Cliquable-->
+          <div class="card card-collaborationVerso cardBackCliquable d-none" id=card2ExpertMoodleBackCliquable>
+            <!-- Card 2 Back Header -->
+            <div class="row cardBackHead card-collaboration" id=card2BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/collaboration.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Collaboration</h3>
+              </div>
+            </div>
+            <!-- Card 2 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-collaboration">&#8226;&nbsp;</span>Projets en petits groupes</li>
+                  <li><span class="li-collaboration">&#8226;&nbsp;</span>Construction / élaboration d'une production
+                    commune</li>
+                  <li><span class="li-collaboration">&#8226;&nbsp;</span>Discussion autour des productions de tiers</li>
+                </ul>
+                <p class="basColonneCollaboration mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-collaboration">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card2ExpertMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Galerie d'images"><strong> Galerie d'images </strong> </button>
+                </p>
+                <hr class="hr-collaboration">
+                <strong class="text-collaboration">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card2ExpertMoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Glossaire"><strong>Glossaire</strong></button>
+                  <button type="button" id=card2ExpertMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Devoir"><strong>Devoir (en groupe)</strong> </button>
+                  <button type="button" id=card2ExpertMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Partage"><strong>Partage</strong> </button>
+                  <button type="button" id=card2ExpertMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Tableau"><strong>Tableau</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card2ExpertMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Base de données"><strong>Base de données</strong> </button>
+                  <button type="button" id=card2ExpertMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Wiki"><strong>Wiki</strong> </button>
+                  <button type="button" id=card2ExpertMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Atelier"><strong>Atelier </strong></button>
+                </p>
+                <hr class="hr-collaboration">
+                <strong class="text-collaboration">Activités externes à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card2ExpertMoodleBtn10 class="btn textVerso btnCliquable"
+                    value="Outils ENT"><strong> Outils ENT : Ex PAD</strong> </button>
+                  <button type="button" id=card2ExpertMoodleBtn11 class="btn textVerso btnCliquable"
+                    value="Carte mentale"><strong> Carte mentale collaborative : Digimindmap </strong> </button>
+                  <button type="button" id=card2ExpertMoodleBtn12 class="btn textVerso btnCliquable"
+                    value="Tableau blanc"><strong> Tableau blanc collaboratif : Digiboard </strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card2ExpertMoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Bureautique collaborative"><strong> Bureautique collaborative</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card2ExpertMoodleBtn13 class="btn textVerso btnCliquable"
+                    value="Autre"><strong> Autre </strong> </button>
+                </p>
+                <p class="basColonneCollaboration">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Carte 3 Back Cliquable -->
+          <div class="card card-discussionVerso cardBackCliquable d-none" id=card3ExpertMoodleBackCliquable>
+            <!-- Card 3 Back Header -->
+            <div class="row cardBackHead card-discussion" id=card3BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/discussion.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Discussion</h3>
+              </div>
+            </div>
+            <!-- Card 3 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Communication</li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Groupes de discussion synchrones et asynchrones
+                  </li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Discussion en classe ou lors d'un séminaire</li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Remue-méninges, nuages de mots</li>
+                  <li><span class="li-discussion">&#8226;&nbsp;</span>Commentaires</li>
+                </ul>
+                <p class="basColonneDiscussion mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-discussion">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card3ExpertMoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Outil de commentaire"><strong> Outil de commentaire (ex : galerie d'images) </strong>
+                  </button>
+                </p>
+                <hr class="hr-discussion">
+                <strong class="text-discussion">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card3ExpertMoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Forum"><strong> Forum </strong> </button>
+                  <button type="button" id=card3ExpertMoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Chat"><strong> Chat </strong> </button>
+                  <button type="button" id=card3ExpertMoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Sticky notes"><strong> Sticky notes </strong> </button>
+                  <button type="button" id=card3ExpertMoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Nuage de mots"><strong> Nuage de mots </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <strong class="text-discussion">H5P</strong>
+                <p>
+                  <button type="button" id=card3ExpertMoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Twitter user feed"><strong> Twitter user feed </strong> </button>
+                  <button type="button" id=card3ExpertMoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong> Autre H5P </strong> </button>
+                </p>
+                <hr class="hr-discussion">
+                <strong class="text-discussion">Activités à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card3ExpertMoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Classe virtuelles"><strong> Classe virtuelle (ex:BBB) pour discussions synchrones et
+                      asynchrones </strong> </button>
+                  <button type="button" id=card3ExpertMoodleBtn9 class="btn textVerso btnCliquable"
+                    value="La digitale"><strong> La digitale : Digistorm</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card3ExpertMoodleBtn10 class="btn textVerso btnCliquable"
+                    value="Autre"><strong> Autre </strong> </button>
+                </p>
+                <p class="basColonneDiscussion">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 4 Back cliquable -->
+          <div class="card card-enqueteVerso cardBackCliquable d-none" id=card4ExpertMoodleBackCliquable>
+            <!-- Card 4 Back Header -->
+            <div class="row cardBackHead card-enquete" id=card4BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/enquete.png" alt="" style="max-height:50px;" class="center-block">
+                <h3 class="titre-carte"> Enquête</h3>
+              </div>
+            </div>
+            <!-- Card 4 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Comparaison de textes</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Analyse des informations et idées dans une gamme de
+                    documents et de ressources</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Recherche et évaluation d'informations et d'idées
+                  </li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Collecte et analyse de données à l'aide d'outils
+                    numériques</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Observations lors d'un TP ou sur le terrain</li>
+                  <li><span class="li-enquete">&#8226;&nbsp;</span>Mise en relation des informations trouvées sous la
+                    forme d'un arbre de concept</li>
+                </ul>
+                <p class="basColonneEnquete mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-enquete">Ressources Moodle</strong>
+                <p>
+                  <button type="button" id=card4MoodleBtn1 class="btn textVerso btnCliquable" value="Fichier"><strong>
+                      Fichier </strong> </button>
+                  <button type="button" id=card4MoodleBtn2 class="btn textVerso btnCliquable" value="Dossier"><strong>
+                      Dossier </strong> </button>
+                  <button type="button" id=card4MoodleBtn3 class="btn textVerso btnCliquable" value="URL"><strong> URL
+                    </strong></button>
+                </p>
+                <hr class="hr-enquete">
+                <strong class="text-enquete">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card4MoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Feedback"><strong>Feedback</strong></button>
+                  <button type="button" id=card4MoodleBtn7 class="btn textVerso btnCliquable" value="Sondage"><strong>
+                      Sondage</strong> </button>
+                  <button type="button" id=card4MoodleBtn5 class="btn textVerso btnCliquable" value="Leçon"><strong>
+                      Leçon</strong> </button>
+                  <button type="button" id=card4MoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Questionnaire"><strong> Questionnaire</strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <strong class="text-enquete">H5P</strong>
+                <p>
+                  <button type="button" id=card4MoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Cornell notes"><strong> Cornell Notes</strong> </button>
+                  <button type="button" id=card4MoodleBtn14 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong> Autre H5P</strong> </button>
+                </p>
+                <hr class="hr-enquete">
+                <strong class="text-enquete">Activités externes à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card4MoodleBtn9 class="btn textVerso btnCliquable"
+                    value="PeerTube, PodEduc"><strong> PeerTube, PodEduc</strong> </button>
+                  <button type="button" id=card4MoodleBtn10 class="btn textVerso btnCliquable" value="Youtube"><strong>
+                      Youtube </strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card4MoodleBtn11 class="btn textVerso btnCliquable"
+                    value="Application externe"><strong> Application externe </strong> </button>
+                  <button type="button" id=card4MoodleBtn12 class="btn textVerso btnCliquable" value="PDF"><strong>
+                      Annotation PDF </strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card4MoodleBtn13 class="btn textVerso btnCliquable" value="Autre"><strong>
+                      Autre </strong> </button>
+                </p>
+                <p class="basColonneEnquete">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 5 Back Cliquable-->
+          <div class="card card-pratiqueVerso cardBackCliquable d-none" id=card5ExpertMoodleBackCliquable>
+            <!-- Card 5 Back Header -->
+            <div class="row cardBackHead card-pratique" id=card5BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/pratique.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Pratique - Entrainement</h3>
+              </div>
+            </div>
+            <!-- Card 5 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Faire des exercices, des tests formatifs</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Réaliser des projets basés sur la pratique</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Laboratoires</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Sorties de terrain, activités de jeu de rôles</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Etude de cas</li>
+                  <li><span class="li-pratique">&#8226;&nbsp;</span>Simulations</li>
+                </ul>
+                <p class="basColonnePratique mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-pratique">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card5MoodleBtn2 class="btn textVerso btnCliquable" value="Jeu"><strong> Jeu
+                    </strong> </button>
+                  <button type="button" id=card5MoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Paquetage Scorm"><strong> Paquetage Scorm </strong> </button>
+                  <button type="button" id=card5MoodleBtn5 class="btn textVerso btnCliquable" value="Test"><strong>Test
+                      (formatif)</strong></button>
+                  <button type="button" id=card5MoodleBtn1 class="btn textVerso btnCliquable" value="Géogebra"><strong>
+                      Geogebra </strong> </button>
+                  <button type="button" id=card5MoodleBtn3 class="btn textVerso btnCliquable" value="Leçon"><strong>
+                      Leçon </strong> </button>
+                </p>
+                <hr class="hr-pratique">
+                <strong class="text-pratique">H5P</strong>
+                <p>
+                  <button type="button" id=card5MoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Question set"><strong>Question Set (ou activités séparées)</strong> </button>
+                  <button type="button" id=card5MoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Course presentation"><strong>Course Presentation</strong></button>
+                  <button type="button" id=card5MoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Interactive video"><strong> Interactive Video</strong> </button>
+                  <button type="button" id=card5MoodleBtn15 class="btn textVerso btnCliquable"
+                    value="Flashcards"><strong> Flashcards</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card5MoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Interactive book"><strong> Interactive Book</strong> </button>
+                  <button type="button" id=card5MoodleBtn11 class="btn textVerso btnCliquable"
+                    value="Arithmetic quizz"><strong> Arithmetic Quizz</strong> </button>
+                  <button type="button" id=card5MoodleBtn12 class="btn textVerso btnCliquable"
+                    value="Crossword"><strong> Crossword</strong> </button>
+                  <button type="button" id=card5MoodleBtn13 class="btn textVerso btnCliquable"
+                    value="Dictation"><strong> Dictation</strong> </button>
+                  <button type="button" id=card5MoodleBtn14 class="btn textVerso btnCliquable"
+                    value="find the hotspot"><strong> Find the hotspot</strong> </button>
+                  <button type="button" id=card5MoodleBtn17 class="btn textVerso btnCliquable"
+                    value="Sort the paragraphs"><strong> Sort the paragraphs</strong> </button>
+                  <button type="button" id=card5MoodleBtn16 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong> Autre H5P</strong> </button>
+                </p>
+                <hr class="hr-pratique">
+                <strong class="text-pratique">Activités externes à intégrer dans votre cours</strong>
+                <p>
+                  <button type="button" id=card5MoodleBtn18 class="btn textVerso btnCliquable"
+                    value="Digistorm"><strong> Digistorm (questionnaire)</strong> </button>
+                  <button type="button" id=card5MoodleBtn19 class="btn textVerso btnCliquable"
+                    value="Exerciseur en ligne"><strong> Exerciseur en ligne</strong> </button>
+                  <button type="button" id=card5MoodleBtn20 class="btn textVerso btnCliquable"
+                    value="Simulateur"><strong> Simulateur</strong> </button>
+                </p>
+                <p>
+                  <button type="button" id=card5MoodleBtn21 class="btn textVerso btnCliquable" value="Autre"><strong>
+                      Autre</strong> </button>
+                </p>
+                <p class="basColonnePratique">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 6 Back Cliquable -->
+          <div class="card card-productionVerso cardBackCliquable d-none" id=card6ExpertMoodleBackCliquable>
+            <!-- Card 6 Back Header -->
+            <div class="row cardBackHead card-production" id=card6BackHead>
+              <div class="col d-flex flex-row">
+                <img src="./images/production.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
+                <h3 class="titre-carte"> Production</h3>
+              </div>
+            </div>
+            <!-- Card 6 Back Body -->
+            <div class="row cardBackBody">
+              <!-- Colonne Gauche -->
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Bilans, commentaires, compte-rendu</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Rapports, mémoires</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Modèle (conception, dessins)</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Prestations (performance)</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Objets</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Animations</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Maquettes, prototypes</li>
+                  <li><span class="li-production">&#8226;&nbsp;</span>Vidéos</li>
+                </ul>
+                <p class="basColonneProduction mx-2">Activités</p>
+              </div>
+              <!-- Colonne Droite -->
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-production">Activités Moodle</strong>
+                <p>
+                  <button type="button" id=card6MoodleBtn2 class="btn textVerso btnCliquable"
+                    value="Devoir"><strong>Devoir </strong></button>
+                  <button type="button" id=card6MoodleBtn1 class="btn textVerso btnCliquable"
+                    value="Base de données"><strong> Base de données </strong> </button>
+                  <button type="button" id=card6MoodleBtn3 class="btn textVerso btnCliquable"
+                    value="Géogebra"><strong>Geogebra</strong></button>
+                </p>
+                <hr class="hr-production">
+                <strong class="text-production">H5P</strong>
+                <p>
+                  <button type="button" id=card6MoodleBtn4 class="btn textVerso btnCliquable"
+                    value="Audio recorder"><strong>Audio recorder</strong> </button>
+                  <button type="button" id=card6MoodleBtn5 class="btn textVerso btnCliquable"
+                    value="Documentation tool"><strong>Documentation tool</strong></button>
+                  <button type="button" id=card6MoodleBtn6 class="btn textVerso btnCliquable"
+                    value="Essay"><strong>Essay</strong></button>
+                  <button type="button" id=card6MoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Structure strip"><strong>Structure strip</strong></button>
+                  <button type="button" id=card6MoodleBtn7 class="btn textVerso btnCliquable"
+                    value="Autre H5P"><strong>Autre H5P</strong></button>
+                </p>
+                <hr class="hr-production">
+                <strong class="text-production">Activités externes à intégrer à votre cours</strong>
+                <p>
+                  <button type="button" id=card6MoodleBtn8 class="btn textVerso btnCliquable"
+                    value="Classe virtuelle"><strong>Classe virtuelle (ex : BBB) pour présentation et expression
+                      orale</strong></button>
+                  <button type="button" id=card6MoodleBtn9 class="btn textVerso btnCliquable"
+                    value="Carte mentale"><strong>Carte mentale (ex : Digimindmap)</strong></button>
+                  <button type="button" id=card6MoodleBtn10 class="btn textVerso btnCliquable"
+                    value="Editeur de code"><strong>Editeur de code (ex : Capytale)</strong></button>
+                </p>
+                <p>
+                  <button type="button" id=card6MoodleBtn11 class="btn textVerso btnCliquable"
+                    value=""><strong>Autre</strong></button>
+                </p>
+                <p class="basColonneProduction">Outils Numériques</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col"> </div>
+      </div>
+    </div>
+    <!-- Endroit ou les cards peuvent être déplacées -->
+    <table class="mt-2 p-0 w-100 table-stripped" id="tableau">
+      <thead class="thead-inverse text-center" style="width:100%">
+        <td style="width:3%;"></td>
+        <td style="width:15%;"><strong>Mon Scénario</strong></td>
+        <td style="width:10%;">Activités</td>
+        <td style="width:30%;">Remarques</td>
+        <td style="width:7%;">Durée</td>
+        <td style="width:10%;">Présentiel <br>Distanciel</td>
+        <td style="width:10%;">Individuel <br>Groupe </td>
+        <td style="width:15%;">Matériel</td>
+      </thead>
+      <tbody id=dropzone class='bordure'>
+        <tr style='height:50px;'>
+          <td style="width:3%;"></td>
+          <td style="width:15%;" class="dropzone surlignable"></td>
+          <td style="width:10%;"></td>
+          <td style="width:30%;"></td>
+          <td style="width:5%;"></td>
+          <td style="width:10%;"></td>
+          <td style="width:10%;"></td>
+          <td style="width:15%;"></td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Bouton d'export -->
+    <div class="row">
+      <div class="col-sm-10"></div>
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-success" onclick='exporter();'>Exporter <i
+            class="fa-solid fa-file-arrow-down"></i></button>
+      </div>
+    </div>
+    <!-- Graphs -->
+    <div class="row">
+      <div class="col-sm-3">
+        <canvas id="graphPresentielDistanciel" class="d-none" width="100" height="100"></canvas>
+      </div>
+      <div class="col-sm-6 align-top">
+        <canvas id="radar" width="100" height="100" class="d-none"></canvas>
+      </div>
+      <div class="col-sm-3">
+        <canvas id="graphIndividuelGroupe" class="d-none" width="100" height="100"></canvas>
+      </div>
+    </div>
+    <!-- EasterEgg -->
+    <!-- <div class="">
+        <img id="easterImage"  class='easterEgg d-none' src="../MLK/images/easterEgg.png">
+        <audio id="audioEasterEgg" class='d-none' controls>
+          <source src="../MLK/images/sonEasterEgg.wav" type="audio/mpeg">
+        </audio>
+      </div>
+    </div> -->
+
+    <!-- Footer Licence-->
+    <div class="container-fluid pt-2">
+      <a href="#demo" class="btn btn-primary" data-bs-toggle="collapse">Licence <i
+          class="fa-solid fa-circle-info"></i></a>
+      <div id="demo" class="collapse">
+        <div class="row justify-content-between custom-line">
+          <div class="col-3"><img src="./images/logo_DRANE.png" class=w-100 alt=""></i>
+          </div>
+          <div class="col-6"><strong>Application développée par la DRANE Grand Est<br>Contact : </strong><a
+              href="mailto:support-ent@ac-reims.fr">support-ent@ac-reims.fr</a><br><span style=" font-size:14px;">This
+              work is a derivate of ABC Learning Design method by Clive Young and Natasa Perovic, UCL (2015). Learning
+              types, Laurillard, D. (2012).
+              Licensed under CC BY-NC-SA 4.0. Original resources available at abc-id.org</span>
+          </div>
+          <div class="col-3"><img src="./images/licence.png" class=w-75 alt=""></i>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+<!-- Appel des fonctions javascript-->
+<script type="text/javascript" src="scripts/TypeDeCartes.js"></script>
+<script type="text/javascript" src="scripts/DragAndDrop.js"></script>
+<script type="text/javascript" src="scripts/Graphes.js"></script>
+<script type="text/javascript" src="scripts/ExportExcel.js"></script>
+<!-- <script type="text/javascript" src="scripts/EasterEgg.js"></script> -->
+</html>

@@ -1,0 +1,393 @@
+  .dropable{
+    cursor:pointer;
+  }
+  .overlay-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width : 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      z-index: 10;
+      transition: opacity 1s ease-in-out;
+    }
+  .form-check-input{
+    background-color: rgba(0,0,255,1);
+    border-color:rgba(0,0,255,1);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb%28255, 255, 255 %29'/%3e%3c/svg%3e") !important;
+  }
+  .form-check-input:checked{
+    background-color: rgba(255,0,0,1);
+    border-color:rgba(255,0,0,1);
+  }
+
+  .card{
+    border-radius: 15px;
+    box-shadow: 0 5px 10px rgba(12,16,31,0.4);
+    transition:transform .4s;
+    background-color: inherit;
+    overflow: hidden;
+  }
+  .cardFront{
+    border-radius: 15px;
+    box-shadow: 0 5px 10px rgba(12,16,31,0.4);
+
+
+    transition:transform .4s;
+    background-color: inherit;
+    overflow: hidden;
+  }
+
+  .colle{
+    border-radius: 20px;
+    transition:transform .4s;
+    background-color: inherit;
+  }
+  .imageCool{
+    border-radius: 20px;
+  }
+  /* Couleur de fond */
+  .card-acquisition{
+    background-color: rgb(22,177,162);
+    /* word-wrap: break-word;
+    white-space: normal; */
+  }
+  .card-collaboration{
+    background-color: rgb(243,146,0);
+    /* word-wrap: break-word;
+    white-space: normal; */
+  }
+  .card-discussion{
+    background-color: rgb(29,113,184);
+    word-wrap: break-word;
+    white-space: normal;
+  }
+  .card-enquete{
+    background-color: rgb(190,22,34);
+    word-wrap: break-word;
+    white-space: normal;
+  }
+  .card-pratique{
+    background-color: rgb(102,36,131);
+    word-wrap: break-word;
+    white-space: normal;
+  }
+  .card-production{
+    background-color: rgb(58,170,53);
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  .hr-acquisition{
+    border-style: dashed; /* spécifie le style de la bordure en pointillé */
+    border-width: 2px; /* spécifie la largeur de la bordure */
+    border-color: rgba(22,177,162,1); /* spécifie la couleur de la bordure */
+    border-top: none; /* supprime la bordure supérieure pour éviter la double ligne */
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 1;
+  }
+  .hr-collaboration{
+    border-style: dashed; /* spécifie le style de la bordure en pointillé */
+    border-width: 2px; /* spécifie la largeur de la bordure */
+    border-color: rgba(243,146,0,1); /* spécifie la couleur de la bordure */
+    border-top: none; /* supprime la bordure supérieure pour éviter la double ligne */
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 1;
+  }
+  .hr-discussion{
+    border-style: dashed; /* spécifie le style de la bordure en pointillé */
+    border-width: 2px; /* spécifie la largeur de la bordure */
+    border-color: rgba(29,113,184,1); /* spécifie la couleur de la bordure */
+    border-top: none; /* supprime la bordure supérieure pour éviter la double ligne */
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 1;
+  }
+  .hr-enquete{
+    border-style: dashed; /* spécifie le style de la bordure en pointillé */
+    border-width: 2px; /* spécifie la largeur de la bordure */
+    border-color: rgba(190,22,34,1); /* spécifie la couleur de la bordure */
+    border-top: none; /* supprime la bordure supérieure pour éviter la double ligne */
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 1;
+  }
+  .hr-pratique{
+    border-style: dashed; /* spécifie le style de la bordure en pointillé */
+    border-width: 2px; /* spécifie la largeur de la bordure */
+    border-color: rgba(102,36,131,1); /* spécifie la couleur de la bordure */
+    border-top: none; /* supprime la bordure supérieure pour éviter la double ligne */
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 1;
+  }
+  .hr-production{
+    border-style: dashed; /* spécifie le style de la bordure en pointillé */
+    border-width: 2px; /* spécifie la largeur de la bordure */
+    border-color: rgba(58,170,53,1); /* spécifie la couleur de la bordure */
+    border-top: none; /* supprime la bordure supérieure pour éviter la double ligne */
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 1;
+  }
+
+  .text-acquisition{
+    font-size:12px;
+    color:rgba(22,177,162,1);
+  }
+  .text-collaboration{
+    font-size:12px;
+    color:rgba(243,146,0,1);
+  }
+  .text-discussion{
+    font-size:12px;
+    color:rgba(29,113,184,1);
+  }
+  .text-enquete{
+    font-size:12px;
+    color:rgba(190,22,34,1);
+  }
+  .text-pratique{
+    font-size:12px;
+    color: rgba(102,36,131,1);
+  }
+  .text-production{
+    font-size:12px;
+    color:rgba(58,170,53,1);
+  }
+  .text-licence{
+    font-size: 7px;
+    margin :auto;
+  }
+  .description{
+    font-size: 12px;
+    font-family: arial;
+    color:white;
+  }
+  .textVerso{
+    font-size: 11px;
+    font-family: arial;
+  }
+  .titre-carte{
+    color:white;
+  }
+  .cardDepot {
+    border: 2px dashed #000;
+    margin-top: 5px;
+  }
+  .img-fluid{
+    max-height: 120px;
+  }
+  .dropzone {
+    /* height: 100px; */
+    border: 2px dashed #ccc;
+    /* padding: 20px; */
+    margin-bottom: 20px;
+    background-color: inherit;
+  }
+  .surlignable.active {
+    border :2px dashed #ff0070;
+  }
+  .surlignable.hover {
+    cursor:grab;
+  }
+  .zoneDepot{
+    min-height:50px;
+    background-color: lightgrey;
+  }
+  .row .cardBackHead{
+    max-height: 50px;
+  }
+  .row .cardBackBody{
+    height:65%;
+  }
+  .row .cardBackFooter{
+    max-height:50px;
+  }
+  .row .entete{
+    height:20px
+  }
+  ul{
+    margin-bottom : 0.5rem;
+  }
+
+  .card-acquisitionVerso{
+    background-color: rgb(22,177,162);
+    /* width:80% */
+  }
+  .card-collaborationVerso{
+    background-color: rgb(243,146,0);
+    /* width:80% */
+  }
+  .card-discussionVerso{
+    background-color: rgb(29,113,184);
+    /* width:80% */
+  }
+  .card-enqueteVerso{
+    background-color: rgb(190,22,34);
+    /* width:80% */
+  }
+  .card-pratiqueVerso{
+    background-color: rgb(102,36,131);
+    /* width:80% */
+  }
+  .card-productionVerso{
+    background-color: rgb(58,170,53);
+    /* width:80% */
+  }
+
+  .basColonneAcquisition{
+    margin-bottom: 0px;
+    margin-top: 1px;
+    color: rgb(22,177,162);
+    font-weight: 1000;
+    font-size: 1rem;
+  }
+  .basColonneCollaboration{
+    margin-bottom: 0px;
+    margin-top: 1px;
+    color: rgb(243,146,0);
+    font-weight: 1000;
+    font-size: 1rem;
+  }
+  .basColonneDiscussion{
+    margin-bottom: 0px;
+    margin-top: 1px;
+    color: rgb(29,113,184);
+    font-weight: 1000;
+    font-size: 1rem;
+  }
+  .basColonneEnquete{
+    margin-bottom: 0px;
+    margin-top: 1px;
+    color: rgb(190,22,34);
+    font-weight: 1000;
+    font-size: 1rem;
+  }
+  .basColonnePratique{
+    margin-bottom: 0px;
+    margin-top: 1px;
+    color: rgb(102,36,131);
+    font-weight: 1000;
+    font-size: 1rem;
+  }
+  .basColonneProduction{
+    margin-bottom: 0px;
+    margin-top: 1px;
+    color: rgb(58,170,53);
+    font-weight: 1000;
+    font-size: 1rem;
+  }
+
+  .colonneBackDroite{
+    background-color: white;
+    border-bottom-left-radius: 20px;
+    width:60%;
+    margin-left: 1px;
+    flex: auto;
+  }
+  .colonneBackGauche{
+    background-color: white;
+    margin-right:1px;
+    border-bottom-right-radius: 20px;
+    width:35%;
+    flex: auto;
+  }
+  .imageFront{
+      height:100px;
+    }
+  p{
+    margin-bottom: 0;
+  }
+  .btn:hover{
+    border:1px solid black;
+  }
+  .btnInactif{
+    display: inline-block;
+    font-weight: 400;
+    /* line-height: 1.5; */
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.25rem 0.25rem;
+    font-size: 11px;
+    border-radius: 0.25rem;
+    background-color: inherit;
+    /* transition: all 0.15s ease-in-out; */
+  }
+  .btnInactif:hover{
+    cursor: auto;
+  }
+  .ligne{
+    height:50px;
+  }
+
+  ul {
+    list-style-type: none;
+  }
+  .li-acquisition {
+    color: rgba(22,177,162,1);
+    font-size: 16px; /* Taille de la puce */
+    margin-right: 5px; /* Espacement entre la puce et le texte */
+  }
+  .li-collaboration {
+    color: rgba(243,146,0,1);
+    font-size: 16px; /* Taille de la puce */
+    margin-right: 5px; /* Espacement entre la puce et le texte */
+  }
+  .li-discussion {
+    color: rgba(29,113,184,1);
+    font-size: 16px; /* Taille de la puce */
+    margin-right: 5px; /* Espacement entre la puce et le texte */
+  }
+  .li-enquete {
+    color: rgba(190,22,34,1);
+    font-size: 16px; /* Taille de la puce */
+    margin-right: 5px; /* Espacement entre la puce et le texte */
+  }
+  .li-pratique {
+    color: rgba(102,36,131,1);
+    font-size: 16px; /* Taille de la puce */
+    margin-right: 5px; /* Espacement entre la puce et le texte */
+  }
+  .li-production {
+    color: rgba(58,170,53,1);
+    font-size: 16px; /* Taille de la puce */
+    margin-right: 5px; /* Espacement entre la puce et le texte */
+  }
+  .cardFront:hover{
+    cursor: grab;
+  }
+  .cardFront:active{
+    cursor:grabbing;
+  }
+
+  .easterEgg{
+    transform-origin: center center;
+    transition: transform 4s ease;
+    position: absolute;
+  }
+
+  /* table tr:not(:first-child) td:first-child:hover {
+    border: 1px solid black;
+  } */
+  /* .bordure{
+    border: 1px solid black;
+  } */
