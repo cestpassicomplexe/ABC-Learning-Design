@@ -38,10 +38,12 @@ Il réalise l'opération clé de l'ABC LD : **associer le type d'activité d'app
 
 ---
 
-## 🏗️ Structure du Projet (Initial)
+## 🏗️ Structure du Projet
 
-* **`/images/`** : Contient les ressources multimédias, codes javascript et styles. A noter que les libraires sont initialement tirées de cdnjs.cloudflare.com et stockées ici pour informations (non utilisé dans ce projet)
-* **`ABC Learning Design.html`** : Page d'accueil - version interactive du jeu de carte.
+* **`index.html`** page d'accueil du projet ;
+* **`styles.css`** page de style CSS ;
+* **`/images/`** : Contient les ressources multimédias dans ce projet;
+* **`/scripts/`** : JavaScript liés au projet;
 * **`README.md`** : Ce document.
 
 ## ✅ Feuille de Route et Améliorations (Check-list)
@@ -50,9 +52,9 @@ Cette section sert de **liste de contrôle (to-do list)**
 
 ### ⚙️ Développement Fonctionnel
 
+- [x] **Restructuration du code**
 - [ ] **Intégration d'API** : Permettre la connexion à des API d'IA
 - [ ] **Génération Automatisée de Séquence** : Génération de séquences de cours basées sur des objectifs d'apprentissages (acquis d'apprentissages) et données du public-cible.
-- [ ] **Restructuration du code**
 - [ ] **Fonction Export/Import** : Génération d'un fichier pouvant être importé pour reprendre un travail inachevé ou partagé avec d'autres utilisateurs.
 
 ### 📝 Révision du Contenu Pédagogique
