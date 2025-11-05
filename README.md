@@ -60,7 +60,7 @@ Cette section sert de **liste de contrôle (to-do list)**
     - [ ] Copié sous format Markdown
     - [ ] 
 - [ ] **Fonction Export/Import** : Génération d'un fichier pouvant être importé pour reprendre un travail inachevé ou partagé avec d'autres utilisateurs.
-- [ ] **Mise à jour de la fonction export XLS** : suite à la modfication du tableau de scénarisation, tester/vérifer l'export actuel
+- [x] **Mise à jour de la fonction export XLS** : suite à la modfication du tableau de scénarisation, tester/vérifer l'export actuel
 
 
 ### 📝 Révision du Contenu Pédagogique
