@@ -385,6 +385,16 @@
     position: absolute;
   }
 
+  tr.dragging {
+    opacity: 0.5;
+    background: #f0f0f0;
+  }
+  
+  /* Crée une ligne bleue épaisse au-dessus de la ligne où l'on s'apprête à déposer */
+  tr.drag-over-indicator {
+    border-top: 3px solid #0d6efd; /* Vous pouvez changer la couleur (ex: "red") */
+  }
+
   /* table tr:not(:first-child) td:first-child:hover {
     border: 1px solid black;
   } */

@@ -13,7 +13,10 @@ var ligneEnCours;
 //gere le double clic pour voir apparaitre le verso des cartes en haut.
 //fonction qui au click dans la premiere case du tableau fait apparaitre le verso de la carte
 function handleClick() {
-    nom = this.id;
+    // --- DÉBUT DE LA MODIFICATION ---
+
+    // Ancienne méthode (non fiable pour les clics simulés)
+    /*
     const y = event.clientY;
     for (var k = 1; k < tableau.rows.length; k++) {
         // Pour vérifier su quelle ligne je suis j'utilise la position du pointeur.
@@ -21,115 +24,89 @@ function handleClick() {
             ligneEnCours = k;
         }
     }
+    */
 
-    // cardSuppressed=document.getElementById(nom);
+    // Nouvelle méthode (fiable et plus simple)
+    // 'this' est la cellule (<td>) qui a été cliquée.
+    // 1. On trouve la ligne parente (<tr>) la plus proche.
+    const clickedRow = this.closest('tr');
+    
+    // 2. On récupère son index dans le tableau. C'est notre nouvelle ligne de travail.
+    // L'index d'une ligne dans le corps (tbody) est directement le 'k' que vous cherchiez.
+    ligneEnCours = clickedRow.rowIndex;
+
+    // --- FIN DE LA MODIFICATION ---
+
+    nom = this.id;
     nouveauNom = nom.slice(4, 5);
     for (var i = 1; i < 7; i++) {
         nomNovice = 'card' + i + 'NoviceMoodleBackCliquable';
         nomExpert = 'card' + i + 'ExpertMoodleBackCliquable';
         carteNovice = document.getElementById(nomNovice);
         carteExpert = document.getElementById(nomExpert);
-        // console.log(carte);
-        // console.log(i.toString()==nouveauNom);
+
         if (i.toString() == nouveauNom) {
             if (choixTypeCarte == 'Novice') {
                 carteNovice.classList.toggle('d-none');
             } else {
                 carteExpert.classList.toggle('d-none');
             }
-            // console.log(carte);
         } else {
             carteNovice.classList.add('d-none');
             carteExpert.classList.add('d-none');
         }
     }
 }
-// Fonction pour ajouter les outils en cliquant sur les boutons situé au verso des cartes.
+
+
+
+/**
+ * Gère le clic sur un bouton d'outil situé au verso d'une carte.
+ * Cette fonction met à jour la cellule "Outil" de la ligne de scénario
+ * actuellement sélectionnée ('ligneEnCours').
+ */
 function handleClickBtn() {
-    // trouver le nb de cellule dans la ligne en cours
-    nombreCellule = tableau.rows[ligneEnCours].cells.length;
-    if (nombreCellule > 2) { //si le nb de cellule est plus grand que 2 il y a déjà un outil de déclaré
-        for (var i = 7; i > 1; i--) {
-            // console.log(tableau.rows[ligneEnCours].cells[i]);
-            tableau.rows[ligneEnCours].cells[i].remove();
+    // La variable 'ligneEnCours' est définie globalement lorsque l'utilisateur
+    // clique sur une carte dans la première colonne du tableau.
+
+    // 1. Récupérer la ligne cible dans le tableau
+    const targetRow = tableau.rows[ligneEnCours];
+
+    // 2. Vérification de sécurité : s'assurer que la ligne existe
+    if (!targetRow) {
+        console.error("Erreur : Impossible de trouver la ligne de destination (ligneEnCours: " + ligneEnCours + ").");
+        return; // Arrête l'exécution pour éviter une erreur
+    }
+
+    // 3. Cibler la 4ème cellule (index 3), qui correspond à la colonne "Outil"
+    const celluleOutil = targetRow.cells[3];
+
+    // 4. Vérification de sécurité : s'assurer que la cellule "Outil" existe
+    if (!celluleOutil) {
+        console.error("Erreur : La structure de la ligne est incorrecte, la cellule 'Outil' est manquante.");
+        return;
+    }
+
+    // 5. Mettre à jour le contenu de la cellule avec le nom de l'outil
+    // On privilégie l'attribut 'value' du bouton, sinon on prend son texte.
+    const nomOutil = this.value || this.textContent.trim();
+    celluleOutil.innerText = nomOutil;
+
+    // 6. Cacher toutes les cartes "verso" pour nettoyer l'interface
+    for (var i = 1; i < 7; i++) {
+        // On reconstruit l'ID de chaque carte à cacher
+        const cardId = 'card' + i + choixTypeCarte + 'MoodleBackCliquable';
+        const cardElement = document.getElementById(cardId);
+        
+        // On vérifie que l'élément existe avant de manipuler ses classes
+        if (cardElement) {
+            cardElement.classList.add('d-none');
         }
     }
-    // Insertion du nom de l'outils
-    td = tableau.rows[ligneEnCours].insertCell();
-    td.innerText = this.value;
-    // Remarques
-    td = tableau.rows[ligneEnCours].insertCell();
-    td.className = 'col';
-    input = document.createElement('textarea');
-    input.className = 'form-control ligne';
-    td.appendChild(input);
-    // Durée
-    td = tableau.rows[ligneEnCours].insertCell();
-    td.className = 'col';
-    input = document.createElement('input');
-    input.setAttribute('type', 'number');
-    input.setAttribute('value', 0);
-    input.setAttribute('min', 0);
-    input.setAttribute('max', 100);
-    input.setAttribute('onchange', 'actugraph();');
-    td.appendChild(input);
 
-    //Présentiel distanciel
-    td = tableau.rows[ligneEnCours].insertCell();
-    td.className = 'col';
-    // Créer le select
-    select = document.createElement('select');
-    select.setAttribute('onchange', "actugraph();");
-    var optionElement = document.createElement("option");
-    // Définit le texte et la valeur de l'option
-    optionElement.text = "Présentiel";
-    optionElement.value = "Présentiel";
-    // Ajoute l'option au select
-    select.appendChild(optionElement);
-    var optionElement = document.createElement("option");
-    // Définit le texte et la valeur de l'option
-    optionElement.text = "Distanciel";
-    optionElement.value = "Distanciel";
-    // Ajoute l'option au select
-    select.appendChild(optionElement);
-    td.appendChild(select);
-
-    //Individuel Groupe
-    td = tableau.rows[ligneEnCours].insertCell();
-    td.className = 'col';
-    // Créer le select
-    select = document.createElement('select');
-    select.setAttribute('onchange', "actugraph();");
-    // Crée une nouvelle option
-    var optionElement = document.createElement("option");
-    // Définit le texte et la valeur de l'option
-    optionElement.text = "Individuel";
-    optionElement.value = "Individuel";
-    // Ajoute l'option au select
-    select.appendChild(optionElement);
-    // Crée une nouvelle option
-    var optionElement = document.createElement("option");
-    // Définit le texte et la valeur de l'option
-    optionElement.text = "Groupe";
-    optionElement.value = "Groupe";
-    // Ajoute l'option au select
-    select.appendChild(optionElement);
-    td.appendChild(select);
-
-    //Matériel
-    td = tableau.rows[ligneEnCours].insertCell();
-    td.className = 'col';
-    input = document.createElement('textarea');
-    input.className = 'form-control ligne';
-    td.appendChild(input);
-
-    // Cache les cartes
-    for (var i = 1; i < 7; i++) {
-        document.getElementById('card' + i + choixTypeCarte + 'MoodleBackCliquable').classList.add('d-none');
-    }
+    // 7. Mettre à jour les graphiques
     actugraph();
 }
-
 function highlightDropzone() {
     dropzone.classList.add('active');
 }
@@ -137,149 +114,156 @@ function highlightDropzone() {
 function handleDragStart() {
 }
 // dragstart pour les éléments déjà dans le tableau
-function handleDragStart2() {
-    //repere ou est le curseur
-    const x = event.clientX;
-    const y = event.clientY;
-    //tableau dans sa globalité
-    var tableau = document.getElementById('tableau');
-    //tablebody du tableau.
-    var dropzone = document.getElementById('dropzone');
-    tableauRect = tableau.getBoundingClientRect();
-    rect = tableau.rows[1].cells[1].getBoundingClientRect();
-    dropZoneRect = { 'left': rect.left, 'right': rect.right, 'top': rect.top, 'bottom': tableauRect.bottom }
-    if (x >= dropZoneRect.left && x <= dropZoneRect.right && y >= dropZoneRect.top && y <= dropZoneRect.bottom) {
-        for (var k = 1; k < tableau.rows.length; k++) {
-            if (y <= tableau.rows[k].getBoundingClientRect().bottom && y >= tableau.rows[k].getBoundingClientRect().top) {
-                // J'ajoute la classe dragging à la ligne contenant la carte que je déplace.
-                // Comme ca je peux la retrouver dans handleDragEnd2
-                tableau.rows[k].classList.add('dragging');
-                // console.log(document.querySelector('.dragging'));
-            }
-        }
-    }
+function handleDragStart2(event) {
+    // L'élément déplacé est l'icône (event.target)
+    // On trouve sa ligne parente (tr) et on la marque
+    event.target.closest('tr').classList.add('dragging');
+    // On dit au navigateur quelles données on déplace (même si c'est factice)
+    event.dataTransfer.setData('text/plain', null);
+    event.dataTransfer.effectAllowed = 'move'; // Indique visuellement un déplacement
 }
-// dragEnd pour glisser deposer les éléments dans la drop zone.
-function handleDragEnd2() {
-    // retrouve la ligne a déplacer
-    ligne = document.querySelector('.dragging');
-    ligne.classList.remove('dragging');
-    //repere ou est le curseur
-    const x = event.clientX;
-    const y = event.clientY;
-    //tableau dans sa globalité
-    var tableau = document.getElementById('tableau');
-    //tablebody du tableau.
-    var dropzone = document.getElementById('dropzone');
-    tableauRect = tableau.getBoundingClientRect();
-    rect = tableau.rows[1].cells[1].getBoundingClientRect();
-    dropZoneRect = { 'left': rect.left, 'right': rect.right, 'top': rect.top, 'bottom': tableauRect.bottom }
-    //Si je suis dans la zone de drop
-    if (x >= dropZoneRect.left && x <= dropZoneRect.right && y >= dropZoneRect.top && y <= dropZoneRect.bottom) {
-        for (var k = 1; k < tableau.rows.length; k++) {
-            // Pour vérifier sur quelle ligne je suis j'utilise la position du pointeur.
-            if (y <= tableau.rows[k].getBoundingClientRect().bottom && y >= tableau.rows[k].getBoundingClientRect().top) {
-                // Si je suis bien dans le tableau je suis sur une ligne et alors j'insère au dessus.
-                tableau.rows[k].cells[1].classList.remove('active');
-                dropzone.insertBefore(ligne, tableau.rows[k]);
-                for (var i = 1; i < 7; i++) {
-                    document.getElementById('card' + i + 'BackCliquable').classList.add('d-none');
-                }
-            }
-        }
+
+
+function handleDragEnd2(event) {
+    // On retire la classe 'dragging' de la ligne qu'on déplaçait
+    const draggedRow = document.querySelector('.dragging');
+    if (draggedRow) {
+        draggedRow.classList.remove('dragging');
     }
+
+    // NOUVEAU : On s'assure de retirer tous les indicateurs d'insertion restants
+    const indicators = document.querySelectorAll('.drag-over-indicator');
+    indicators.forEach(indicator => {
+        indicator.classList.remove('drag-over-indicator');
+    });
 }
-// FOnction s'activant lorsqu'on lache la carte dans le tableau.
+
+/**
+ * Gère le dépôt d'une carte dans le tableau.
+ * Cette fonction transforme la ligne de dépôt cible en ligne de contenu
+ * et ajoute une nouvelle ligne de dépôt vide à la fin.
+ */
+/**
+ * Gère le dépôt d'une carte dans le tableau.
+ * Cette fonction transforme la ligne de dépôt cible en ligne de contenu
+ * et ajoute une nouvelle ligne de dépôt vide à la fin.
+ */
 function handleDragEnd() {
-    //clone le bouton en déplacement
-    idClone = document.getElementById(this.id);
-    btnClone = idClone.cloneNode(true);
-    //Je récupere l'id du head de la carte à mettre dans la 1ere colonne du tableau
-    idHead = this.id.slice(0, 5) + 'BackHead';
-    // console.log(document.getElementById(idHead).childNodes);
-    headClone = document.getElementById(idHead).childNodes[1];
+    const dropzoneTbody = document.getElementById('dropzone');
+    const targetCell = dropzoneTbody.querySelector('.surlignable.active');
+    if (!targetCell) { return; }
 
-    numeroCarte = this.id.slice(4, 5);
+    const targetRow = targetCell.closest('tr');
+    
+    // On vide la ligne proprement
+    while (targetRow.firstChild) {
+        targetRow.removeChild(targetRow.firstChild);
+    }
+    
+    targetRow.className = 'ligne text-center';
 
-    // Vérification si la carte a été lâchée hors de la zone de dépôt
-    // Emplacement du curseur
-    const x = event.clientX;
-    const y = event.clientY;
-    //tableau dans sa globalité
-    var tableau = document.getElementById('tableau');
-    //tablebody du tableau.
-    var dropzone = document.getElementById('dropzone');
-    // récupere la taille du tableau pour fixer le bas.
-    tableauRect = tableau.getBoundingClientRect();
-    // La taille de la 1ere cellule de la 2eme ligne pour fixer le haut, la gauche et droite
-    rect = tableau.rows[1].cells[1].getBoundingClientRect();
-    // Tout est stocké dans une variable dropZoneRect
-    dropZoneRect = { 'left': rect.left, 'right': rect.right, 'top': rect.top, 'bottom': tableauRect.bottom }
-    // console.log(x,y,dropZoneRect);
-    //si je suis dans la premiere colonne, qui est la zone de drop
-    if (x >= dropZoneRect.left && x <= dropZoneRect.right && y >= dropZoneRect.top && y <= dropZoneRect.bottom) {
-        // Je parcours les lignes pour savoir sur quelle ligne je suis pour insérer dessus.
-        for (var k = 1; k < tableau.rows.length; k++) {
-            // Pour vérifier su quelle ligne je suis j'utilise la position du pointeur.
-            if (y <= tableau.rows[k].getBoundingClientRect().bottom && y >= tableau.rows[k].getBoundingClientRect().top) {
-                // console.log(k);
-                // Création de la ligne
-                tr = document.createElement('tr');
-                tr.className = 'ligne text-center';
-                //Supprimer
-                td = document.createElement('td');
-                td.className = 'col text-center';
-                button = document.createElement('button');
-                button.className = 'btn';
-                button.innerHTML = '<i class="fa-solid fa-trash" style="color: #ffffff;"></i>';
-                button.setAttribute('onclick', 'supprimer();');
-                td.appendChild(button);
-                switch (this.id.slice(4, 5)) {
-                    case "1": td.classList.add('card-acquisition'); break;
-                    case "2": td.classList.add('card-collaboration'); break;
-                    case "3": td.classList.add('card-discussion'); break;
-                    case "4": td.classList.add('card-enquete'); break;
-                    case "5": td.classList.add('card-pratique'); break;
-                    case "6": td.classList.add('card-production'); break;
-                }
-                tr.appendChild(td);
-                //Type de carte
-                td = document.createElement('td');
-                td.className = 'col text-center d-flex flex-row dropable surlignable';
-                td.id = this.id.slice(0, 5) + new Date().getTime();
-                switch (this.id.slice(4, 5)) {
-                    case "1": td.classList.add('card-acquisition'); break;
-                    case "2": td.classList.add('card-collaboration'); break;
-                    case "3": td.classList.add('card-discussion'); break;
-                    case "4": td.classList.add('card-enquete'); break;
-                    case "5": td.classList.add('card-pratique'); break;
-                    case "6": td.classList.add('card-production'); break;
-                }
-                td.appendChild(headClone.childNodes[1].cloneNode(true));
-                titre = document.createElement('h6');
-                titre.className = 'titre-carte w-75';
-                titre.innerText = headClone.childNodes[3].innerText;
-                td.appendChild(titre);
-                td.setAttribute('draggable', true);
-                td.addEventListener('click', handleClick);
-                td.addEventListener('dragstart', handleDragStart2);
-                td.addEventListener('dragend', handleDragEnd2);
-                td.addEventListener('dragover', handleDragOver);
-                td.addEventListener('dragleave', handleDragLeave);
-
-                tr.appendChild(td);
+    const cardId = this.id;
+    const headId = cardId.slice(0, 5) + 'BackHead';
+    const headClone = document.getElementById(headId).childNodes[1];
 
 
-                // Retirer le highlight signifiant ou est déposée la carte.
-                tableau.rows[k].cells[1].classList.remove('active');
-                dropzone.insertBefore(tr, tableau.rows[k]);
-                // Cacher les Cartes
-                for (var i = 1; i < 7; i++) {
-                    document.getElementById('card' + i + 'BackCliquable').classList.add('d-none');
-                }
-                // document.getElementById('card'+numeroCarte+'BackCliquable').classList.remove('d-none');
-            }
+    // --- Cellule 1: Poignée et Suppression ---
+    let cell1 = targetRow.insertCell();
+    
+    let wrapper1 = document.createElement('div');
+    wrapper1.className = 'd-flex justify-content-around align-items-center';
+    
+    // 3. On ajoute les éléments DANS le wrapper.
+    let handle = document.createElement('i');
+    handle.className = 'fa-solid fa-grip-vertical';
+    handle.draggable = true;
+    handle.style.userSelect = 'auto'; 
+    handle.style.cursor = 'grab';
+    handle.addEventListener('dragstart', handleDragStart2);
+    handle.addEventListener('dragend', handleDragEnd2);
+    wrapper1.appendChild(handle);
+    
+    let button = document.createElement('button');
+    button.className = 'btn';
+    button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+    button.setAttribute('onclick', 'supprimer(this);');
+    wrapper1.appendChild(button);
+
+    // 4. On ajoute le wrapper complet DANS la cellule.
+    cell1.appendChild(wrapper1);
+
+    // On ajoute la couleur de fond à la cellule, pas au wrapper.
+    switch (cardId.slice(4, 5)) {
+        case "1": cell1.classList.add('card-acquisition'); break;
+        case "2": cell1.classList.add('card-collaboration'); break;
+        case "3": cell1.classList.add('card-discussion'); break;
+        case "4": cell1.classList.add('card-enquete'); break;
+        case "5": cell1.classList.add('card-pratique'); break;
+        case "6": cell1.classList.add('card-production'); break;
+    }
+
+    // --- Cellule 2: Type d'Apprentissage ---
+    const cellTypeApprentissage = targetRow.insertCell();
+    // Même principe ici.
+    
+    // 1. On crée le wrapper flex.
+    let wrapper2 = document.createElement('div');
+    wrapper2.className = 'd-flex flex-row'; // Les classes flex vont sur le div.
+
+    // 2. On ajoute les éléments DANS le wrapper.
+    wrapper2.appendChild(headClone.childNodes[1].cloneNode(true));
+    let titre = document.createElement('h6');
+    titre.className = 'titre-carte w-75';
+    titre.innerText = headClone.childNodes[3].innerText;
+    wrapper2.appendChild(titre);
+
+    // 3. On ajoute le wrapper DANS la cellule.
+    cellTypeApprentissage.appendChild(wrapper2);
+    
+    cellTypeApprentissage.id = cardId.slice(0, 5) + new Date().getTime();
+    cellTypeApprentissage.addEventListener('click', handleClick); 
+    switch (cardId.slice(4, 5)) {
+        case "1": cellTypeApprentissage.classList.add('card-acquisition'); break;
+        case "2": cellTypeApprentissage.classList.add('card-collaboration'); break;
+        case "3": cellTypeApprentissage.classList.add('card-discussion'); break;
+        case "4": cellTypeApprentissage.classList.add('card-enquete'); break;
+        case "5": cellTypeApprentissage.classList.add('card-pratique'); break;
+        case "6": cellTypeApprentissage.classList.add('card-production'); break;
+    }
+    
+    // --- FIN DE LA CORRECTION MAJEURE ---
+
+
+    // Le reste des cellules est inchangé et correct.
+    targetRow.insertCell().innerHTML = "<textarea class='form-control ligne' placeholder=\"L'apprenant sera capable de...\"></textarea>";
+    targetRow.insertCell().innerText = "";
+    targetRow.insertCell().innerHTML = "<textarea class='form-control ligne' placeholder=\"Instructions pour l'activité...\"></textarea>";
+    targetRow.insertCell().innerHTML = "<input type='number' class='form-control' value='10' min='0' onchange='actugraph();'>";
+    targetRow.insertCell().innerHTML = `<select class='form-select' onchange="actugraph();"><option>Présentiel / Individuel</option><option>Présentiel / En groupe</option><option>Présentiel / Classe entière</option><option>Distanciel Synchrone / Individuel</option><option>Distanciel Synchrone / En groupe</option><option>Distanciel Synchrone / Classe entière</option><option>Distanciel Asynchrone / Individuel</option><option>Distanciel Asynchrone / En groupe</option></select>`;
+    targetRow.insertCell().innerHTML = `<select class='form-select' onchange="actugraph();"><option>Non évalué</option><option>Formatif (auto-corrigé)</option><option>Formatif (par les pairs)</option><option>Formatif (enseignant)</option><option>Sommative (notée)</option><option>Certificative</option></select>`;
+    targetRow.insertCell().innerHTML = "<textarea class='form-control ligne' placeholder=\"Lien, PDF, matériel...\"></textarea>";
+
+    // --- Ajout de la nouvelle ligne vide ---
+    const nouvelleLigneVide = dropzoneTbody.insertRow();
+    nouvelleLigneVide.style.height = '50px';
+    nouvelleLigneVide.insertCell();
+    const nouvelleDropzoneCell = nouvelleLigneVide.insertCell();
+    nouvelleDropzoneCell.className = 'dropzone surlignable';
+    for (let i = 0; i < 7; i++) { nouvelleLigneVide.insertCell(); }
+    
+    targetCell.classList.remove('active');
+    cellTypeApprentissage.click();
+}
+
+// Recommandation : Je vois `onclick='confirmerSuppression(this);'`. Il serait plus propre 
+// de remplacer la fonction `supprimer` par `confirmerSuppression` pour éviter la confusion.
+function confirmerSuppression(bouton) {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette ligne ?")) {
+        const ligneASupprimer = bouton.closest('tr');
+        if (ligneASupprimer) {
+            ligneASupprimer.remove();
         }
+        actugraph();
     }
 }
 
@@ -291,41 +275,70 @@ function handleDragLeave() {
         tableau.rows[i].cells[1].classList.remove('active');
     }
 }
+
 function handleDragOver(event) {
-    rect = tableau.rows[1].cells[1].getBoundingClientRect();
-    const x = event.clientX;
-    const y = event.clientY;
-    // console.log(x,rect);
-    if (x >= rect.left && x <= rect.right) {
-        for (var k = 1; k < tableau.rows.length; k++) {
-            // Pour vérifier su quelle ligne je suis j'utilise la position du pointeur.
-            if (y <= tableau.rows[k].getBoundingClientRect().bottom && y >= tableau.rows[k].getBoundingClientRect().top) {
-                event.preventDefault();
-                tableau.rows[k].cells[1].classList.add('active');
-            }
+    event.preventDefault(); 
+
+    const dropzoneTbody = document.getElementById('dropzone');
+    const draggedRow = dropzoneTbody.querySelector('.dragging');
+
+    // --- CAS N°1 : On est en train de réorganiser une ligne existante ---
+    if (draggedRow) {
+        // On cherche la ligne survolée
+        const overRow = event.target.closest('tr');
+
+        // NOUVEAU : On nettoie d'abord tous les indicateurs précédents
+        dropzoneTbody.querySelectorAll('tr').forEach(row => {
+            row.classList.remove('drag-over-indicator');
+        });
+        
+        // Si on survole une autre ligne (et pas celle qu'on déplace), on la déplace ET on affiche l'indicateur
+        if (overRow && overRow !== draggedRow) {
+            // NOUVEAU : On ajoute l'indicateur sur la ligne qui va être "poussée"
+            overRow.classList.add('drag-over-indicator');
+            
+            // On déplace l'élément comme avant
+            dropzoneTbody.insertBefore(draggedRow, overRow);
+        }
+    } 
+    // --- CAS N°2 : On est en train de déposer une nouvelle carte ---
+    else {
+        // Cette partie ne change pas
+        dropzoneTbody.querySelectorAll('.surlignable').forEach(cell => {
+            cell.classList.remove('active');
+        });
+        const overCell = event.target.closest('td.surlignable');
+        if (overCell) {
+            overCell.classList.add('active');
         }
     }
 }
+
 function handleDrop() {
     event.preventDefault();
 }
-function supprimer() {//supprime la ligne du tableau quand on click sur la croix
-    // Je recherche la ligne
-    const y = event.clientY;
-    for (var k = 1; k < tableau.rows.length; k++) {
-        if (y <= tableau.rows[k].getBoundingClientRect().bottom && y >= tableau.rows[k].getBoundingClientRect().top) {
-            // La ligne est trouvée, je la supprime.
-            tableau.rows[k].remove();
+
+/**
+ * Demande une confirmation à l'utilisateur avant de supprimer une ligne.
+ * @param {HTMLElement} bouton - Le bouton de suppression qui a été cliqué.
+ */
+function supprimer(bouton) {
+    // Affiche une boîte de dialogue standard du navigateur
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette ligne ?")) {
+        // Si l'utilisateur clique sur "OK" :
+        // 1. On trouve l'élément <tr> le plus proche du bouton
+        const ligneASupprimer = bouton.closest('tr');
+        
+        // 2. On le supprime du DOM
+        if (ligneASupprimer) {
+            ligneASupprimer.remove();
         }
+        
+        // 3. On met à jour les graphiques
+        actugraph();
     }
-    for (var i = 1; i < 7; i++) {
-        document.getElementById('card' + i + choixTypeCarte + 'MoodleBackCliquable').classList.add('d-none');
-    }
-
-    actugraph();
-
+    // Si l'utilisateur clique sur "Annuler", rien ne se passe.
 }
-
 
 cardsFront.forEach(card => {
     card.addEventListener('dragstart', handleDragStart);
