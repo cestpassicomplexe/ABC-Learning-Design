@@ -55,14 +55,20 @@ Cette section sert de **liste de contrôle (to-do list)**
 - [x] **Restructuration du code**
 - [ ] **Intégration d'API** : Permettre la connexion à des API d'IA
 - [ ] **Génération Automatisée de Séquence** : Génération de séquences de cours basées sur des objectifs d'apprentissages (acquis d'apprentissages) et données du public-cible.
+- [ ] Ajout de fonctions d'export
+    - [ ] Copié sous forme de tableau
+    - [ ] Copié sous format Markdown
+    - [ ] 
 - [ ] **Fonction Export/Import** : Génération d'un fichier pouvant être importé pour reprendre un travail inachevé ou partagé avec d'autres utilisateurs.
+- [ ] **Mise à jour de la fonction export XLS** : suite à la modfication du tableau de scénarisation, tester/vérifer l'export actuel
+
 
 ### 📝 Révision du Contenu Pédagogique
 
 - [ ] **Révision du contenu des cartes** : Affiner les descriptions et les exemples d'activités pour les rendre moins spécifiques (éviter les plug-in payants par exemple) et actuelles (Moodle/H5P/Autres)
-- [ ] **Définition de l'Évaluation** : Ajouter un champ pour l'intégration de l'évaluation (formative et sommative) aux points clés du storyboard.
-- [ ] **Révision des en-têtes** : Amélioration des en-têtes afin de s'approcher d'une scénarisation plus précise
-- [ ] **Révision des modalités** : Amélioration des listes déroulantes pour aller plus loin que la dichotomie Présentiel/Distanciel - Individuel/Groupe
+- [x] **Définition de l'Évaluation** : Ajouter un champ pour l'intégration de l'évaluation (formative et sommative) aux points clés du storyboard.
+- [x] **Révision des en-têtes** : Amélioration des en-têtes afin de s'approcher d'une scénarisation plus précise
+- [x] **Révision des modalités** : Amélioration des listes déroulantes pour aller plus loin que la dichotomie Présentiel/Distanciel - Individuel/Groupe
 
 
 ## Projet intial
