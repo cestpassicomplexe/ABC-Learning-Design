@@ -28,24 +28,59 @@
 </head>
 
 <body>
-  <!-- Navbar menu -->
-  <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-end">
-    <!-- Links -->
+  <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-between align-items-center px-3">
+    
+    <!-- PARTIE GAUCHE : Nos nouvelles actions -->
+    <div class="d-flex align-items-center">
+      <!-- 1. Bouton Sauvegarder -->
+      <button type="button" id="boutonSauvegarder" class="btn btn-primary me-2">
+        Sauvegarder <i class="fa-solid fa-floppy-disk"></i>
+      </button>
+    
+      <!-- 2. Bouton Charger -->
+      <div class="me-2">
+        <input type="file" id="fichierImport" accept=".json" class="d-none">
+        <button type="button" id="boutonImporter" class="btn btn-secondary">
+          Charger <i class="fa-solid fa-file-arrow-up"></i>
+        </button>
+      </div>
+    
+      <!-- 3. Menu déroulant pour les Exports et la Copie -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Exporter & Copier <i class="fa-solid fa-share-square"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li><h6 class="dropdown-header">Exporter en fichier</h6></li>
+          <li><a class="dropdown-item" href="#" id="export-excel">Format Excel (.xlsx)</a></li>
+          <li><a class="dropdown-item" href="#" id="export-md">Format Markdown (.md)</a></li>
+          <li><a class="dropdown-item" href="#" id="export-html">Format HTML (.html)</a></li>
+          <li><a class="dropdown-item" href="#" id="export-txt">Format Texte (.txt)</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><h6 class="dropdown-header">Copier dans le presse-papiers</h6></li>
+          <li><a class="dropdown-item" href="#" id="copy-html">Copier pour Traitement de texte</a></li>
+          <li><a class="dropdown-item" href="#" id="copy-md">Copier en Markdown</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PARTIE DROITE : Les anciens liens -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link align-self-end mx-2" href="https://moodletoolguide.net/fr/" target="_blank">
+        <a class="nav-link" href="https://moodletoolguide.net/fr/" target="_blank">
           Guide des outils Moodle
           <i class="fas fa-graduation-cap"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link align-self-end mx-2" href="https://h5p.org/content-types-and-applications" target="_blank">
+        <a class="nav-link" href="https://h5p.org/content-types-and-applications" target="_blank">
           Exemples H5P
           <i class="fa-solid fa-book-open"></i>
         </a>
       </li>
     </ul>
-  </nav>
+
+</nav>
   <!-- Switch entre les deux modes-->
   <div class="container-fluid pt-2 form-switch">
 
@@ -1534,6 +1569,8 @@
         <div class="col"> </div>
       </div>
     </div>
+
+
     <!-- Endroit où les cards peuvent être déplacées -->
     <table class="mt-2 p-0 w-100 table-stripped" id="tableau">
 
@@ -1580,15 +1617,7 @@
       </tbody>
   
   </table>
-    <!-- Bouton d'export -->
-    <div class="row">
-      <div class="col-sm-10"></div>
-      <div class="col-sm-2">
-        <button type="button" class="btn btn-success" onclick='exporter();'>Exporter <i
-            class="fa-solid fa-file-arrow-down"></i></button>
-      </div>
-    </div>
-    <!-- Graphs -->
+     <!-- Graphs -->
     <div class="row">
       <div class="col-sm-3">
         <canvas id="graphPresentielDistanciel" class="d-none" width="100" height="100"></canvas>
@@ -1634,6 +1663,7 @@
 <script type="text/javascript" src="scripts/DragAndDrop.js"></script>
 <script type="text/javascript" src="scripts/Graphes.js"></script>
 <script type="text/javascript" src="scripts/ExportExcel.js"></script>
+<script type="text/javascript" src="scripts/importExport.js"></script>
 <!-- <script type="text/javascript" src="scripts/EasterEgg.js"></script> -->
 
 </html>
