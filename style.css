@@ -1,46 +1,62 @@
-.dropable{
-  cursor:pointer;
-}
-.overlay-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width : 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    z-index: 10;
-    transition: opacity 1s ease-in-out;
-  }
-.form-check-input{
-  background-color: rgba(0,0,255,1);
-  border-color:rgba(0,0,255,1);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb%28255, 255, 255 %29'/%3e%3c/svg%3e") !important;
-}
-.form-check-input:checked{
-  background-color: rgba(255,0,0,1);
-  border-color:rgba(255,0,0,1);
+/* ============================================
+   VARIABLES CSS - Couleurs des types d'apprentissage
+   ============================================ */
+:root {
+  /* Couleurs principales des types d'apprentissage */
+  --color-acquisition: rgb(22, 177, 162);
+  --color-collaboration: rgb(243, 146, 0);
+  --color-discussion: rgb(29, 113, 184);
+  --color-enquete: rgb(190, 22, 34);
+  --color-pratique: rgb(102, 36, 131);
+  --color-production: rgb(58, 170, 53);
+
+  /* Ombres et effets */
+  --card-shadow: 0 5px 10px rgba(12, 16, 31, 0.4);
+  --card-border-radius: 15px;
+  --card-transition: transform 0.4s;
 }
 
-.card{
+/* ============================================
+   STYLES GÉNÉRAUX
+   ============================================ */
+.dropable {
+  cursor: pointer;
+}
+
+.overlay-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 1s ease-in-out;
+}
+
+
+
+.card {
   border-radius: 15px;
-  box-shadow: 0 5px 10px rgba(12,16,31,0.4);
-  transition:transform .4s;
+  box-shadow: 0 5px 10px rgba(12, 16, 31, 0.4);
+  transition: transform .4s;
   background-color: inherit;
   overflow: hidden;
 }
-.cardFront{
+
+.cardFront {
   border-radius: 15px;
-  box-shadow: 0 5px 10px rgba(12,16,31,0.4);
+  box-shadow: 0 5px 10px rgba(12, 16, 31, 0.4);
 
 
-  transition:transform .4s;
+  transition: transform .4s;
   background-color: inherit;
   overflow: hidden;
 }
 
 /* --- NOUVEAUX STYLES POUR L'UX (MIS À JOUR) --- */
-  
+
 /* Permet de positionner l'indicateur d'action en bas de la carte */
 .card-body {
   position: relative;
@@ -72,107 +88,60 @@
 
 /* Style visuel pour indiquer qu'une ligne est en cours de modification */
 .ligne-en-modification {
-  outline: 2px solid #0d6efd; /* Bordure bleue pour la visibilité */
+  outline: 2px solid #0d6efd;
+  /* Bordure bleue pour la visibilité */
   outline-offset: -2px;
 }
 
 /* --- FIN DES NOUVEAUX STYLES --- */
 
-.colle{
+.colle {
   border-radius: 20px;
-  transition:transform .4s;
+  transition: transform .4s;
   background-color: inherit;
 }
-.imageCool{
+
+.imageCool {
   border-radius: 20px;
 }
+
 /* Couleur de fond */
-.card-acquisition{
-  background-color: rgb(22,177,162);
+.card-acquisition {
+  background-color: var(--color-acquisition);
 }
-.card-collaboration{
-  background-color: rgb(243,146,0);
+
+.card-collaboration {
+  background-color: var(--color-collaboration);
 }
-.card-discussion{
-  background-color: rgb(29,113,184);
-  word-wrap: break-word;
-  white-space: normal;
-}
-.card-enquete{
-  background-color: rgb(190,22,34);
-  word-wrap: break-word;
-  white-space: normal;
-}
-.card-pratique{
-  background-color: rgb(102,36,131);
-  word-wrap: break-word;
-  white-space: normal;
-}
-.card-production{
-  background-color: rgb(58,170,53);
+
+.card-discussion {
+  background-color: var(--color-discussion);
   word-wrap: break-word;
   white-space: normal;
 }
 
-.hr-acquisition{
-  border-style: dashed;
-  border-width: 2px;
-  border-color: rgba(22,177,162,1);
-  border-top: none;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  opacity: 1;
+.card-enquete {
+  background-color: var(--color-enquete);
+  word-wrap: break-word;
+  white-space: normal;
 }
-.hr-collaboration{
-  border-style: dashed;
-  border-width: 2px;
-  border-color: rgba(243,146,0,1);
-  border-top: none;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  opacity: 1;
+
+.card-pratique {
+  background-color: var(--color-pratique);
+  word-wrap: break-word;
+  white-space: normal;
 }
-.hr-discussion{
-  border-style: dashed;
-  border-width: 2px;
-  border-color: rgba(29,113,184,1);
-  border-top: none;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  opacity: 1;
+
+.card-production {
+  background-color: var(--color-production);
+  word-wrap: break-word;
+  white-space: normal;
 }
-.hr-enquete{
+
+.hr-acquisition {
   border-style: dashed;
   border-width: 2px;
-  border-color: rgba(190,22,34,1);
-  border-top: none;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  opacity: 1;
-}
-.hr-pratique{
-  border-style: dashed;
-  border-width: 2px;
-  border-color: rgba(102,36,131,1);
-  border-top: none;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  opacity: 1;
-}
-.hr-production{
-  border-style: dashed;
-  border-width: 2px;
-  border-color: rgba(58,170,53,1);
+  border-color: var(--color-acquisition);
   border-top: none;
   margin-left: 2rem;
   margin-right: 2rem;
@@ -181,170 +150,265 @@
   opacity: 1;
 }
 
-.text-acquisition{
-  font-size:12px;
-  color:rgba(22,177,162,1);
+.hr-collaboration {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: var(--color-collaboration);
+  border-top: none;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 1;
 }
-.text-collaboration{
-  font-size:12px;
-  color:rgba(243,146,0,1);
+
+.hr-discussion {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: var(--color-discussion);
+  border-top: none;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 1;
 }
-.text-discussion{
-  font-size:12px;
-  color:rgba(29,113,184,1);
+
+.hr-enquete {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: var(--color-enquete);
+  border-top: none;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 1;
 }
-.text-enquete{
-  font-size:12px;
-  color:rgba(190,22,34,1);
+
+.hr-pratique {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: var(--color-pratique);
+  border-top: none;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 1;
 }
-.text-pratique{
-  font-size:12px;
-  color: rgba(102,36,131,1);
+
+.hr-production {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: var(--color-production);
+  border-top: none;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 1;
 }
-.text-production{
-  font-size:12px;
-  color:rgba(58,170,53,1);
+
+.text-acquisition {
+  font-size: 12px;
+  color: var(--color-acquisition);
 }
-.text-licence{
+
+.text-collaboration {
+  font-size: 12px;
+  color: var(--color-collaboration);
+}
+
+.text-discussion {
+  font-size: 12px;
+  color: var(--color-discussion);
+}
+
+.text-enquete {
+  font-size: 12px;
+  color: var(--color-enquete);
+}
+
+.text-pratique {
+  font-size: 12px;
+  color: var(--color-pratique);
+}
+
+.text-production {
+  font-size: 12px;
+  color: var(--color-production);
+}
+
+.text-licence {
   font-size: 7px;
-  margin :auto;
+  margin: auto;
 }
-.description{
+
+.description {
   font-size: 12px;
   font-family: arial;
-  color:white;
+  color: white;
 }
-.textVerso{
+
+.textVerso {
   font-size: 11px;
   font-family: arial;
 }
-.titre-carte{
-  color:white;
+
+.titre-carte {
+  color: white;
 }
+
 .cardDepot {
   border: 2px dashed #000;
   margin-top: 5px;
 }
-.img-fluid{
+
+.img-fluid {
   max-height: 120px;
 }
+
 .dropzone {
   border: 2px dashed #ccc;
   margin-bottom: 20px;
   background-color: inherit;
 }
+
 .surlignable.active {
-  border :2px dashed #ff0070;
+  border: 2px dashed #ff0070;
 }
+
 .surlignable.hover {
-  cursor:grab;
+  cursor: grab;
 }
-.zoneDepot{
-  min-height:50px;
+
+.zoneDepot {
+  min-height: 50px;
   background-color: lightgrey;
 }
-.row .cardBackHead{
+
+.row .cardBackHead {
   max-height: 50px;
 }
-.row .cardBackBody{
-  height:65%;
-}
-.row .cardBackFooter{
-  max-height:50px;
-}
-.row .entete{
-  height:20px
-}
-ul{
-  margin-bottom : 0.5rem;
+
+.row .cardBackBody {
+  height: 65%;
 }
 
-.card-acquisitionVerso{
-  background-color: rgb(22,177,162);
-}
-.card-collaborationVerso{
-  background-color: rgb(243,146,0);
-}
-.card-discussionVerso{
-  background-color: rgb(29,113,184);
-}
-.card-enqueteVerso{
-  background-color: rgb(190,22,34);
-}
-.card-pratiqueVerso{
-  background-color: rgb(102,36,131);
-}
-.card-productionVerso{
-  background-color: rgb(58,170,53);
+.row .cardBackFooter {
+  max-height: 50px;
 }
 
-.basColonneAcquisition{
-  margin-bottom: 0px;
-  margin-top: 1px;
-  color: rgb(22,177,162);
-  font-weight: 1000;
-  font-size: 1rem;
+.row .entete {
+  height: 20px
 }
-.basColonneCollaboration{
-  margin-bottom: 0px;
-  margin-top: 1px;
-  color: rgb(243,146,0);
-  font-weight: 1000;
-  font-size: 1rem;
+
+ul {
+  margin-bottom: 0.5rem;
 }
-.basColonneDiscussion{
-  margin-bottom: 0px;
-  margin-top: 1px;
-  color: rgb(29,113,184);
-  font-weight: 1000;
-  font-size: 1rem;
+
+.card-acquisitionVerso {
+  background-color: var(--color-acquisition);
 }
-.basColonneEnquete{
-  margin-bottom: 0px;
-  margin-top: 1px;
-  color: rgb(190,22,34);
-  font-weight: 1000;
-  font-size: 1rem;
+
+.card-collaborationVerso {
+  background-color: var(--color-collaboration);
 }
-.basColonnePratique{
-  margin-bottom: 0px;
-  margin-top: 1px;
-  color: rgb(102,36,131);
-  font-weight: 1000;
-  font-size: 1rem;
+
+.card-discussionVerso {
+  background-color: var(--color-discussion);
 }
-.basColonneProduction{
+
+.card-enqueteVerso {
+  background-color: var(--color-enquete);
+}
+
+.card-pratiqueVerso {
+  background-color: var(--color-pratique);
+}
+
+.card-productionVerso {
+  background-color: var(--color-production);
+}
+
+.basColonneAcquisition {
   margin-bottom: 0px;
   margin-top: 1px;
-  color: rgb(58,170,53);
+  color: var(--color-acquisition);
   font-weight: 1000;
   font-size: 1rem;
 }
 
-.colonneBackDroite{
+.basColonneCollaboration {
+  margin-bottom: 0px;
+  margin-top: 1px;
+  color: var(--color-collaboration);
+  font-weight: 1000;
+  font-size: 1rem;
+}
+
+.basColonneDiscussion {
+  margin-bottom: 0px;
+  margin-top: 1px;
+  color: var(--color-discussion);
+  font-weight: 1000;
+  font-size: 1rem;
+}
+
+.basColonneEnquete {
+  margin-bottom: 0px;
+  margin-top: 1px;
+  color: var(--color-enquete);
+  font-weight: 1000;
+  font-size: 1rem;
+}
+
+.basColonnePratique {
+  margin-bottom: 0px;
+  margin-top: 1px;
+  color: var(--color-pratique);
+  font-weight: 1000;
+  font-size: 1rem;
+}
+
+.basColonneProduction {
+  margin-bottom: 0px;
+  margin-top: 1px;
+  color: var(--color-production);
+  font-weight: 1000;
+  font-size: 1rem;
+}
+
+.colonneBackDroite {
   background-color: white;
   border-bottom-left-radius: 20px;
-  width:60%;
+  width: 60%;
   margin-left: 1px;
   flex: auto;
 }
-.colonneBackGauche{
+
+.colonneBackGauche {
   background-color: white;
-  margin-right:1px;
+  margin-right: 1px;
   border-bottom-right-radius: 20px;
-  width:35%;
+  width: 35%;
   flex: auto;
 }
-.imageFront{
-    height:100px;
-  }
-p{
+
+.imageFront {
+  height: 100px;
+}
+
+p {
   margin-bottom: 0;
 }
-.btn:hover{
-  border:1px solid black;
+
+.btn:hover {
+  border: 1px solid black;
 }
-.btnInactif{
+
+.btnInactif {
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -357,54 +421,64 @@ p{
   border-radius: 0.25rem;
   background-color: inherit;
 }
-.btnInactif:hover{
+
+.btnInactif:hover {
   cursor: auto;
 }
-.ligne{
-  height:50px;
+
+.ligne {
+  height: 50px;
 }
 
 ul {
   list-style-type: none;
 }
+
 .li-acquisition {
-  color: rgba(22,177,162,1);
+  color: var(--color-acquisition);
   font-size: 16px;
   margin-right: 5px;
-}
-.li-collaboration {
-  color: rgba(243,146,0,1);
-  font-size: 16px;
-  margin-right: 5px;
-}
-.li-discussion {
-  color: rgba(29,113,184,1);
-  font-size: 16px;
-  margin-right: 5px;
-}
-.li-enquete {
-  color: rgba(190,22,34,1);
-  font-size: 16px;
-  margin-right: 5px;
-}
-.li-pratique {
-  color: rgba(102,36,131,1);
-  font-size: 16px;
-  margin-right: 5px;
-}
-.li-production {
-  color: rgba(58,170,53,1);
-  font-size: 16px;
-  margin-right: 5px;
-}
-.cardFront:hover{
-  cursor: grab;
-}
-.cardFront:active{
-  cursor:grabbing;
 }
 
-.easterEgg{
+.li-collaboration {
+  color: var(--color-collaboration);
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.li-discussion {
+  color: var(--color-discussion);
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.li-enquete {
+  color: var(--color-enquete);
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.li-pratique {
+  color: var(--color-pratique);
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.li-production {
+  color: var(--color-production);
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.cardFront:hover {
+  cursor: grab;
+}
+
+.cardFront:active {
+  cursor: grabbing;
+}
+
+.easterEgg {
   transform-origin: center center;
   transition: transform 4s ease;
   position: absolute;
@@ -420,41 +494,72 @@ tr.drag-over-indicator {
 }
 
 /* --- Style pour les étoiles des outils favoris --- */
-.star-acquisition { 
-color: rgb(22, 177, 162); 
+.star-acquisition {
+  color: var(--color-acquisition);
 }
-.star-collaboration { 
-color: rgb(243, 146, 0); 
+
+.star-collaboration {
+  color: var(--color-collaboration);
 }
-.star-discussion { 
-color: rgb(29, 113, 184); 
+
+.star-discussion {
+  color: var(--color-discussion);
 }
-.star-enquete { 
-color: rgb(190, 22, 34); 
+
+.star-enquete {
+  color: var(--color-enquete);
 }
-.star-pratique { 
-color: rgb(102, 36, 131); 
+
+.star-pratique {
+  color: var(--color-pratique);
 }
-.star-production { 
-color: rgb(58, 170, 53); 
+
+.star-production {
+  color: var(--color-production);
 }
+
 /* --- Style pour les icônes d'action superposées --- */
 
 /* Cible les boutons dans la première cellule des lignes du tableau */
 #dropzone .btn-icon {
-  background-color: transparent; /* Enlève le fond du bouton */
-  border: none;                  /* Enlève la bordure */
-  padding: 2px 4px;              /* Réduit l'espacement pour les rendre compacts */
+  background-color: transparent;
+  /* Enlève le fond du bouton */
+  border: none;
+  /* Enlève la bordure */
+  padding: 2px 4px;
+  /* Réduit l'espacement pour les rendre compacts */
 }
 
 /* Cible les icônes (i) à l'intérieur de ces boutons */
 #dropzone .btn-icon i {
-  color: white;                  /* Met l'icône en blanc */
-  font-size: 1rem;               /* Taille de l'icône */
-  transition: transform 0.2s ease-in-out; /* Ajoute un effet de transition doux */
+  color: white;
+  /* Met l'icône en blanc */
+  font-size: 1rem;
+  /* Taille de l'icône */
+  transition: transform 0.2s ease-in-out;
+  /* Ajoute un effet de transition doux */
 }
 
 /* Ajoute un effet de grossissement au survol pour un meilleur feedback */
 #dropzone .btn-icon:hover i {
   transform: scale(1.25);
+}
+
+/* ============================================
+   AUTO-RESIZE TEXTAREAS IN TABLE
+   ============================================ */
+/* Textareas dans le tableau s'adaptent au contenu */
+#tableau textarea,
+#dropzone textarea {
+  min-height: 60px;
+  overflow-y: hidden;
+  resize: vertical;
+  line-height: 1.5;
+  padding: 8px;
+}
+
+/* Assure que les cellules s'adaptent à la hauteur du contenu */
+#tableau td,
+#dropzone td {
+  vertical-align: top;
 }

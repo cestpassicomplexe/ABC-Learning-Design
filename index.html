@@ -2,42 +2,71 @@
 <html lang="fr">
 
 <head>
-  <title>ABC Learning Design / Moodle</title>
-  <link rel="shortcut icon" href="./images/carte.png">
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ABC Learning Design - Outil de Scénarisation Pédagogique</title>
+  <meta name="description"
+    content="Outil interactif de conception de scénarios pédagogiques basé sur la méthode ABC Learning Design. Créez des parcours d'apprentissage alignés avec les 6 types d'activités d'apprentissage.">
+  <meta name="author" content="Sébastien Fasbender">
+  <meta name="keywords"
+    content="ABC Learning Design, scénarisation pédagogique, Moodle, H5P, ingénierie pédagogique, design pédagogique">
 
-  <!-- Déclaration de la source pour bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Déclaration de jQuery et DataTable -->
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ABC Learning Design - Outil de Scénarisation Pédagogique">
+  <meta property="og:description"
+    content="Outil interactif pour concevoir des scénarios pédagogiques basés sur la méthode ABC Learning Design.">
+  <meta property="og:locale" content="fr_FR">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./images/carte.png">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+
+  <!-- jQuery et DataTables -->
   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.js" charset="utf-8"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
   <script type="text/javascript" charset="utf8"
     src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/components/modal/">
-  <!-- FontAwesome -->
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-  <!-- Déclaration de font-awesome pour les icones -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.css" rel="stylesheet">
-  <!-- ChartJS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.js" crossorigin="anonymous"
-    referrerpolicy="no-referrer"></script>
-  <!-- Excel JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.js"></script>
+
+  <!-- Font Awesome 6 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet"
+    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+    crossorigin="anonymous">
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"
+    integrity="sha512-tMabqarPtykgDtdtSqCL3uLVM0gS1ZkUAVhRFu1vSEFgvB73niFQWJuvviDyBGBH22Lcau4rHB5p2K2T0Xvr6Q=="
+    crossorigin="anonymous"></script>
+
+  <!-- ExcelJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"
+    integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/pU4M6Jw0jNIDImb0/YKXBkTQvJ6xZqIGBcKdCfGZRZMJYpBLJJPLtPLrOQA=="
+    crossorigin="anonymous"></script>
+
+  <!-- html-docx-js for Word document generation (browser-compatible) -->
+  <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
+
+  <!-- Styles personnalisés -->
   <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
   <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-between align-items-center px-3">
-    
+
     <!-- PARTIE GAUCHE : Nos nouvelles actions -->
     <div class="d-flex align-items-center">
       <!-- 1. Bouton Sauvegarder -->
       <button type="button" id="boutonSauvegarder" class="btn btn-primary me-2">
         Sauvegarder <i class="fa-solid fa-floppy-disk"></i>
       </button>
-    
+
       <!-- 2. Bouton Charger -->
       <div class="me-2">
         <input type="file" id="fichierImport" accept=".json" class="d-none">
@@ -45,22 +74,57 @@
           Charger <i class="fa-solid fa-file-arrow-up"></i>
         </button>
       </div>
-    
+
       <!-- 3. Menu déroulant pour les Exports et la Copie -->
       <div class="btn-group">
-        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
+          aria-expanded="false">
           Exporter & Copier <i class="fa-solid fa-share-square"></i>
         </button>
         <ul class="dropdown-menu">
-          <li><h6 class="dropdown-header">Exporter en fichier</h6></li>
+          <li>
+            <h6 class="dropdown-header">Exporter en fichier</h6>
+          </li>
           <li><a class="dropdown-item" href="#" id="export-excel">Format Excel (.xlsx)</a></li>
           <li><a class="dropdown-item" href="#" id="export-md">Format Markdown (.md)</a></li>
           <li><a class="dropdown-item" href="#" id="export-html">Format HTML (.html)</a></li>
           <li><a class="dropdown-item" href="#" id="export-txt">Format Texte (.txt)</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><h6 class="dropdown-header">Copier dans le presse-papiers</h6></li>
+          <li><a class="dropdown-item" href="#" id="export-docx">Format Word (.docx)</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li>
+            <h6 class="dropdown-header">Copier dans le presse-papiers</h6>
+          </li>
           <li><a class="dropdown-item" href="#" id="copy-html">Copier pour Traitement de texte</a></li>
           <li><a class="dropdown-item" href="#" id="copy-md">Copier en Markdown</a></li>
+        </ul>
+      </div>
+
+      <!-- 4. Menu déroulant pour l'Assistant IA -->
+      <div class="btn-group ms-2">
+        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-robot me-1"></i>Assistant IA
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <h6 class="dropdown-header"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Génération</h6>
+          </li>
+          <li><a class="dropdown-item" href="#" id="ai-generate-sequence"><i
+                class="fa-solid fa-sparkles me-2"></i>Générer une séquence</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li>
+            <h6 class="dropdown-header"><i class="fa-solid fa-clipboard-check me-2"></i>Outils Enseignant</h6>
+          </li>
+          <li><a class="dropdown-item" href="#" id="ai-generate-checklist"><i
+                class="fa-solid fa-list-check me-2"></i>Générer la check-list</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#" id="ai-config"><i class="fa-solid fa-gear me-2"></i>Configuration IA</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -81,16 +145,16 @@
       </li>
     </ul>
 
-</nav>
-  
+  </nav>
+
   <div class="container-fluid pt-2">
     <div class="row justify-content-between custom-line">
       <div class="col-2">
-        <img src="./images/prof.png" style="height:120px" alt=""></i>
+        <img src="./images/prof.png" style="height:120px" alt="Illustration professeur">
       </div>
       <div class="col-8 text-center">
-         <h2 class="text-primary fw-bold">Composez votre scénario pédagogique</h2>
-         <p>Cliquez sur un type d'apprentissage pour choisir une activité et l'ajouter à votre parcours.</p>
+        <h2 class="text-primary fw-bold">Composez votre scénario pédagogique</h2>
+        <p>Cliquez sur un type d'apprentissage pour choisir une activité et l'ajouter à votre parcours.</p>
       </div>
       <div class="col-2">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
@@ -120,7 +184,8 @@
           <div class="modal-body">
             <div class="container-fluid">
               <div class="row">
-                <div class="col-sm-2"><img src="./images/prof.png" style="height:120px" alt=""></i></div>
+                <div class="col-sm-2"><img src="./images/prof.png" style="height:120px" alt="Illustration professeur">
+                </div>
                 <div class="col-sm-10">
                   <h5><em>Cet outil vous aide à organiser les tâches d'apprentissages que vous souhaitez mettre en
                       oeuvre ("Qu'est ce que les élèves vont faire ?"). <br /> Sélectionnez d'abord le type de tâche ;
@@ -129,6 +194,75 @@
               </div>
               <img src="./images/notice_ABC.png" style="width:100%" alt="">
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau d'informations de la séquence -->
+    <div class="card shadow-sm mb-3" id="sequence-info-card">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fa-solid fa-info-circle me-2"></i>Informations de la Séquence
+        </h5>
+        <button type="button" class="btn btn-sm btn-light" id="toggle-sequence-info">
+          <i class="fa-solid fa-chevron-up"></i>
+        </button>
+      </div>
+      <div class="card-body" id="sequence-info-body">
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <label class="form-label fw-bold">
+              <i class="fa-solid fa-heading me-1"></i>Nom de la séquence
+            </label>
+            <input type="text" class="form-control" id="sequence-name"
+              placeholder="Ex: Introduction à la programmation Python">
+          </div>
+          <div class="col-md-3 mb-2">
+            <label class="form-label fw-bold">
+              <i class="fa-solid fa-graduation-cap me-1"></i>Niveau
+            </label>
+            <select class="form-select" id="sequence-level">
+              <option value="">Non spécifié</option>
+              <option value="Débutant">Débutant</option>
+              <option value="Intermédiaire">Intermédiaire</option>
+              <option value="Avancé">Avancé</option>
+              <option value="Expert">Expert</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-2">
+            <label class="form-label fw-bold">
+              <i class="fa-solid fa-clock me-1"></i>Durée totale
+              <i class="fa-solid fa-circle-info ms-1 text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="Cette durée est calculée automatiquement en additionnant les durées de toutes les activités ajoutées ci-dessous."
+                style="font-size: 0.9em; cursor: help;"></i>
+            </label>
+            <input type="text" class="form-control" id="sequence-duration" value="0 min" readonly>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-2">
+            <label class="form-label fw-bold">
+              <i class="fa-solid fa-bullseye me-1"></i>Objectifs d'apprentissage
+            </label>
+            <textarea class="form-control" rows="3" id="sequence-objectives"
+              placeholder="À la fin de cette séquence, les apprenants seront capables de...&#10;- Expliquer les concepts clés&#10;- Appliquer les techniques apprises&#10;- Analyser des situations concrètes"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-2">
+            <label class="form-label fw-bold">
+              <i class="fa-solid fa-users me-1"></i>Public cible
+            </label>
+            <input type="text" class="form-control" id="sequence-audience"
+              placeholder="Ex: Étudiants L1 informatique, Professionnels en formation continue">
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label fw-bold">
+              <i class="fa-solid fa-list-check me-1"></i>Prérequis
+            </label>
+            <input type="text" class="form-control" id="sequence-prerequisites"
+              placeholder="Ex: Bases en algorithmique, Notions de mathématiques">
           </div>
         </div>
       </div>
@@ -153,8 +287,8 @@
                 des démonstrations, des vidéos.
               </p>
               <div class="card-action-link">
-  <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-</div>
+                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
+              </div>
             </div>
           </div>
           <!-- Card 2 Front-->
@@ -171,8 +305,8 @@
                 construction de la connaissance.
               </p>
               <div class="card-action-link">
-  <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-</div>
+                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
+              </div>
             </div>
           </div>
           <!-- Carte 3 Front -->
@@ -188,8 +322,8 @@
                 remette en cause, réponde aux arguments et questions de l'enseignant et/ou de ses pairs.
               </p>
               <div class="card-action-link">
-  <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-</div>
+                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
+              </div>
             </div>
           </div>
           <!-- Carte 4 Front -->
@@ -205,8 +339,8 @@
                 ressources qui renvoient aux concepts et idées enseignées.
               </p>
               <div class="card-action-link">
-  <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-</div>
+                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
+              </div>
             </div>
           </div>
           <!-- Card 5 Front-->
@@ -223,8 +357,8 @@
                 La rétroaction peut venir de l’autoréflexion, des pairs, de l’enseignant ou de l’activité elle-même.
               </p>
               <div class="card-action-link">
-  <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-</div>
+                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
+              </div>
             </div>
           </div>
           <!-- Card 6 Front-->
@@ -241,14 +375,14 @@
                 choix opérés.
               </p>
               <div class="card-action-link">
-  <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-</div>
+                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
+              </div>
             </div>
           </div>
         </div>
         <div class="col"> </div>
       </div>
-      
+
       <!-- SECTION DE CARTES VERSO FUSIONNÉES (AVEC Icônes FontAwesome) -->
       <div class="row m-auto">
         <div class="col"> </div>
@@ -275,28 +409,39 @@
               <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
                 <strong class="text-acquisition">Ressources Moodle</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Fichier"><strong>Fichier <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Dossier"><strong>Dossier <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="URL"><strong>URL <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Etiquette"><strong>Etiquette <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Fichier"><strong>Fichier <span
+                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Dossier"><strong>Dossier <span
+                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="URL"><strong>URL <span
+                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Etiquette"><strong>Etiquette <span
+                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
                   <button type="button" class="btn textVerso btnCliquable" value="Page">Page</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Livre">Livre</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Galerie d'images">Galerie d'images</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Galerie d'images">Galerie
+                    d'images</button>
                 </p>
                 <hr class="hr-acquisition">
                 <strong class="text-acquisition">Activités Moodle (en consultation)</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Glossaire"><strong>Glossaire <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de données</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Glossaire"><strong>Glossaire <span
+                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de
+                    données</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Leçon">Leçon</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Geogebra">Géogébra</button>
                 </p>
                 <hr class="hr-acquisition">
                 <strong class="text-acquisition">H5P</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Course Presentation"><strong>Course Presentation <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Dialog Cards"><strong>Dialog Cards <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Image Hotspots"><strong>Image Hotspots <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Course Presentation"><strong>Course
+                      Presentation <span class="star-acquisition"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Dialog Cards"><strong>Dialog Cards
+                      <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Image Hotspots"><strong>Image Hotspots
+                      <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
                   <button type="button" class="btn textVerso btnCliquable" value="Image Slider">Image Slider</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Timeliner">Timeliner</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Virtual tour">Virtual tour</button>
@@ -305,10 +450,14 @@
                 <hr class="hr-acquisition">
                 <strong class="text-acquisition">Outils externes</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="PeerTube, PodEduc"><strong>PeerTube, PodEduc <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Youtube"><strong>Youtube <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Classe Virtuelle"><strong>Classe virtuelle <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Annotation PDF">Annotation PDF</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="PeerTube, PodEduc"><strong>PeerTube,
+                      PodEduc <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Youtube"><strong>Youtube <span
+                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Classe Virtuelle"><strong>Classe
+                      virtuelle <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Annotation PDF">Annotation
+                    PDF</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
                 </p>
                 <p class="basColonneAcquisition">Outils Numériques</p>
@@ -324,42 +473,55 @@
               </div>
             </div>
             <div class="row cardBackBody">
-                <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
-                    <ul>
-                      <li>Projets en petits groupes</li>
-                      <li>Construction / élaboration d'une production commune</li>
-                      <li>Discussion autour des productions de tiers</li>
-                    </ul>
-                    <p class="basColonneCollaboration mx-2">Activités</p>
-                </div>
-                <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
-                    <strong class="text-collaboration">Activités Moodle</strong>
-                    <p>
-                      <button type="button" class="btn textVerso btnCliquable" value="Galerie d'images"><strong>Galerie d'images <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Glossaire"><strong>Glossaire <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Devoir (en groupe)"><strong>Devoir (en groupe) <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Tableau"><strong>Tableau <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de données</button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Wiki">Wiki</button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Atelier">Atelier</button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Partage">Partage</button>
-                    </p>
-                    <hr class="hr-collaboration">
-                    <strong class="text-collaboration">Outils externes</strong>
-                    <p>
-                      <button type="button" class="btn textVerso btnCliquable" value="Outils ENT (Pad...)"><strong>Outils ENT (Pad...) <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Carte mentale collaborative"><strong>Carte mentale collab. <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Tableau blanc collaboratif"><strong>Tableau blanc collab. <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Bureautique collaborative">Bureautique collaborative</button>
-                      <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
-                    </p>
-                    <p class="basColonneCollaboration">Outils Numériques</p>
-                </div>
+              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
+                <ul>
+                  <li>Projets en petits groupes</li>
+                  <li>Construction / élaboration d'une production commune</li>
+                  <li>Discussion autour des productions de tiers</li>
+                </ul>
+                <p class="basColonneCollaboration mx-2">Activités</p>
+              </div>
+              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
+                <strong class="text-collaboration">Activités Moodle</strong>
+                <p>
+                  <button type="button" class="btn textVerso btnCliquable" value="Galerie d'images"><strong>Galerie
+                      d'images <span class="star-collaboration"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Glossaire"><strong>Glossaire <span
+                        class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Devoir (en groupe)"><strong>Devoir (en
+                      groupe) <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Tableau"><strong>Tableau <span
+                        class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de
+                    données</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Wiki">Wiki</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Atelier">Atelier</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Partage">Partage</button>
+                </p>
+                <hr class="hr-collaboration">
+                <strong class="text-collaboration">Outils externes</strong>
+                <p>
+                  <button type="button" class="btn textVerso btnCliquable" value="Outils ENT (Pad...)"><strong>Outils
+                      ENT (Pad...) <span class="star-collaboration"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable"
+                    value="Carte mentale collaborative"><strong>Carte mentale collab. <span
+                        class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable"
+                    value="Tableau blanc collaboratif"><strong>Tableau blanc collab. <span class="star-collaboration"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Bureautique collaborative">Bureautique
+                    collaborative</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
+                </p>
+                <p class="basColonneCollaboration">Outils Numériques</p>
+              </div>
             </div>
           </div>
           <!-- Card 3 Back Merged -->
           <div class="card card-discussionVerso cardBackCliquable d-none" id="card3Back">
-             <div class="row cardBackHead card-discussion" id="card3BackHead">
+            <div class="row cardBackHead card-discussion" id="card3BackHead">
               <div class="col d-flex flex-row">
                 <img src="./images/discussion.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
                 <h3 class="titre-carte"> Discussion</h3>
@@ -379,23 +541,32 @@
               <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
                 <strong class="text-discussion">Activités Moodle</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Forum"><strong>Forum <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Chat"><strong>Chat <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Sticky notes"><strong>Sticky notes <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Nuage de mots"><strong>Nuage de mots <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Commentaire (galerie...)"><strong>Commentaire (galerie...) <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Forum"><strong>Forum <span
+                        class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Chat"><strong>Chat <span
+                        class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Sticky notes"><strong>Sticky notes
+                      <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Nuage de mots"><strong>Nuage de mots
+                      <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable"
+                    value="Commentaire (galerie...)"><strong>Commentaire (galerie...) <span class="star-discussion"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
                 </p>
                 <hr class="hr-discussion">
                 <strong class="text-discussion">H5P</strong>
                 <p>
-                    <button type="button" class="btn textVerso btnCliquable" value="Twitter user feed">Twitter user feed</button>
-                    <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Twitter user feed">Twitter user
+                    feed</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
                 </p>
                 <hr class="hr-discussion">
                 <strong class="text-discussion">Outils externes</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Classe virtuelle"><strong>Classe virtuelle <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Digistorm"><strong>La digitale : Digistorm <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Classe virtuelle"><strong>Classe
+                      virtuelle <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Digistorm"><strong>La digitale :
+                      Digistorm <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
                 </p>
                 <p class="basColonneDiscussion">Outils Numériques</p>
@@ -425,30 +596,39 @@
               <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
                 <strong class="text-enquete">Ressources Moodle</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Fichier"><strong>Fichier <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Dossier"><strong>Dossier <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="URL"><strong>URL <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Fichier"><strong>Fichier <span
+                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Dossier"><strong>Dossier <span
+                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="URL"><strong>URL <span
+                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
                 </p>
                 <hr class="hr-enquete">
                 <strong class="text-enquete">Activités Moodle</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Sondage"><strong>Sondage <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Feedback"><strong>Feedback <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Sondage"><strong>Sondage <span
+                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Feedback"><strong>Feedback <span
+                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
                   <button type="button" class="btn textVerso btnCliquable" value="Questionnaire">Questionnaire</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Leçon">Leçon</button>
                 </p>
                 <hr class="hr-enquete">
                 <strong class="text-enquete">H5P</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Cornell notes"><strong>Cornell Notes <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Cornell notes"><strong>Cornell Notes
+                      <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
                 </p>
                 <hr class="hr-enquete">
                 <strong class="text-enquete">Outils externes</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="PeerTube, PodEduc"><strong>PeerTube, PodEduc <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Youtube"><strong>Youtube <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Annotation PDF">Annotation PDF</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="PeerTube, PodEduc"><strong>PeerTube,
+                      PodEduc <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Youtube"><strong>Youtube <span
+                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Annotation PDF">Annotation
+                    PDF</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
                 </p>
                 <p class="basColonneEnquete">Outils Numériques</p>
@@ -476,28 +656,40 @@
               <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
                 <strong class="text-pratique">Activités Moodle</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Test (formatif)"><strong>Test (formatif) <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Jeu"><strong>Jeu <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Paquetage Scorm"><strong>Paquetage Scorm <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Test (formatif)"><strong>Test
+                      (formatif) <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Jeu"><strong>Jeu <span
+                        class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Paquetage Scorm"><strong>Paquetage
+                      Scorm <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
                   <button type="button" class="btn textVerso btnCliquable" value="Leçon">Leçon</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Géogebra">Geogebra</button>
                 </p>
                 <hr class="hr-pratique">
                 <strong class="text-pratique">H5P</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Question Set"><strong>Question Set <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Interactive Video"><strong>Interactive Video <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Flashcards"><strong>Flashcards <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Course presentation">Course Presentation</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Question Set"><strong>Question Set
+                      <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Interactive Video"><strong>Interactive
+                      Video <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Flashcards"><strong>Flashcards <span
+                        class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Course presentation">Course
+                    Presentation</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Dictation">Dictation</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
                 </p>
                 <hr class="hr-pratique">
                 <strong class="text-pratique">Outils externes</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Digistorm (questionnaire)"><strong>Digistorm (questionnaire) <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Exerciseur en ligne"><strong>Exerciseur en ligne <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Simulateur"><strong>Simulateur <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable"
+                    value="Digistorm (questionnaire)"><strong>Digistorm (questionnaire) <span class="star-pratique"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable"
+                    value="Exerciseur en ligne"><strong>Exerciseur en ligne <span class="star-pratique"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Simulateur"><strong>Simulateur <span
+                        class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
                 </p>
                 <p class="basColonnePratique">Outils Numériques</p>
@@ -525,25 +717,34 @@
               <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
                 <strong class="text-production">Activités Moodle</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Devoir"><strong>Devoir <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de données</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Devoir"><strong>Devoir <span
+                        class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de
+                    données</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Géogebra">Geogebra</button>
                 </p>
                 <hr class="hr-production">
                 <strong class="text-production">H5P</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Audio recorder"><strong>Audio recorder <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Documentation tool">Documentation tool</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Audio recorder"><strong>Audio recorder
+                      <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Documentation tool">Documentation
+                    tool</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Essay">Essay</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Structure strip">Structure strip</button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Structure strip">Structure
+                    strip</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
                 </p>
                 <hr class="hr-production">
                 <strong class="text-production">Outils externes</strong>
                 <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Classe virtuelle (oral)"><strong>Classe virtuelle (oral) <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Carte mentale"><strong>Carte mentale <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Editeur de code">Editeur de code</button>
+                  <button type="button" class="btn textVerso btnCliquable"
+                    value="Classe virtuelle (oral)"><strong>Classe virtuelle (oral) <span class="star-production"><i
+                          class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Carte mentale"><strong>Carte mentale
+                      <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
+                  <button type="button" class="btn textVerso btnCliquable" value="Editeur de code">Editeur de
+                    code</button>
                   <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
                 </p>
                 <p class="basColonneProduction">Outils Numériques</p>
@@ -556,57 +757,60 @@
     </div>
 
 
+
     <!-- Endroit où les cards peuvent être déplacées -->
+
     <table class="mt-2 p-0 w-100 table-stripped" id="tableau">
 
-        <colgroup>
-          <col style="width: 3%;">
-          <col style="width: 15%;">
-          <col style="width: 20%;">
-          <col style="width: 10%;">
-          <col style="width: 20%;">
-          <col style="width: 5%;">
-          <col style="width: 12%;">
-          <col style="width: 10%;">
-          <col style="width: 5%;">
+      <colgroup>
+        <col style="width: 3%;">
+        <col style="width: 15%;">
+        <col style="width: 20%;">
+        <col style="width: 10%;">
+        <col style="width: 20%;">
+        <col style="width: 5%;">
+        <col style="width: 12%;">
+        <col style="width: 10%;">
+        <col style="width: 5%;">
       </colgroup>
-  
+
       <thead class="thead-inverse text-center">
-          <tr>
-              <th></th> <!-- Cellule vide pour la poignée/poubelle -->
-              <th><strong>Type d'Apprentissage</strong></th>
-              <th><strong>Objectif(s) Visé(s)</strong></th>
-              <th><strong>Outil</strong></th>
-              <th><strong>Consignes</strong></th>
-              <th><strong>Durée</strong></th>
-              <th><strong>Modalité</strong></th>
-              <th><strong>Évaluation & Feedback</strong></th>
-              <th><strong>Ressources</strong></th>
-          </tr>
+        <tr>
+          <th></th> <!-- Cellule vide pour la poignée/poubelle -->
+          <th><strong>Type d'Apprentissage</strong></th>
+          <th><strong>Objectif(s) Visé(s)</strong></th>
+          <th><strong>Outil</strong></th>
+          <th><strong>Consignes</strong></th>
+          <th><strong>Durée</strong></th>
+          <th><strong>Modalité</strong></th>
+          <th><strong>Évaluation & Feedback</strong></th>
+          <th><strong>Ressources</strong></th>
+        </tr>
       </thead>
-  
+
       <tbody id="dropzone" class="bordure">
-          <tr id="ligne-accueil">
-              <td colspan="9" class="text-center text-muted p-5">
-                  <i class="fa-solid fa-arrow-pointer fa-2x mb-3"></i>
-                  <h5>Glissez-déposez un type d'apprentissage dans la zone de dépôt<br/> ou cliquez sur "Choisir une activité" sur une carte pour commencer.</h5>
-              </td>
-          </tr>
-          <tr style="height:80px;">
-              <td></td>
-              <td class="dropzone surlignable"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-          </tr>
+        <tr id="ligne-accueil">
+          <td colspan="9" class="text-center text-muted p-5">
+            <i class="fa-solid fa-arrow-pointer fa-2x mb-3"></i>
+            <h5>Glissez-déposez un type d'apprentissage dans la zone de dépôt<br /> ou cliquez sur "Choisir une
+              activité" sur une carte pour commencer.</h5>
+          </td>
+        </tr>
+        <tr style="height:80px;">
+          <td></td>
+          <td class="dropzone surlignable"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
       </tbody>
-  
-  </table>
-     <!-- Graphs -->
+
+    </table>
+    <!-- Graphs -->
     <div class="row">
       <div class="col-sm-3">
         <canvas id="graphPresentielDistanciel" class="d-none" width="100" height="100"></canvas>
@@ -620,30 +824,132 @@
     </div>
 
     <!-- Footer Licence-->
-    <div class="container-fluid pt-2">
-      <a href="#demo" class="btn btn-primary" data-bs-toggle="collapse">Licence <i
+    <div class="container-fluid pt-2 pb-4">
+      <a href="#demo" class="btn btn-primary" data-bs-toggle="collapse">À propos & Licence <i
           class="fa-solid fa-circle-info"></i></a>
-      <div id="demo" class="collapse">
-        <div class="row justify-content-between custom-line">
-          <div class="col-3"><img src="./images/logo_DRANE.png" class=w-100 alt=""></i>
-          </div>
-          <div class="col-6"><strong>Application développée par la DRANE Grand Est<br>Contact : </strong><a
-              href="mailto:support-ent@ac-reims.fr">support-ent@ac-reims.fr</a><br><span style=" font-size:14px;">This
-              work is a derivate of ABC Learning Design method by Clive Young and Natasa Perovic, UCL (2015). Learning
-              types, Laurillard, D. (2012).
-              Licensed under CC BY-NC-SA 4.0. Original resources available at abc-id.org</span>
-          </div>
-          <div class="col-3"><img src="./images/licence.png" class=w-75 alt=""></i>
+      <div id="demo" class="collapse mt-3">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title text-primary mb-3">
+                  <i class="fa-solid fa-users me-2"></i>Crédits et Développement
+                </h5>
+
+                <p class="mb-2">
+                  <strong>Projet maintenu par :</strong> Sébastien Fasbender
+                </p>
+
+                <p class="mb-3">
+                  <strong>Application originale développée par :</strong> DRANE Grand Est<br>
+                  <small class="text-muted">Contact original : <a
+                      href="mailto:support-ent@ac-reims.fr">support-ent@ac-reims.fr</a></small>
+                </p>
+
+                <hr>
+
+                <h6 class="text-primary mb-2">
+                  <i class="fa-solid fa-graduation-cap me-2"></i>Fondements Pédagogiques
+                </h6>
+                <p class="small mb-3">
+                  Cet outil est basé sur la méthode <strong>ABC Learning Design</strong> développée par
+                  <em>Clive Young et Natasa Perovic, UCL (2015)</em>.<br>
+                  Les types d'apprentissage sont issus des travaux de <em>Diana Laurillard (2012)</em>.
+                </p>
+
+                <hr>
+
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                  <div class="mb-2">
+                    <h6 class="text-primary mb-2">
+                      <i class="fa-solid fa-scale-balanced me-2"></i>Licence
+                    </h6>
+                    <p class="small mb-0">
+                      Ce projet est sous licence <strong>CC BY-NC-SA 4.0</strong><br>
+                      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">
+                        Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-end">
+                    <img src="./images/licence.png" class="img-fluid" style="max-width: 150px;"
+                      alt="Licence Creative Commons BY-NC-SA 4.0">
+                  </div>
+                </div>
+
+                <hr>
+
+                <p class="small text-muted mb-0">
+                  <i class="fa-solid fa-link me-1"></i>
+                  Ressources originales disponibles sur <a href="https://abc-ld.org" target="_blank"
+                    rel="noopener">abc-ld.org</a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 </body>
 <!-- Appel des fonctions javascript-->
+<!-- Scripts IA -->
+<script type="text/javascript" src="scripts/ai/aiConfig.js"></script>
+<script type="text/javascript" src="scripts/ai/apiKeyManager.js"></script>
+<script type="text/javascript" src="scripts/ai/aiService.js"></script>
+<script type="text/javascript" src="scripts/ai/promptTemplates.js"></script>
+<script type="text/javascript" src="scripts/ai/sequenceGenerator.js"></script>
+<script type="text/javascript" src="scripts/ui/aiConfigModal.js"></script>
+<script type="text/javascript" src="scripts/ui/generatorModal.js"></script>
+<script type="text/javascript" src="scripts/ui/checklistModal.js"></script>
+<script type="text/javascript" src="scripts/ui/sequenceInfo.js"></script>
+
+<!-- Scripts existants -->
 <script type="text/javascript" src="scripts/TypeDeCartes.js"></script>
 <script type="text/javascript" src="scripts/DragAndDrop.js"></script>
 <script type="text/javascript" src="scripts/Graphes.js"></script>
 <script type="text/javascript" src="scripts/ExportExcel.js"></script>
 <script type="text/javascript" src="scripts/importExport.js"></script>
+<script type="text/javascript" src="scripts/autoResizeTextarea.js"></script>
+
+<!-- Event listeners pour les boutons IA -->
+<script>
+  // Ouvrir la configuration IA
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialiser les tooltips Bootstrap
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    document.getElementById('ai-config')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      aiConfigModal.show();
+    });
+
+    // Générer une séquence
+    document.getElementById('ai-generate-sequence')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!apiKeyManager.hasKey()) {
+        alert('Veuillez d\'abord configurer votre clé API dans "Configuration IA"');
+        aiConfigModal.show();
+      } else {
+        generatorModal.show();
+      }
+    });
+
+    // Générer la check-list enseignant
+    document.getElementById('ai-generate-checklist')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!apiKeyManager.hasKey()) {
+        alert('Veuillez d\'abord configurer votre clé API dans "Configuration IA"');
+        aiConfigModal.show();
+      } else {
+        checklistModal.show();
+      }
+    });
+
+
+  });
+</script>
 
 </html>

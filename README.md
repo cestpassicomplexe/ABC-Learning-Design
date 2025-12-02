@@ -65,7 +65,7 @@ Cette section sert de **liste de contrôle (to-do list)**
 ### 📝 Révision du Contenu Pédagogique
 
 - [ ] **Révision du contenu des cartes** : Affiner les descriptions et les exemples d'activités pour les rendre moins spécifiques (éviter les plug-in payants par exemple) et actuelles (Moodle/H5P/Autres)
-- [ ] Utilité du mode Novice/Expert à revoir
+- [x] ~~**Révision du mode Novice/expert** : Fusion des cartes en 1 avec système de favoris pour indiquer les activités "novices"~~
 - [x] **Définition de l'Évaluation** : Ajouter un champ pour l'intégration de l'évaluation (formative et sommative) aux points clés du storyboard.
 - [x] **Révision des en-têtes** : Amélioration des en-têtes afin de s'approcher d'une scénarisation plus précise
 - [x] **Révision des modalités** : Amélioration des listes déroulantes pour aller plus loin que la dichotomie Présentiel/Distanciel - Individuel/Groupe
