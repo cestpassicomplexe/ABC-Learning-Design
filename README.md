@@ -53,8 +53,9 @@ Cette section sert de **liste de contrôle (to-do list)**
 ### ⚙️ Développement Fonctionnel
 
 - [x] ~**Restructuration du code**~
-- [ ] **Intégration d'API** : Permettre la connexion à des API d'IA
-- [ ] **Génération Automatisée de Séquence** : Génération de séquences de cours basées sur des objectifs d'apprentissages (acquis d'apprentissages) et données du public-cible.
+- [x] ~**Intégration d'API** : Permettre la connexion à des API d'IA. Actuellement uniquement avec Gemini~
+- [ ] **Intégration d'API** : Permettre la connexion à des API d'IA. Actuellement uniquement avec Gemini
+- [X] **Génération Automatisée de Séquence** : Génération de séquences de cours basées sur des objectifs d'apprentissages (acquis d'apprentissages) et données du public-cible.
 - [x] ~Ajout de fonctions d'export~
     - [x] ~Copié sous forme de tableau~
     - [x] ~Copié sous format Markdown~
