@@ -442,12 +442,16 @@ class GeneratorModal {
 
         // Ajouter une ligne vide pour la prochaine activité
         if (index < this.currentSequence.activites.length - 1) {
-          this.ajouterLigneVidePourDepot(dropzoneTbody);
+          if (typeof window.ajouterLigneVidePourDepot === 'function') {
+            window.ajouterLigneVidePourDepot(dropzoneTbody);
+          }
         }
       });
 
       // Ajouter une dernière ligne vide
-      this.ajouterLigneVidePourDepot(dropzoneTbody);
+      if (typeof window.ajouterLigneVidePourDepot === 'function') {
+        window.ajouterLigneVidePourDepot(dropzoneTbody);
+      }
 
       // Mettre à jour les graphiques
       if (typeof actugraph === 'function') {
@@ -472,6 +476,76 @@ class GeneratorModal {
    * Créer une ligne à partir d'une activité générée
    */
   creerLigneFromActivite(ligne, cardNumber, activite) {
+    if (typeof window.creerContenuLigne === 'function') {
+      // Utiliser la fonction globale qui attache correctement les écouteurs d'événements
+      window.creerContenuLigne(ligne, cardNumber, activite.outil || '');
+
+      const cells = ligne.cells;
+
+      // Mettre à jour les champs avec les données de l'activité
+      // Cell 2: Objectif (index 2)
+      if (activite.objectif) {
+        const textarea = cells[2].querySelector('textarea');
+        if (textarea) textarea.value = activite.objectif;
+      }
+
+      // Cell 4: Consignes (index 4)
+      if (activite.consignes) {
+        const textarea = cells[4].querySelector('textarea');
+        if (textarea) textarea.value = activite.consignes;
+      }
+
+      // Cell 5: Durée (index 5)
+      if (activite.duree) {
+        const input = cells[5].querySelector('input');
+        if (input) input.value = activite.duree;
+      }
+
+      // Cell 6: Modalité (index 6)
+      if (activite.modalite || activite.organisation) {
+        const select = cells[6].querySelector('select');
+        if (select) {
+          const targetValue = this.convertModaliteToSelect(activite.modalite, activite.organisation);
+          // Trouver l'option correspondante (parfois le texte exact diffère légèrement)
+          for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].text === targetValue) {
+              select.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+
+      // Cell 7: Évaluation (index 7)
+      if (activite.evaluation) {
+        const select = cells[7].querySelector('select');
+        if (select) {
+          const targetValue = this.convertEvaluationToSelect(activite.evaluation);
+          for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].text === targetValue) {
+              select.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+
+      // Cell 8: Ressources (index 8)
+      if (activite.ressources) {
+        const textarea = cells[8].querySelector('textarea');
+        if (textarea) textarea.value = activite.ressources;
+      }
+
+    } else {
+      console.error("Global function creerContenuLigne not found! Using fallback.");
+      this.fallbackCreerLigneFromActivite(ligne, cardNumber, activite);
+    }
+  }
+
+  /**
+   * Fallback method if global function is missing (simplified version)
+   */
+  fallbackCreerLigneFromActivite(ligne, cardNumber, activite) {
     const cardTypeName = this.getCardTypeName(cardNumber);
     ligne.className = 'ligne text-center';
     ligne.innerHTML = '';
@@ -605,17 +679,7 @@ class GeneratorModal {
     return 'Non évalué';
   }
 
-  /**
-   * Ajouter une ligne vide pour le dépôt
-   */
-  ajouterLigneVidePourDepot(tbody) {
-    const nouvelleLigneVide = tbody.insertRow();
-    nouvelleLigneVide.style.height = '80px';
-    nouvelleLigneVide.insertCell();
-    const nouvelleDropzoneCell = nouvelleLigneVide.insertCell();
-    nouvelleDropzoneCell.className = 'dropzone surlignable';
-    for (let i = 0; i < 7; i++) { nouvelleLigneVide.insertCell(); }
-  }
+
 
   /**
    * Exporter la séquence

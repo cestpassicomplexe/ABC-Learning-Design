@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- LOGIQUE HYBRIDE : GESTION PAR CLIC + GLISSER-DÉPOSER ---
 
     cardsFront.forEach(card => {
-        card.style.cursor = 'pointer'; 
+        card.style.cursor = 'pointer';
         card.addEventListener('click', afficherVersoCartePourAjout);
         card.addEventListener('dragstart', handleDragStart);
         card.addEventListener('dragend', handleDragEnd);
@@ -42,14 +42,14 @@ document.addEventListener('DOMContentLoaded', function () {
             targetCardBack.classList.remove('d-none');
             const boutons = targetCardBack.querySelectorAll('.btnCliquable');
             boutons.forEach(bouton => {
-                bouton.onclick = gererSelectionOutil; 
+                bouton.onclick = gererSelectionOutil;
             });
         }
     }
 
     function gererSelectionOutil() {
         let nomOutil = this.value || this.textContent.trim();
-        
+
         if (this.value === 'Autre') {
             const outilPersonnalise = prompt("Veuillez préciser le nom de l'outil ou de l'activité personnalisée :", "");
             if (!outilPersonnalise) { return; }
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
             nettoyerPlaceholdersInitiaux();
 
             const cardIdNumber = parentCardBack.id.match(/\d+/)[0];
-            
+
             let nouvelleLigneContenu;
             const ligneVideExistante = dropzoneTbody.querySelector('.dropzone');
 
@@ -82,22 +82,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
             creerContenuLigne(nouvelleLigneContenu, cardIdNumber, nomOutil);
         }
-        
+
         parentCardBack.classList.add('d-none');
         document.querySelectorAll('.ligne-en-modification').forEach(row => {
             row.classList.remove('ligne-en-modification');
         });
-        
+
         if (!dropzoneTbody.querySelector('.dropzone')) {
             ajouterLigneVidePourDepot(dropzoneTbody);
         }
-        
+
         actugraph();
     }
-    
+
     // --- FONCTIONS POUR LE GLISSER-DÉPOSER ---
-    
-    function handleDragStart() {}
+
+    function handleDragStart() { }
 
     function handleDragEnd() {
         const dropzoneTbody = document.getElementById('dropzone');
@@ -110,9 +110,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const cardIdNumber = this.id.match(/\d+/)[0];
 
         creerContenuLigne(targetRow, cardIdNumber, "");
-        
+
         ajouterLigneVidePourDepot(dropzoneTbody);
-        
+
         targetCell.classList.remove('active');
         actugraph();
 
@@ -130,8 +130,8 @@ document.addEventListener('DOMContentLoaded', function () {
         nouvelleDropzoneCell.className = 'dropzone surlignable';
         for (let i = 0; i < 7; i++) { nouvelleLigneVide.insertCell(); }
     }
-    
-    window.declencherModification = function(elementDeclencheur) {
+
+    window.declencherModification = function (elementDeclencheur) {
         const ligneAModifier = elementDeclencheur.closest('tr');
 
         document.querySelectorAll('.ligne-en-modification').forEach(row => {
@@ -140,10 +140,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         ligneAModifier.classList.add('ligne-en-modification');
         ligneEnCours = ligneAModifier.rowIndex;
-        
+
         const cellType = ligneAModifier.cells[1];
         const cardIdNumber = cellType.id.slice(4, 5);
-        
+
         afficherVersoCarte(cardIdNumber);
     }
 
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function creerContenuLigne(ligne, cardIdNumber, nomOutil) {
         ligne.className = 'ligne text-center';
-        ligne.innerHTML = ''; 
+        ligne.innerHTML = '';
 
         let cell1 = ligne.insertCell();
         cell1.innerHTML = `<div class="actions-container">
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                <button class="btn btn-icon" onclick="supprimer(this);"><i class="fa-solid fa-trash"></i></button>
                              </div>
                            </div>`;
-        
+
         const handle = cell1.querySelector('.handle');
         handle.addEventListener('dragstart', handleDragStart2);
         handle.addEventListener('dragend', handleDragEnd2);
@@ -176,16 +176,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const cardHeadId = `card${cardIdNumber}BackHead`;
         const headElementContainer = document.getElementById(cardHeadId);
         let imageSrc = "", titreText = "Activité";
-        
-        if(headElementContainer){
-             const headElement = headElementContainer.querySelector('.col');
-             const originalImg = headElement.querySelector('img');
-             if(originalImg) imageSrc = originalImg.src;
-             titreText = headElement.querySelector('h3').textContent.trim();
+
+        if (headElementContainer) {
+            const headElement = headElementContainer.querySelector('.col');
+            const originalImg = headElement.querySelector('img');
+            if (originalImg) imageSrc = originalImg.src;
+            titreText = headElement.querySelector('h3').textContent.trim();
         }
 
         let cell2 = ligne.insertCell();
-        if(imageSrc) {
+        if (imageSrc) {
             const img = document.createElement('img');
             img.src = imageSrc;
             img.style.maxHeight = "50px";
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const cardColorClass = `card-${getCardTypeName(cardIdNumber)}`;
         cell1.classList.add(cardColorClass);
         cell2.classList.add(cardColorClass);
-        
+
         ligne.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="L'apprenant sera capable de..."></textarea>`;
         ligne.insertCell().innerText = nomOutil;
         ligne.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="Instructions pour l'activité..."></textarea>`;
@@ -213,15 +213,15 @@ document.addEventListener('DOMContentLoaded', function () {
         // Ajout d'écouteurs sur tous les champs éditables pour déplacer la ligne bleue au focus
         const inputs = ligne.querySelectorAll('.form-control, .form-select');
         inputs.forEach(elm => {
-            elm.addEventListener('focus', function() {
+            elm.addEventListener('focus', function () {
                 // 1. Visuel : On enlève la surbrillance des autres lignes et on l'ajoute ici
                 document.querySelectorAll('.ligne-en-modification').forEach(r => r.classList.remove('ligne-en-modification'));
                 ligne.classList.add('ligne-en-modification');
-                
+
                 // 2. Logique : On sort du mode "modification de l'outil" (car l'utilisateur tape du texte)
                 // On cache les cartes Verso pour éviter la confusion visuelle
                 document.querySelectorAll('.cardBackCliquable').forEach(card => card.classList.add('d-none'));
-                
+
                 // On reset la variable pour éviter d'écraser l'outil de la ligne précédente si on clique sur une carte après
                 ligneEnCours = undefined;
             });
@@ -245,29 +245,29 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const dropzoneTbody = document.getElementById('dropzone');
         const draggedRow = dropzoneTbody.querySelector('.dragging');
-        
+
         if (draggedRow) {
-             const overElement = event.target.closest('tr');
-             if (overElement && overElement.parentNode === dropzoneTbody) {
-                 dropzoneTbody.querySelectorAll('tr').forEach(row => row.classList.remove('drag-over-indicator'));
-                 
-                 if (overElement !== draggedRow) {
-                     if(overElement.querySelector('.dropzone')) {
-                         dropzoneTbody.insertBefore(draggedRow, overElement);
-                         return;
-                     }
-                     const rect = overElement.getBoundingClientRect();
-                     const next = (event.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
-                     dropzoneTbody.insertBefore(draggedRow, next && overElement.nextSibling || overElement);
-                 }
-             }
+            const overElement = event.target.closest('tr');
+            if (overElement && overElement.parentNode === dropzoneTbody) {
+                dropzoneTbody.querySelectorAll('tr').forEach(row => row.classList.remove('drag-over-indicator'));
+
+                if (overElement !== draggedRow) {
+                    if (overElement.querySelector('.dropzone')) {
+                        dropzoneTbody.insertBefore(draggedRow, overElement);
+                        return;
+                    }
+                    const rect = overElement.getBoundingClientRect();
+                    const next = (event.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
+                    dropzoneTbody.insertBefore(draggedRow, next && overElement.nextSibling || overElement);
+                }
+            }
         } else {
             dropzoneTbody.querySelectorAll('.surlignable').forEach(cell => cell.classList.remove('active'));
             const overCell = event.target.closest('td.surlignable');
             if (overCell) overCell.classList.add('active');
         }
     }
-    
+
     function handleDragLeave(event) {
         const overCell = event.target.closest('td.surlignable');
         if (overCell) {
@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    window.supprimer = function(bouton) {
+    window.supprimer = function (bouton) {
         if (confirm("Êtes-vous sûr de vouloir supprimer cette ligne ?")) {
             const ligneASupprimer = bouton.closest('tr');
             if (ligneASupprimer) {
@@ -284,7 +284,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-    
+
     dropzone.addEventListener('dragover', handleDragOver);
     dropzone.addEventListener('dragleave', handleDragLeave);
+
+    // Expose functions globally for other modules (like generatorModal.js)
+    window.creerContenuLigne = creerContenuLigne;
+    window.ajouterLigneVidePourDepot = ajouterLigneVidePourDepot;
 });
