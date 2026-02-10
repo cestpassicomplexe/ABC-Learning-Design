@@ -291,4 +291,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Expose functions globally for other modules (like generatorModal.js)
     window.creerContenuLigne = creerContenuLigne;
     window.ajouterLigneVidePourDepot = ajouterLigneVidePourDepot;
+    window.handleDragStart2 = handleDragStart2;
+    window.handleDragEnd2 = handleDragEnd2;
 });

@@ -685,8 +685,8 @@ function creerLigneDeTableau(data) {
         </div>`;
     cell1.classList.add(cardInfo.class);
     const handle = cell1.querySelector('.fa-grip-vertical');
-    handle.addEventListener('dragstart', handleDragStart2);
-    handle.addEventListener('dragend', handleDragEnd2);
+    handle.addEventListener('dragstart', window.handleDragStart2);
+    handle.addEventListener('dragend', window.handleDragEnd2);
 
     // --- Cellule 2: Type d'Apprentissage (avec l'icône) ---
     const cellTypeApprentissage = targetRow.insertCell();
@@ -699,7 +699,7 @@ function creerLigneDeTableau(data) {
         </div>
     `;
     cellTypeApprentissage.id = `card${cardInfo.num}-${new Date().getTime()}`;
-    cellTypeApprentissage.addEventListener('click', handleClick);
+    cellTypeApprentissage.addEventListener('click', function () { window.declencherModification(this); });
 
     // --- Autres cellules ---
     targetRow.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="L'apprenant sera capable de...">${data.objectifs}</textarea>`;
