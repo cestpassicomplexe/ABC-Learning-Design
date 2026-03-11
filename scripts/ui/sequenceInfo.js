@@ -9,6 +9,7 @@ class SequenceInfo {
             level: document.getElementById('sequence-level'),
             duration: document.getElementById('sequence-duration'),
             objectives: document.getElementById('sequence-objectives'),
+            summary: document.getElementById('sequence-summary'),
             audience: document.getElementById('sequence-audience'),
             prerequisites: document.getElementById('sequence-prerequisites')
         };
@@ -30,6 +31,11 @@ class SequenceInfo {
                 field.addEventListener('input', () => this.save());
             }
         });
+
+        // Compteur de caractères pour le résumé
+        if (this.fields.summary) {
+            this.fields.summary.addEventListener('input', () => this.updateCounter());
+        }
 
         // Toggle collapse/expand
         if (this.toggleBtn) {
@@ -94,6 +100,7 @@ class SequenceInfo {
             level: this.fields.level?.value || '',
             duration: this.calculateTotalDuration(),
             objectives: this.fields.objectives?.value || '',
+            summary: this.fields.summary?.value || '',
             audience: this.fields.audience?.value || '',
             prerequisites: this.fields.prerequisites?.value || ''
         };
@@ -108,6 +115,10 @@ class SequenceInfo {
         if (this.fields.name) this.fields.name.value = data.name || '';
         if (this.fields.level) this.fields.level.value = data.level || '';
         if (this.fields.objectives) this.fields.objectives.value = data.objectives || '';
+        if (this.fields.summary) {
+            this.fields.summary.value = data.summary || '';
+            this.updateCounter();
+        }
         if (this.fields.audience) this.fields.audience.value = data.audience || '';
         if (this.fields.prerequisites) this.fields.prerequisites.value = data.prerequisites || '';
 
@@ -181,10 +192,21 @@ class SequenceInfo {
             name: '',
             level: '',
             objectives: '',
+            summary: '',
             audience: '',
             prerequisites: ''
         });
         this.save();
+    }
+
+    /**
+     * Mettre à jour le compteur de caractères
+     */
+    updateCounter() {
+        const counter = document.getElementById('sequence-summary-count');
+        if (counter && this.fields.summary) {
+            counter.innerText = this.fields.summary.value.length;
+        }
     }
 }
 

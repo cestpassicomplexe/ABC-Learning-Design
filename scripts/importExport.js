@@ -7,7 +7,7 @@
  */
 function getTableData() {
     const data = [];
-    const rows = document.querySelectorAll('#dropzone tr.ligne'); // On ne prend que les lignes de contenu
+    const rows = document.querySelectorAll('#dropzone tr.ligne');
 
     const typeMapping = {
         'card-acquisition': 'Acquisition',
@@ -19,18 +19,23 @@ function getTableData() {
     };
 
     rows.forEach(row => {
-        // La classe qui définit le type est sur la première cellule
-        const typeClass = Array.from(row.cells[0].classList).find(c => c.startsWith('card-'));
+        const firstCell = row.cells[0];
+        const typeClass = firstCell ? Array.from(firstCell.classList).find(c => c.startsWith('card-')) : '';
+
+        // Extraction du mot-clé depuis la cellule 2 (index 1)
+        const keywordInput = row.cells[1]?.querySelector('.keyword-input');
+        const keyword = keywordInput ? keywordInput.value : '';
 
         data.push({
             typeApprentissage: typeMapping[typeClass] || 'Inconnu',
-            objectifs: row.cells[2].querySelector('textarea').value,
-            outil: row.cells[3].innerText,
-            consignes: row.cells[4].querySelector('textarea').value,
-            duree: row.cells[5].querySelector('input').value,
-            modalite: row.cells[6].querySelector('select').value,
-            evaluation: row.cells[7].querySelector('select').value,
-            ressources: row.cells[8].querySelector('textarea').value,
+            keyword: keyword,
+            objectifs: row.cells[2]?.querySelector('textarea')?.value || '',
+            outil: row.cells[3]?.innerText || '',
+            consignes: row.cells[4]?.querySelector('textarea')?.value || '',
+            duree: row.cells[5]?.querySelector('input')?.value || '0',
+            modalite: row.cells[6]?.querySelector('select')?.value || '',
+            evaluation: row.cells[7]?.querySelector('select')?.value || '',
+            ressources: row.cells[8]?.querySelector('textarea')?.value || '',
         });
     });
 
@@ -61,6 +66,7 @@ function getSequenceInfoForExport() {
  */
 function generateSequenceInfoText(seqInfo) {
     let text = '';
+    if (seqInfo.summary) text += `Résumé (140 car.) : ${seqInfo.summary}\n`;
     if (seqInfo.name) text += `Nom de la séquence : ${seqInfo.name}\n`;
     if (seqInfo.level) text += `Niveau : ${seqInfo.level}\n`;
     if (seqInfo.duration) text += `Durée totale : ${seqInfo.duration}\n`;
@@ -103,105 +109,103 @@ function exportJSON() {
 }
 
 function exportExcel() {
-    // Cette fonction utilise la librairie ExcelJS déjà chargée dans votre HTML.
-    const data = getTableData();
-    const seqInfo = getSequenceInfoForExport();
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Scénario Pédagogique');
+    try {
+        // Détection robuste de la bibliothèque (peut varier selon le CDN/Version)
+        const LibExcel = window.ExcelJS || window.exceljs;
 
-    let currentRow = 1;
+        if (!LibExcel) {
+            alert("La bibliothèque ExcelJS n'a pas pu être chargée.\n\nCauses possibles :\n1. Connexion internet requise pour charger la librairie.\n2. Le chargement est encore en cours (merci de patienter quelques secondes).");
+            return;
+        }
 
-    // Ajout des informations de la séquence
-    if (seqInfo.name) {
-        worksheet.mergeCells(`A${currentRow}:H${currentRow}`);
-        const titleCell = worksheet.getCell(`A${currentRow}`);
-        titleCell.value = seqInfo.name;
-        titleCell.font = { bold: true, size: 16 };
-        currentRow++;
-    }
+        const data = getTableData();
+        const seqInfo = getSequenceInfoForExport();
+        const workbook = new LibExcel.Workbook();
+        const worksheet = workbook.addWorksheet('Scénario Pédagogique');
 
-    if (seqInfo.level || seqInfo.duration) {
-        if (seqInfo.level) {
-            worksheet.getCell(`A${currentRow}`).value = 'Niveau :';
+        let currentRow = 1;
+
+        // Ajout des informations de la séquence
+        if (seqInfo.summary) {
+            worksheet.getCell(`A${currentRow}`).value = 'Résumé (140 car.) :';
             worksheet.getCell(`A${currentRow}`).font = { bold: true };
-            worksheet.getCell(`B${currentRow}`).value = seqInfo.level;
+            worksheet.getCell(`B${currentRow}`).value = seqInfo.summary;
             currentRow++;
         }
-        if (seqInfo.duration) {
-            worksheet.getCell(`A${currentRow}`).value = 'Durée totale :';
-            worksheet.getCell(`A${currentRow}`).font = { bold: true };
-            worksheet.getCell(`B${currentRow}`).value = seqInfo.duration;
+        if (seqInfo.name) {
+            worksheet.mergeCells(`A${currentRow}:I${currentRow}`);
+            const titleCell = worksheet.getCell(`A${currentRow}`);
+            titleCell.value = seqInfo.name;
+            titleCell.font = { bold: true, size: 16 };
             currentRow++;
         }
+
+        if (seqInfo.level || seqInfo.duration) {
+            if (seqInfo.level) {
+                worksheet.getCell(`A${currentRow}`).value = 'Niveau :';
+                worksheet.getCell(`A${currentRow}`).font = { bold: true };
+                worksheet.getCell(`B${currentRow}`).value = seqInfo.level;
+                currentRow++;
+            }
+            if (seqInfo.duration) {
+                worksheet.getCell(`A${currentRow}`).value = 'Durée totale :';
+                worksheet.getCell(`A${currentRow}`).font = { bold: true };
+                worksheet.getCell(`B${currentRow}`).value = seqInfo.duration;
+                currentRow++;
+            }
+        }
+
+        if (seqInfo.objectives) {
+            worksheet.getCell(`A${currentRow}`).value = 'Objectifs d\'apprentissage :';
+            worksheet.getCell(`A${currentRow}`).font = { bold: true };
+            currentRow++;
+            worksheet.mergeCells(`A${currentRow}:I${currentRow}`);
+            worksheet.getCell(`A${currentRow}`).value = seqInfo.objectives;
+            worksheet.getCell(`A${currentRow}`).alignment = { wrapText: true };
+            currentRow++;
+        }
+
+        if (currentRow > 1) currentRow++; // Ligne vide avant le tableau
+
+        // Configuration des colonnes (avec en-têtes)
+        worksheet.columns = [
+            { header: 'Type d\'Apprentissage', key: 'typeApprentissage', width: 25 },
+            { header: 'Note / Rappel', key: 'keyword', width: 20 },
+            { header: 'Objectif(s) Visé(s)', key: 'objectifs', width: 40 },
+            { header: 'Outil', key: 'outil', width: 20 },
+            { header: 'Consignes', key: 'consignes', width: 40 },
+            { header: 'Durée (min)', key: 'duree', width: 15 },
+            { header: 'Modalité', key: 'modalite', width: 30 },
+            { header: 'Évaluation & Feedback', key: 'evaluation', width: 30 },
+            { header: 'Ressources', key: 'ressources', width: 30 },
+        ];
+
+        // Style pour la ligne d'en-tête
+        const headerRow = worksheet.getRow(worksheet.columns[0].header ? currentRow : currentRow);
+        worksheet.getRow(worksheet.lastRow.number).font = { bold: true };
+        worksheet.getRow(worksheet.lastRow.number).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFD3D3D3' }
+        };
+
+        // Ajout des données
+        data.forEach(row => {
+            worksheet.addRow(row);
+        });
+
+        // Génération du fichier
+        const filename = seqInfo.name ?
+            `${seqInfo.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.xlsx` :
+            'scenario_pedagogique.xlsx';
+
+        workbook.xlsx.writeBuffer().then(buffer => {
+            downloadFile(filename, buffer, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        });
+    } catch (error) {
+        console.error('Erreur export Excel:', error);
+        alert('Une erreur est survenue lors de l\'export Excel : ' + error.message);
     }
-
-    if (seqInfo.objectives) {
-        worksheet.getCell(`A${currentRow}`).value = 'Objectifs d\'apprentissage :';
-        worksheet.getCell(`A${currentRow}`).font = { bold: true };
-        currentRow++;
-        worksheet.mergeCells(`A${currentRow}:H${currentRow}`);
-        worksheet.getCell(`A${currentRow}`).value = seqInfo.objectives;
-        worksheet.getCell(`A${currentRow}`).alignment = { wrapText: true };
-        currentRow++;
-    }
-
-    if (seqInfo.audience) {
-        worksheet.getCell(`A${currentRow}`).value = 'Public cible :';
-        worksheet.getCell(`A${currentRow}`).font = { bold: true };
-        worksheet.getCell(`B${currentRow}`).value = seqInfo.audience;
-        currentRow++;
-    }
-
-    if (seqInfo.prerequisites) {
-        worksheet.getCell(`A${currentRow}`).value = 'Prérequis :';
-        worksheet.getCell(`A${currentRow}`).font = { bold: true };
-        worksheet.getCell(`B${currentRow}`).value = seqInfo.prerequisites;
-        currentRow++;
-    }
-
-    if (currentRow > 1) {
-        currentRow++; // Ligne vide avant le tableau
-    }
-
-    // Ajout des en-têtes du tableau
-    const headerRow = currentRow;
-    worksheet.getRow(headerRow).values = [
-        'Type d\'Apprentissage', 'Objectif(s) Visé(s)', 'Outil',
-        'Consignes', 'Durée (min)', 'Modalité',
-        'Évaluation & Feedback', 'Ressources'
-    ];
-    worksheet.getRow(headerRow).font = { bold: true };
-    worksheet.getRow(headerRow).fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFD3D3D3' }
-    };
-
-    // Configuration des colonnes
-    worksheet.columns = [
-        { key: 'typeApprentissage', width: 25 },
-        { key: 'objectifs', width: 40 },
-        { key: 'outil', width: 20 },
-        { key: 'consignes', width: 40 },
-        { key: 'duree', width: 15 },
-        { key: 'modalite', width: 30 },
-        { key: 'evaluation', width: 30 },
-        { key: 'ressources', width: 30 },
-    ];
-
-    // Ajout des données
-    data.forEach(row => {
-        currentRow++;
-        worksheet.addRow(row);
-    });
-
-    // Génération du fichier
-    const filename = seqInfo.name ?
-        `${seqInfo.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.xlsx` :
-        'scenario_pedagogique.xlsx';
-    workbook.xlsx.writeBuffer().then(buffer => {
-        downloadFile(filename, buffer, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    });
 }
 
 /* Génère une chaîne de caractères complète représentant le tableau au format Markdown.
@@ -209,7 +213,7 @@ function exportExcel() {
 function generateMarkdownTable(data) {
     // Les en-têtes complets
     let headers = [
-        'Type d\'Apprentissage', 'Objectif(s) Visé(s)', 'Outil',
+        'Type d\'Apprentissage', 'Note / Rappel', 'Objectif(s) Visé(s)', 'Outil',
         'Consignes', 'Durée (min)', 'Modalité',
         'Évaluation & Feedback', 'Ressources'
     ];
@@ -220,13 +224,13 @@ function generateMarkdownTable(data) {
 
     // Ajout de chaque ligne de données
     data.forEach(row => {
-        // On s'assure de nettoyer les sauts de ligne dans les textareas pour ne pas casser le tableau Markdown
+        const cleanKeyword = row.keyword.replace(/\n/g, ' ');
         const cleanObjectives = row.objectifs.replace(/\n/g, ' ');
         const cleanConsignes = row.consignes.replace(/\n/g, ' ');
         const cleanRessources = row.ressources.replace(/\n/g, ' ');
 
         const rowData = [
-            row.typeApprentissage, cleanObjectives, row.outil,
+            row.typeApprentissage, cleanKeyword, cleanObjectives, row.outil,
             cleanConsignes, row.duree, row.modalite,
             row.evaluation, cleanRessources
         ];
@@ -243,6 +247,7 @@ function exportMarkdown() {
 
     // En-tête avec les informations de la séquence
     let content = '';
+    if (seqInfo.summary) content += `**Résumé (140 car.)** : ${seqInfo.summary}\n\n`;
     if (seqInfo.name) content += `# ${seqInfo.name}\n\n`;
     if (seqInfo.level || seqInfo.duration) {
         content += '**Informations générales**\n\n';
@@ -271,8 +276,9 @@ function exportHTML() {
 
     // Section d'informations de la séquence
     let seqInfoHtml = '';
-    if (seqInfo.name || seqInfo.level || seqInfo.duration || seqInfo.objectives || seqInfo.audience || seqInfo.prerequisites) {
+    if (seqInfo.summary || seqInfo.name || seqInfo.level || seqInfo.duration || seqInfo.objectives || seqInfo.audience || seqInfo.prerequisites) {
         seqInfoHtml = '<div class="sequence-info" style="margin-bottom: 30px;">';
+        if (seqInfo.summary) seqInfoHtml += `<p><strong>Résumé (140 car.) :</strong> ${seqInfo.summary}</p>`;
         if (seqInfo.name || seqInfo.level || seqInfo.duration) {
             seqInfoHtml += '<div style="margin-bottom: 15px;">';
             if (seqInfo.level) seqInfoHtml += `<p><strong>Niveau :</strong> ${seqInfo.level}</p>`;
@@ -288,17 +294,18 @@ function exportHTML() {
 
     // On construit une table HTML propre à partir des données réelles
     let tableHtml = `
-        <table>
+        <table style="border-collapse: collapse; width: 100%;">
             <thead>
-                <tr>
-                    <th>Type d'Apprentissage</th>
-                    <th>Objectif(s) Visé(s)</th>
-                    <th>Outil</th>
-                    <th>Consignes</th>
-                    <th>Durée (min)</th>
-                    <th>Modalité</th>
-                    <th>Évaluation & Feedback</th>
-                    <th>Ressources</th>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 8px;">Type d'Apprentissage</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Note / Rappel</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Objectif(s) Visé(s)</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Outil</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Consignes</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Durée (min)</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Modalité</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Évaluation & Feedback</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Ressources</th>
                 </tr>
             </thead>
             <tbody>
@@ -306,14 +313,15 @@ function exportHTML() {
     data.forEach(row => {
         tableHtml += `
             <tr>
-                <td>${row.typeApprentissage}</td>
-                <td>${row.objectifs}</td>
-                <td>${row.outil}</td>
-                <td>${row.consignes}</td>
-                <td>${row.duree}</td>
-                <td>${row.modalite}</td>
-                <td>${row.evaluation}</td>
-                <td>${row.ressources}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.typeApprentissage}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.keyword}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.objectifs.replace(/\n/g, '<br>')}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.outil}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.consignes.replace(/\n/g, '<br>')}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: center;">${row.duree}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.modalite}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.evaluation}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">${row.ressources.replace(/\n/g, '<br>')}</td>
             </tr>
         `;
     });
@@ -364,6 +372,7 @@ function exportTXT() {
     data.forEach((row, index) => {
         content += `--- ÉTAPE ${index + 1} ---\n`;
         content += `Type d'Apprentissage: ${row.typeApprentissage}\n`;
+        if (row.keyword) content += `Note / Rappel: ${row.keyword}\n`;
         content += `Objectif(s) Visé(s): ${row.objectifs}\n`;
         content += `Outil: ${row.outil}\n`;
         content += `Consignes: ${row.consignes}\n`;
@@ -414,7 +423,10 @@ function exportDOCX() {
     `;
 
     // Informations de la séquence
-    if (seqInfo.level || seqInfo.duration || seqInfo.objectives || seqInfo.audience || seqInfo.prerequisites) {
+    if (seqInfo.summary || seqInfo.level || seqInfo.duration || seqInfo.objectives || seqInfo.audience || seqInfo.prerequisites) {
+        if (seqInfo.summary) {
+            htmlContent += `<p><span class="info-label">Résumé (140 car.) :</span> ${seqInfo.summary}</p>`;
+        }
         if (seqInfo.level) {
             htmlContent += `<p><span class="info-label">Niveau :</span> ${seqInfo.level}</p>`;
         }
@@ -440,6 +452,7 @@ function exportDOCX() {
             <thead>
                 <tr>
                     <th>Type d'Apprentissage</th>
+                    <th>Note / Rappel</th>
                     <th>Objectif(s) Visé(s)</th>
                     <th>Outil</th>
                     <th>Consignes</th>
@@ -456,6 +469,7 @@ function exportDOCX() {
         htmlContent += `
             <tr>
                 <td>${row.typeApprentissage}</td>
+                <td>${row.keyword}</td>
                 <td>${row.objectifs.replace(/\n/g, '<br>')}</td>
                 <td>${row.outil}</td>
                 <td>${row.consignes.replace(/\n/g, '<br>')}</td>
@@ -500,8 +514,9 @@ function copyHTML() {
 
     // Section d'informations de la séquence
     let seqInfoHtml = '';
-    if (seqInfo.name || seqInfo.level || seqInfo.duration || seqInfo.objectives || seqInfo.audience || seqInfo.prerequisites) {
+    if (seqInfo.summary || seqInfo.name || seqInfo.level || seqInfo.duration || seqInfo.objectives || seqInfo.audience || seqInfo.prerequisites) {
         seqInfoHtml = '<div style="margin-bottom: 20px;">';
+        if (seqInfo.summary) seqInfoHtml += `<p><strong>Résumé (140 car.) :</strong> ${seqInfo.summary}</p>`;
         if (seqInfo.name) seqInfoHtml += `<h2>${seqInfo.name}</h2>`;
         if (seqInfo.level) seqInfoHtml += `<p><strong>Niveau :</strong> ${seqInfo.level}</p>`;
         if (seqInfo.duration) seqInfoHtml += `<p><strong>Durée totale :</strong> ${seqInfo.duration}</p>`;
@@ -524,6 +539,7 @@ function copyHTML() {
             <thead>
                 <tr>
                     <th>Type d'Apprentissage</th>
+                    <th>Note / Rappel</th>
                     <th>Objectif(s) Visé(s)</th>
                     <th>Outil</th>
                     <th>Consignes</th>
@@ -541,6 +557,7 @@ function copyHTML() {
         htmlContent += `
             <tr>
                 <td>${row.typeApprentissage}</td>
+                <td>${row.keyword}</td>
                 <td>${row.objectifs}</td>
                 <td>${row.outil}</td>
                 <td>${row.consignes}</td>
@@ -572,6 +589,7 @@ function copyMarkdown() {
 
     // En-tête avec les informations de la séquence
     let content = '';
+    if (seqInfo.summary) content += `**Résumé (140 car.)** : ${seqInfo.summary}\n\n`;
     if (seqInfo.name) content += `# ${seqInfo.name}\n\n`;
     if (seqInfo.level || seqInfo.duration) {
         content += '**Informations générales**\n\n';

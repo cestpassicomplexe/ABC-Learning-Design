@@ -30,8 +30,8 @@ function handleChange() {
     nomExpert = 'card' + i + 'ExpertMoodleBackCliquable';
     carteNovice = document.getElementById(nomNovice);
     carteExpert = document.getElementById(nomExpert);
-    carteNovice.classList.add("d-none");
-    carteExpert.classList.add("d-none");
+    if (carteNovice) carteNovice.classList.add("d-none");
+    if (carteExpert) carteExpert.classList.add("d-none");
   }
   // Suppression des lignes du tableau.
   nombreLigne = tableau.rows.length - 1;

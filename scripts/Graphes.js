@@ -1,12 +1,11 @@
 var data = {
-    labels: ['Acquisition', 'Collaboration', 'Discussion', 'Enquête', 'Pratique - Entrainement', 'Production'],
+    labels: ['Acquisition', 'Collaboration', 'Discussion', 'Enquête', 'Pratique', 'Production'],
     datasets: [{
         label: '',
-        data: [],
-        pointBackgroundColor: ['rgb(22,177,162)', 'rgb(243,146,0)', 'rgb(29,113,184)', 'rgb(190,22,34)', 'rgb(102,36,131)', 'rgb(58,170,53'],
+        data: [0, 0, 0, 0, 0, 0],
+        pointBackgroundColor: ['rgb(22,177,162)', 'rgb(243,146,0)', 'rgb(29,113,184)', 'rgb(190,22,34)', 'rgb(102,36,131)', 'rgb(58,170,53)'],
         borderColor: 'dark',
         backgroundColor: 'rgba(100,100,100,0.2)',
-        // tension : 1,
         borderWidth: 1,
     }]
 };
@@ -18,9 +17,9 @@ var option = {
             suggestedMin: 0,
             pointLabels: {
                 font: {
-                    size: 16,
+                    size: 12,
                 },
-                color: ['rgb(22,177,162)', 'rgb(243,146,0)', 'rgb(29,113,184)', 'rgb(190,22,34)', 'rgb(102,36,131)', 'rgb(58,170,53)'],
+                color: '#666',
             },
             ticks: {
                 beginAtZero: true
@@ -43,23 +42,26 @@ var option = {
 var config = {
     type: 'radar', data: data, options: option
 };
-var graphique = new Chart(ctx, config);
+if (typeof Chart === 'undefined') {
+    console.error("Chart.js n'est pas chargé. Les graphiques ne fonctionneront pas.");
+} else {
+    window.graphique = new Chart(ctx, config);
+}
 
 var dataPresentielDistanciel = {
     labels: ['Présentiel', 'Distanciel'],
     datasets: [{
         label: '',
-        data: [],
-        pointBackgroundColor: ['red', 'green'],
+        data: [0, 0],
+        pointBackgroundColor: ['#0d6efd', '#198754'],
         borderColor: 'dark',
-        backgroundColor: ['red', 'green'],
-        // tension : 1,
+        backgroundColor: ['#0d6efd', '#198754'],
         borderWidth: 1,
     }]
 };
 const ctxPresentielDistanciel = document.getElementById('graphPresentielDistanciel');
 var optionPresentielDistanciel = {
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
         legend: false,
         title: {
@@ -76,23 +78,24 @@ var optionPresentielDistanciel = {
 var configPresentielDistanciel = {
     type: 'bar', data: dataPresentielDistanciel, options: optionPresentielDistanciel
 };
-var graphiquePresentielDistanciel = new Chart(ctxPresentielDistanciel, configPresentielDistanciel);
+if (typeof Chart !== 'undefined' && ctxPresentielDistanciel) {
+    window.graphiquePresentielDistanciel = new Chart(ctxPresentielDistanciel, configPresentielDistanciel);
+}
 
 var dataIndividuelGroupe = {
     labels: ['Individuel', 'Groupe'],
     datasets: [{
         label: '',
-        data: [],
-        pointBackgroundColor: ['red', 'green'],
+        data: [0, 0],
+        pointBackgroundColor: ['#0d6efd', '#198754'],
         borderColor: 'dark',
-        backgroundColor: ['red', 'green'],
-        // tension : 1,
+        backgroundColor: ['#0d6efd', '#198754'],
         borderWidth: 1,
     }]
 };
 const ctxIndividuelGroupe = document.getElementById('graphIndividuelGroupe');
 var optionIndividuelGroupe = {
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
         legend: false,
         title: {
@@ -109,24 +112,19 @@ var optionIndividuelGroupe = {
 var configIndividuelGroupe = {
     type: 'bar', data: dataIndividuelGroupe, options: optionIndividuelGroupe
 };
-var graphiqueIndividuelGroupe = new Chart(ctxIndividuelGroupe, configIndividuelGroupe);
+if (typeof Chart !== 'undefined' && ctxIndividuelGroupe) {
+    window.graphiqueIndividuelGroupe = new Chart(ctxIndividuelGroupe, configIndividuelGroupe);
+}
 
 function actugraph() { //fonction pour actualiser le graph
-    // On vérifie s'il y a des lignes de contenu dans le tableau
+    console.log("Appel de actugraph()...");
     const lignesDeDonnees = document.querySelectorAll('#dropzone tr.ligne');
-    
-    // S'il n'y a aucune ligne, on cache les graphes et on arrête tout.
-    if (lignesDeDonnees.length === 0) {
-        radar.classList.add('d-none');
-        graphIndividuelGroupe.classList.add('d-none');
-        graphPresentielDistanciel.classList.add('d-none');
-        return; // Stoppe la fonction ici
-    }
+    console.log("Nombre de lignes trouvées :", lignesDeDonnees.length);
 
-    // Si on a des données, on affiche les graphes
-    radar.classList.remove('d-none');
-    graphIndividuelGroupe.classList.remove('d-none');
-    graphPresentielDistanciel.classList.remove('d-none');
+    // S'il n'y a aucune ligne, on vide les données mais on ne touche pas au DOM ici
+    // La visibilité globale est gérée par l'utilisateur via le bouton Replier/Déployer
+    // On ne retourne plus s'il n'y a pas de lignes, pour pouvoir remettre à zéro les graphes
+    const hasData = lignesDeDonnees.length > 0;
 
     // Réinitialisation des compteurs
     let tempsAcquisition = 0;
@@ -140,36 +138,40 @@ function actugraph() { //fonction pour actualiser le graph
     let tempsPresentiel = 0;
     let tempsDistanciel = 0;
 
-    // On boucle sur chaque ligne de données (on ignore l'en-tête et la ligne de drop vide)
-    lignesDeDonnees.forEach(row => {
-        
-        // Récupération sécurisée des éléments dans la ligne
-        const typeCell = row.cells[1]; // 2ème cellule
-        const dureeCell = row.cells[5]; // 6ème cellule
-        const modaliteCell = row.cells[6]; // 7ème cellule
+    lignesDeDonnees.forEach((row, index) => {
+        const typeCell = row.cells[1];
+        const dureeCell = row.cells[5];
+        const modaliteCell = row.cells[6];
 
-        // On s'assure que les cellules existent pour éviter les erreurs
         if (!typeCell || !dureeCell || !modaliteCell) return;
 
-        // Récupération de la durée (avec une valeur par défaut de 0 si l'input est vide ou invalide)
         const duree = parseInt(dureeCell.querySelector('input')?.value) || 0;
 
-        // --- Graphique Radar : Type d'apprentissage ---
-        const typeApprentissage = typeCell.querySelector('h6')?.innerText;
-        switch (typeApprentissage) {
-            case 'Acquisition':             tempsAcquisition += duree; break;
-            case 'Collaboration':           tempsCollaboration += duree; break;
-            case 'Discussion':              tempsDiscussion += duree; break;
-            case 'Enquête':                 tempsEnquete += duree; break;
-            case 'Pratique - Entrainement': tempsPratique += duree; break;
-            case 'Production':              tempsProduction += duree; break;
+        const typeApprentissageRaw = typeCell.querySelector('h6')?.textContent || "";
+        const typeApprentissage = typeApprentissageRaw.trim();
+
+        // Utilisation d'une comparaison insensible à la casse pour plus de robustesse
+        const typeLower = typeApprentissage.toLowerCase();
+
+        if (typeLower.includes('acquisition')) {
+            tempsAcquisition += duree;
+        } else if (typeLower.includes('collaboration')) {
+            tempsCollaboration += duree;
+        } else if (typeLower.includes('discussion')) {
+            tempsDiscussion += duree;
+        } else if (typeLower.includes('enquête') || typeLower.includes('enquete')) {
+            tempsEnquete += duree;
+        } else if (typeLower.includes('pratique')) {
+            tempsPratique += duree;
+        } else if (typeLower.includes('production')) {
+            tempsProduction += duree;
         }
 
-        // --- Graphes à barres : Modalité ---
         const modaliteValue = modaliteCell.querySelector('select')?.value;
         if (!modaliteValue) return;
 
-        // On vérifie la présence de mots-clés dans la valeur du select
+        console.log(`Ligne ${index}: Type=${typeApprentissage}, Durée=${duree}, Modalité=${modaliteValue}`);
+
         if (modaliteValue.includes('Présentiel')) {
             tempsPresentiel += duree;
         } else if (modaliteValue.includes('Distanciel')) {
@@ -179,20 +181,44 @@ function actugraph() { //fonction pour actualiser le graph
         if (modaliteValue.includes('En groupe')) {
             tempsGroupe += duree;
         } else if (modaliteValue.includes('Individuel') || modaliteValue.includes('Classe entière')) {
-            // On considère "Classe entière" comme de l'individuel pour ce graphe
             tempsIndividuel += duree;
         }
     });
 
-    // Mise à jour du graphique Radar
-    graphique.config.data.datasets[0].data = [tempsAcquisition, tempsCollaboration, tempsDiscussion, tempsEnquete, tempsPratique, tempsProduction];
-    graphique.update();
+    console.log("Totaux calculés - Radar:", [tempsAcquisition, tempsCollaboration, tempsDiscussion, tempsEnquete, tempsPratique, tempsProduction]);
+    console.log("Totaux calculés - Prés/Dist:", [tempsPresentiel, tempsDistanciel]);
+    console.log("Totaux calculés - Ind/Grp:", [tempsIndividuel, tempsGroupe]);
 
-    // Mise à jour du graphique Présentiel/Distanciel
-    graphiquePresentielDistanciel.data.datasets[0].data = [tempsPresentiel, tempsDistanciel];
-    graphiquePresentielDistanciel.update();
+    // Mise à jour sécurisée des graphiques
+    try {
+        if (window.graphique) {
+            window.graphique.data.datasets[0].data = [tempsAcquisition, tempsCollaboration, tempsDiscussion, tempsEnquete, tempsPratique, tempsProduction];
+            window.graphique.update();
+        }
+    } catch (e) { console.error("Erreur mise à jour Radar:", e); }
 
-    // Mise à jour du graphique Individuel/Groupe
-    graphiqueIndividuelGroupe.data.datasets[0].data = [tempsIndividuel, tempsGroupe];
-    graphiqueIndividuelGroupe.update();
+    try {
+        if (window.graphiquePresentielDistanciel) {
+            window.graphiquePresentielDistanciel.data.datasets[0].data = [tempsPresentiel, tempsDistanciel];
+            window.graphiquePresentielDistanciel.update();
+        }
+    } catch (e) { console.error("Erreur mise à jour Prés/Dist:", e); }
+
+    try {
+        if (window.graphiqueIndividuelGroupe) {
+            window.graphiqueIndividuelGroupe.data.datasets[0].data = [tempsIndividuel, tempsGroupe];
+            window.graphiqueIndividuelGroupe.update();
+        }
+    } catch (e) { console.error("Erreur mise à jour Ind/Grp:", e); }
+
+    // S'assurer que les canevas sont visibles si on a des données ou les masquer si vide (optionnel)
+    const radarCanvas = document.getElementById('radar');
+    const presentielCanvas = document.getElementById('graphPresentielDistanciel');
+    const individuelCanvas = document.getElementById('graphIndividuelGroupe');
+
+    if (hasData) {
+        if (radarCanvas) radarCanvas.classList.remove('d-none');
+        if (presentielCanvas) presentielCanvas.classList.remove('d-none');
+        if (individuelCanvas) individuelCanvas.classList.remove('d-none');
+    }
 }

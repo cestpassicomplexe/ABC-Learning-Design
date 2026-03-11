@@ -561,16 +561,9 @@ class GeneratorModal {
                        </div>`;
 
     // Cellule 2 : Type d'apprentissage avec image et titre
-    const cardHeadId = `card${cardNumber}BackHead`;
-    const headElementContainer = document.getElementById(cardHeadId);
-    let imageSrc = "", titreText = activite.type;
-
-    if (headElementContainer) {
-      const headElement = headElementContainer.querySelector('.col');
-      const originalImg = headElement?.querySelector('img');
-      if (originalImg) imageSrc = originalImg.src;
-      titreText = headElement?.querySelector('h3')?.textContent.trim() || activite.type;
-    }
+    const config = TYPES_CONFIG ? TYPES_CONFIG[cardNumber] : null;
+    let imageSrc = config ? config.icon : "";
+    let titreText = config ? config.name : activite.type;
 
     let cell2 = ligne.insertCell();
     if (imageSrc) {
@@ -592,7 +585,15 @@ class GeneratorModal {
     ligne.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="L'apprenant sera capable de...">${activite.objectif || ''}</textarea>`;
 
     // Cellule 4 : Outil
-    ligne.insertCell().innerText = activite.outil || '';
+    let cellOutil = ligne.insertCell();
+    cellOutil.innerText = activite.outil || 'Cliquer pour choisir...';
+    cellOutil.style.cursor = 'pointer';
+    cellOutil.className = 'tool-cell text-primary fw-bold';
+    cellOutil.onclick = () => {
+      if (window.toolSelector) {
+        window.toolSelector.open(ligne, cardNumber);
+      }
+    };
 
     // Cellule 5 : Consignes
     ligne.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="Instructions pour l'activité...">${activite.consignes || ''}</textarea>`;

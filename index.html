@@ -45,9 +45,7 @@
     crossorigin="anonymous"></script>
 
   <!-- ExcelJS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"
-    integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/pU4M6Jw0jNIDImb0/YKXBkTQvJ6xZqIGBcKdCfGZRZMJYpBLJJPLtPLrOQA=="
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 
   <!-- html-docx-js for Word document generation (browser-compatible) -->
   <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
@@ -125,6 +123,11 @@
           </li>
           <li><a class="dropdown-item" href="#" id="ai-config"><i class="fa-solid fa-gear me-2"></i>Configuration IA</a>
           </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="scripts/ai/prompt_system.md" target="_blank"><i
+                class="fa-solid fa-code me-2"></i>Voir le Prompt Système</a></li>
         </ul>
       </div>
     </div>
@@ -143,6 +146,11 @@
           <i class="fa-solid fa-book-open"></i>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#myModal">
+          Aide <i class="fa-solid fa-circle-question"></i>
+        </a>
+      </li>
     </ul>
 
   </nav>
@@ -157,9 +165,6 @@
         <p>Cliquez sur un type d'apprentissage pour choisir une activité et l'ajouter à votre parcours.</p>
       </div>
       <div class="col-2">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-          Aide <i class="fa-solid fa-circle-question"></i>
-        </button>
       </div>
     </div>
   </div>
@@ -210,6 +215,17 @@
         </button>
       </div>
       <div class="card-body" id="sequence-info-body">
+        <!-- Ma séquence en 140 caractères -->
+        <div class="row">
+          <div class="col-md-12 mb-2">
+            <label class="form-label fw-bold d-flex justify-content-between">
+              <span><i class="fa-solid fa-comment-dots me-1"></i>Ma séquence en 140 caractères</span>
+              <small class="text-muted"><span id="sequence-summary-count">0</span> / 140</small>
+            </label>
+            <input type="text" class="form-control" id="sequence-summary" maxlength="140"
+              placeholder="Résumez votre séquence en une phrase courte (utile pour le partage ou l'export)">
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-6 mb-2">
             <label class="form-label fw-bold">
@@ -268,510 +284,37 @@
       </div>
     </div>
 
-    <!-- Card Deck -->
-    <div class="card-deck">
-      <!-- CARTES RECTO -->
-      <div class="row">
-        <div class="col"> </div>
-        <div class="col-auto d-flex flex-row">
-          <!-- Card 1 Front -->
-          <div class="card card-acquisition cardFront m-1" style="width:16%;" draggable="true" id=card1Front>
-            <div class="card-header d-flex flex-row p-0">
-              <img src="./images/acquisition.png" style="height:30px" ; class="">
-              <p>&nbsp</p>
-              <h6 class='titre-carte'>Acquisition</h6>
-            </div>
-            <div class="card-body p-1">
-              <p class=description>
-                L’apprenant écoute un cours magistral, une conférence, un podcast ; lit un livre, une page web ; regarde
-                des démonstrations, des vidéos.
-              </p>
-              <div class="card-action-link">
-                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-              </div>
-            </div>
-          </div>
-          <!-- Card 2 Front-->
-          <div class="card card-collaboration cardFront m-1" style="width:16%;" draggable="true" id=card2Front>
-            <div class="card-header d-flex flex-row p-0">
-              <img src="./images/collaboration.png" style="height:30px" ; class="">
-              <p>&nbsp</p>
-              <h6 class='titre-carte'>Collaboration</h6>
-            </div>
-            <div class="card-body p-1">
-              <p class=description>
-                L'apprentissage par collaboration comprend surtout des activités de discussion, de pratique et de
-                production en équipe. Il s'agit de participer activement, dans un collectif, au processus de
-                construction de la connaissance.
-              </p>
-              <div class="card-action-link">
-                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-              </div>
-            </div>
-          </div>
-          <!-- Carte 3 Front -->
-          <div class="card card-discussion cardFront m-1" style="width:16%;" draggable="true" id=card3Front>
-            <div class="card-header d-flex flex-row p-0">
-              <img src="./images/discussion.png" style="height:30px" ; class="">
-              <p>&nbsp</p>
-              <h6 class='titre-carte'>Discussion</h6>
-            </div>
-            <div class="card-body p-1">
-              <p class="description mt-1">
-                Apprendre par la discussion exige de l'apprenant qu'il formule ses idées et questions, qu'il écoute,
-                remette en cause, réponde aux arguments et questions de l'enseignant et/ou de ses pairs.
-              </p>
-              <div class="card-action-link">
-                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-              </div>
-            </div>
-          </div>
-          <!-- Carte 4 Front -->
-          <div class="card card-enquete cardFront m-1" style="width:16%;" draggable="true" id=card4Front>
-            <div class="card-header d-flex flex-row p-0">
-              <img src="./images/enquete.png" style="height:30px" ; class="">
-              <p>&nbsp</p>
-              <h6 class='titre-carte'>Enquête</h6>
-            </div>
-            <div class="card-body p-1">
-              <p class=description>
-                Apprendre par enquête aide l’apprenant à explorer, comparer et critiquer les textes, documents et autres
-                ressources qui renvoient aux concepts et idées enseignées.
-              </p>
-              <div class="card-action-link">
-                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-              </div>
-            </div>
-          </div>
-          <!-- Card 5 Front-->
-          <div class="card card-pratique cardFront m-1" style="width:16%;" draggable="true" id=card5Front>
-            <div class="card-header d-flex flex-row p-0">
-              <img src="./images/pratique.png" style="height:30px" ; class="">
-              <p>&nbsp</p>
-              <h6 class='titre-carte'>Pratique - Entrainement</h6>
-            </div>
-            <div class="card-body p-1">
-              <p class='description'>
-                L’apprentissage par la pratique permet à l’apprenant de s'entraîner et d'utiliser la rétroaction pour
-                améliorer ses connaissances ou les actions suivantes.
-                La rétroaction peut venir de l’autoréflexion, des pairs, de l’enseignant ou de l’activité elle-même.
-              </p>
-              <div class="card-action-link">
-                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-              </div>
-            </div>
-          </div>
-          <!-- Card 6 Front-->
-          <div class="card card-production cardFront m-1" style="width:16%;" draggable="true" id=card6Front>
-            <div class="card-header d-flex flex-row p-0">
-              <img src="./images/production.png" style="height:30px" ; class="">
-              <p>&nbsp</p>
-              <h6 class='titre-carte'>Production</h6>
-            </div>
-            <div class="card-body p-1">
-              <p class='description'>
-                L'apprenant consolide ce qu'il a appris par une production sur des supports variés. <br>
-                Le formateur accompagne le processus en mettant à disposition des références ou en questionnant les
-                choix opérés.
-              </p>
-              <div class="card-action-link">
-                <i class="fa-solid fa-arrow-right"></i> <strong>Choisir une activité</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col"> </div>
+    <!-- Section Ligne du Temps -->
+    <div id="timeline-container" class="timeline-container-wrapper mb-4">
+      <div class="timeline-header d-flex justify-content-between align-items-center px-3 mb-2">
+        <h5 class="mb-0 text-primary fw-bold"><i class="fa-solid fa-timeline me-2"></i>Ligne du temps de la séquence
+        </h5>
+        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#activityTypeModal">
+          <i class="fa-solid fa-plus-circle me-1"></i>Ajouter une activité
+        </button>
       </div>
-
-      <!-- SECTION DE CARTES VERSO FUSIONNÉES (AVEC Icônes FontAwesome) -->
-      <div class="row m-auto">
-        <div class="col"> </div>
-        <div class="col-auto">
-          <!-- Card 1 Back Merged -->
-          <div class="card card-acquisitionVerso cardBackCliquable d-none" id="card1Back">
-            <div class="row cardBackHead card-acquisition" id="card1BackHead">
-              <div class="col d-flex flex-row">
-                <img src="./images/acquisition.png" alt="" style="max-height:50px;" class="img-fluid center-block">
-                <h3 class="titre-carte"> Acquisition</h3>
-              </div>
-            </div>
-            <div class="row cardBackBody">
-              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
-                <ul>
-                  <li>Écouter l'enseignant, suivre des cours, des conférences</li>
-                  <li>Consulter des documents, articles</li>
-                  <li>Lire des ressources numériques, multimédia, des sites web</li>
-                  <li>Regarder des vidéos, des animations</li>
-                  <li>Suivre des démonstrations, master classes</li>
-                </ul>
-                <p class="basColonneAcquisition mx-2">Activités</p>
-              </div>
-              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
-                <strong class="text-acquisition">Ressources Moodle</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Fichier"><strong>Fichier <span
-                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Dossier"><strong>Dossier <span
-                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="URL"><strong>URL <span
-                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Etiquette"><strong>Etiquette <span
-                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Page">Page</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Livre">Livre</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Galerie d'images">Galerie
-                    d'images</button>
-                </p>
-                <hr class="hr-acquisition">
-                <strong class="text-acquisition">Activités Moodle (en consultation)</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Glossaire"><strong>Glossaire <span
-                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de
-                    données</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Leçon">Leçon</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Geogebra">Géogébra</button>
-                </p>
-                <hr class="hr-acquisition">
-                <strong class="text-acquisition">H5P</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Course Presentation"><strong>Course
-                      Presentation <span class="star-acquisition"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Dialog Cards"><strong>Dialog Cards
-                      <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Image Hotspots"><strong>Image Hotspots
-                      <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Image Slider">Image Slider</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Timeliner">Timeliner</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Virtual tour">Virtual tour</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
-                </p>
-                <hr class="hr-acquisition">
-                <strong class="text-acquisition">Outils externes</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="PeerTube, PodEduc"><strong>PeerTube,
-                      PodEduc <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Youtube"><strong>Youtube <span
-                        class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Classe Virtuelle"><strong>Classe
-                      virtuelle <span class="star-acquisition"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Annotation PDF">Annotation
-                    PDF</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
-                </p>
-                <p class="basColonneAcquisition">Outils Numériques</p>
-              </div>
-            </div>
-          </div>
-          <!-- Card 2 Back Merged -->
-          <div class="card card-collaborationVerso cardBackCliquable d-none" id="card2Back">
-            <div class="row cardBackHead card-collaboration" id="card2BackHead">
-              <div class="col d-flex flex-row">
-                <img src="./images/collaboration.png" alt="" style="max-height:50px;" class="img-fluid center-block">
-                <h3 class="titre-carte"> Collaboration</h3>
-              </div>
-            </div>
-            <div class="row cardBackBody">
-              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
-                <ul>
-                  <li>Projets en petits groupes</li>
-                  <li>Construction / élaboration d'une production commune</li>
-                  <li>Discussion autour des productions de tiers</li>
-                </ul>
-                <p class="basColonneCollaboration mx-2">Activités</p>
-              </div>
-              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
-                <strong class="text-collaboration">Activités Moodle</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Galerie d'images"><strong>Galerie
-                      d'images <span class="star-collaboration"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Glossaire"><strong>Glossaire <span
-                        class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Devoir (en groupe)"><strong>Devoir (en
-                      groupe) <span class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Tableau"><strong>Tableau <span
-                        class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de
-                    données</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Wiki">Wiki</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Atelier">Atelier</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Partage">Partage</button>
-                </p>
-                <hr class="hr-collaboration">
-                <strong class="text-collaboration">Outils externes</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Outils ENT (Pad...)"><strong>Outils
-                      ENT (Pad...) <span class="star-collaboration"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable"
-                    value="Carte mentale collaborative"><strong>Carte mentale collab. <span
-                        class="star-collaboration"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable"
-                    value="Tableau blanc collaboratif"><strong>Tableau blanc collab. <span class="star-collaboration"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Bureautique collaborative">Bureautique
-                    collaborative</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
-                </p>
-                <p class="basColonneCollaboration">Outils Numériques</p>
-              </div>
-            </div>
-          </div>
-          <!-- Card 3 Back Merged -->
-          <div class="card card-discussionVerso cardBackCliquable d-none" id="card3Back">
-            <div class="row cardBackHead card-discussion" id="card3BackHead">
-              <div class="col d-flex flex-row">
-                <img src="./images/discussion.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
-                <h3 class="titre-carte"> Discussion</h3>
-              </div>
-            </div>
-            <div class="row cardBackBody">
-              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
-                <ul>
-                  <li>Communication</li>
-                  <li>Groupes de discussion synchrones et asynchrones</li>
-                  <li>Discussion en classe ou lors d'un séminaire</li>
-                  <li>Remue-méninges, nuages de mots</li>
-                  <li>Commentaires</li>
-                </ul>
-                <p class="basColonneDiscussion mx-2">Activités</p>
-              </div>
-              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
-                <strong class="text-discussion">Activités Moodle</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Forum"><strong>Forum <span
-                        class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Chat"><strong>Chat <span
-                        class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Sticky notes"><strong>Sticky notes
-                      <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Nuage de mots"><strong>Nuage de mots
-                      <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable"
-                    value="Commentaire (galerie...)"><strong>Commentaire (galerie...) <span class="star-discussion"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                </p>
-                <hr class="hr-discussion">
-                <strong class="text-discussion">H5P</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Twitter user feed">Twitter user
-                    feed</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
-                </p>
-                <hr class="hr-discussion">
-                <strong class="text-discussion">Outils externes</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Classe virtuelle"><strong>Classe
-                      virtuelle <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Digistorm"><strong>La digitale :
-                      Digistorm <span class="star-discussion"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
-                </p>
-                <p class="basColonneDiscussion">Outils Numériques</p>
-              </div>
-            </div>
-          </div>
-          <!-- Card 4 Back Merged -->
-          <div class="card card-enqueteVerso cardBackCliquable d-none" id="card4Back">
-            <div class="row cardBackHead card-enquete" id="card4BackHead">
-              <div class="col d-flex flex-row">
-                <img src="./images/enquete.png" alt="" style="max-height:50px;" class="center-block">
-                <h3 class="titre-carte"> Enquête</h3>
-              </div>
-            </div>
-            <div class="row cardBackBody">
-              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
-                <ul>
-                  <li>Comparaison de textes</li>
-                  <li>Analyse des informations et idées</li>
-                  <li>Recherche et évaluation d'informations</li>
-                  <li>Collecte et analyse de données</li>
-                  <li>Observations (TP, terrain)</li>
-                  <li>Mise en relation des informations</li>
-                </ul>
-                <p class="basColonneEnquete mx-2">Activités</p>
-              </div>
-              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
-                <strong class="text-enquete">Ressources Moodle</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Fichier"><strong>Fichier <span
-                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Dossier"><strong>Dossier <span
-                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="URL"><strong>URL <span
-                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                </p>
-                <hr class="hr-enquete">
-                <strong class="text-enquete">Activités Moodle</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Sondage"><strong>Sondage <span
-                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Feedback"><strong>Feedback <span
-                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Questionnaire">Questionnaire</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Leçon">Leçon</button>
-                </p>
-                <hr class="hr-enquete">
-                <strong class="text-enquete">H5P</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Cornell notes"><strong>Cornell Notes
-                      <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
-                </p>
-                <hr class="hr-enquete">
-                <strong class="text-enquete">Outils externes</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="PeerTube, PodEduc"><strong>PeerTube,
-                      PodEduc <span class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Youtube"><strong>Youtube <span
-                        class="star-enquete"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Annotation PDF">Annotation
-                    PDF</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
-                </p>
-                <p class="basColonneEnquete">Outils Numériques</p>
-              </div>
-            </div>
-          </div>
-          <!-- Card 5 Back Merged -->
-          <div class="card card-pratiqueVerso cardBackCliquable d-none" id="card5Back">
-            <div class="row cardBackHead card-pratique" id="card5BackHead">
-              <div class="col d-flex flex-row">
-                <img src="./images/pratique.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
-                <h3 class="titre-carte"> Pratique - Entrainement</h3>
-              </div>
-            </div>
-            <div class="row cardBackBody">
-              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
-                <ul>
-                  <li>Exercices, tests formatifs</li>
-                  <li>Projets basés sur la pratique</li>
-                  <li>Laboratoires, sorties, jeux de rôles</li>
-                  <li>Etude de cas, simulations</li>
-                </ul>
-                <p class="basColonnePratique mx-2">Activités</p>
-              </div>
-              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
-                <strong class="text-pratique">Activités Moodle</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Test (formatif)"><strong>Test
-                      (formatif) <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Jeu"><strong>Jeu <span
-                        class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Paquetage Scorm"><strong>Paquetage
-                      Scorm <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Leçon">Leçon</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Géogebra">Geogebra</button>
-                </p>
-                <hr class="hr-pratique">
-                <strong class="text-pratique">H5P</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Question Set"><strong>Question Set
-                      <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Interactive Video"><strong>Interactive
-                      Video <span class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Flashcards"><strong>Flashcards <span
-                        class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Course presentation">Course
-                    Presentation</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Dictation">Dictation</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
-                </p>
-                <hr class="hr-pratique">
-                <strong class="text-pratique">Outils externes</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable"
-                    value="Digistorm (questionnaire)"><strong>Digistorm (questionnaire) <span class="star-pratique"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable"
-                    value="Exerciseur en ligne"><strong>Exerciseur en ligne <span class="star-pratique"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Simulateur"><strong>Simulateur <span
-                        class="star-pratique"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
-                </p>
-                <p class="basColonnePratique">Outils Numériques</p>
-              </div>
-            </div>
-          </div>
-          <!-- Card 6 Back Merged -->
-          <div class="card card-productionVerso cardBackCliquable d-none" id="card6Back">
-            <div class="row cardBackHead card-production" id="card6BackHead">
-              <div class="col d-flex flex-row">
-                <img src="./images/production.png" alt="" style="max-height:50px;" class=" img-fluid center-block">
-                <h3 class="titre-carte"> Production</h3>
-              </div>
-            </div>
-            <div class="row cardBackBody">
-              <div class="d-flex flex-column justify-content-between colonneBackGauche textVerso">
-                <ul>
-                  <li>Bilans, commentaires, compte-rendu</li>
-                  <li>Rapports, mémoires, maquettes</li>
-                  <li>Modèle (conception, dessins)</li>
-                  <li>Prestations (performance), vidéos</li>
-                </ul>
-                <p class="basColonneProduction mx-2">Activités</p>
-              </div>
-              <div class="d-flex flex-column justify-content-between colonneBackDroite textVerso">
-                <strong class="text-production">Activités Moodle</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Devoir"><strong>Devoir <span
-                        class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Base de données">Base de
-                    données</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Géogebra">Geogebra</button>
-                </p>
-                <hr class="hr-production">
-                <strong class="text-production">H5P</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable" value="Audio recorder"><strong>Audio recorder
-                      <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Documentation tool">Documentation
-                    tool</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Essay">Essay</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Structure strip">Structure
-                    strip</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre H5P">Autre H5P</button>
-                </p>
-                <hr class="hr-production">
-                <strong class="text-production">Outils externes</strong>
-                <p>
-                  <button type="button" class="btn textVerso btnCliquable"
-                    value="Classe virtuelle (oral)"><strong>Classe virtuelle (oral) <span class="star-production"><i
-                          class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Carte mentale"><strong>Carte mentale
-                      <span class="star-production"><i class="fa-solid fa-star"></i></span></strong></button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Editeur de code">Editeur de
-                    code</button>
-                  <button type="button" class="btn textVerso btnCliquable" value="Autre"><strong>Autre</strong></button>
-                </p>
-                <p class="basColonneProduction">Outils Numériques</p>
-              </div>
-            </div>
-          </div>
+      <div id="timeline" class="timeline-content d-flex align-items-center p-3">
+        <!-- Les éléments de la timeline seront générés ici -->
+        <div class="timeline-empty-msg text-muted mx-auto">
+          Cliquer sur "Ajouter une activité" pour commencer votre scénario.
         </div>
-        <div class="col"> </div>
       </div>
     </div>
-
-
 
     <!-- Endroit où les cards peuvent être déplacées -->
 
     <table class="mt-2 p-0 w-100 table-stripped" id="tableau">
 
       <colgroup>
-        <col style="width: 3%;">
-        <col style="width: 15%;">
-        <col style="width: 20%;">
-        <col style="width: 10%;">
-        <col style="width: 20%;">
-        <col style="width: 5%;">
-        <col style="width: 12%;">
-        <col style="width: 10%;">
-        <col style="width: 5%;">
+        <col style="width: 3%;"> <!-- Actions -->
+        <col style="width: 11%;"> <!-- Type d'Apprentissage -->
+        <col style="width: 16%;"> <!-- Objectif(s) -->
+        <col style="width: 10%;"> <!-- Outil -->
+        <col style="width: 20%;"> <!-- Consignes -->
+        <col style="width: 5%;"> <!-- Durée -->
+        <col style="width: 11%;"> <!-- Modalité -->
+        <col style="width: 11%;"> <!-- Évaluation -->
+        <col style="width: 13%;"> <!-- Ressources -->
       </colgroup>
 
       <thead class="thead-inverse text-center">
@@ -789,37 +332,46 @@
       </thead>
 
       <tbody id="dropzone" class="bordure">
-        <tr id="ligne-accueil">
-          <td colspan="9" class="text-center text-muted p-5">
-            <i class="fa-solid fa-arrow-pointer fa-2x mb-3"></i>
-            <h5>Glissez-déposez un type d'apprentissage dans la zone de dépôt<br /> ou cliquez sur "Choisir une
-              activité" sur une carte pour commencer.</h5>
-          </td>
-        </tr>
-        <tr style="height:80px;">
-          <td></td>
-          <td class="dropzone surlignable"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+        <!-- Les activités seront générées ici dynamiquement -->
       </tbody>
 
     </table>
-    <!-- Graphs -->
-    <div class="row">
-      <div class="col-sm-3">
-        <canvas id="graphPresentielDistanciel" class="d-none" width="100" height="100"></canvas>
+    <!-- Graphs Card -->
+    <div class="card shadow-sm mb-4" id="charts-card">
+      <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center py-2">
+        <h6 class="mb-0">
+          <i class="fa-solid fa-chart-pie me-2"></i>Analyses du scénario
+        </h6>
+        <button type="button" class="btn btn-sm btn-light" id="toggle-charts">
+          <i class="fa-solid fa-chevron-up"></i>
+        </button>
       </div>
-      <div class="col-sm-6 align-top">
-        <canvas id="radar" width="100" height="100" class="d-none"></canvas>
-      </div>
-      <div class="col-sm-3">
-        <canvas id="graphIndividuelGroupe" class="d-none" width="100" height="100"></canvas>
+      <div class="card-body p-4" id="charts-container">
+        <div class="row align-items-center">
+          <!-- Histogramme 1 -->
+          <div class="col-lg-3 col-md-4 text-center">
+            <h6 class="small fw-bold text-muted mb-3">Modes d'enseignement</h6>
+            <div class="chart-wrapper">
+              <canvas id="graphPresentielDistanciel"></canvas>
+            </div>
+          </div>
+
+          <!-- Radar centrally placed -->
+          <div class="col-lg-6 col-md-4 text-center">
+            <h6 class="small fw-bold text-muted mb-2">Répartition pédagogique</h6>
+            <div class="radar-wrapper">
+              <canvas id="radar"></canvas>
+            </div>
+          </div>
+
+          <!-- Histogramme 2 -->
+          <div class="col-lg-3 col-md-4 text-center">
+            <h6 class="small fw-bold text-muted mb-3">Groupements</h6>
+            <div class="chart-wrapper">
+              <canvas id="graphIndividuelGroupe"></canvas>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -889,7 +441,163 @@
           </div>
         </div>
       </div>
+    </div> <!-- Fin du container-fluid principal de la page -->
+
+    <!-- Modal de sélection du type d'activité -->
+    <div class="modal fade" id="activityTypeModal" tabindex="-1" aria-labelledby="activityTypeModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="activityTypeModalLabel"><i class="fa-solid fa-plus-circle me-2"></i>Choisir un
+              type d'apprentissage</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-4">Sélectionnez le type d'activité que vous souhaitez ajouter à votre séquence :</p>
+            <div class="row g-3">
+              <!-- Acquisition -->
+              <div class="col-md-4">
+                <div class="card h-100 activity-type-card card-acquisition" onclick="selectionnerTypeActivite(1)"
+                  data-bs-dismiss="modal">
+                  <div class="card-body text-center p-3">
+                    <h5 class="text-white mb-2">Acquisition</h5>
+                    <p class="text-white small mb-0">L’apprenant écoute un cours magistral, un podcast ; lit un livre
+                      ; regarde des démonstrations/vidéos.</p>
+                    <input type="text" class="form-control form-control-sm mt-3 keyword-modal-input"
+                      placeholder="Note / Mot-clé..." onclick="event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+              <!-- Collaboration -->
+              <div class="col-md-4">
+                <div class="card h-100 activity-type-card card-collaboration" onclick="selectionnerTypeActivite(2)"
+                  data-bs-dismiss="modal">
+                  <div class="card-body text-center p-3">
+                    <h5 class="text-white mb-2">Collaboration</h5>
+                    <p class="text-white small mb-0">Activités en équipe. Participer activement à la construction
+                      collective de la connaissance.</p>
+                    <input type="text" class="form-control form-control-sm mt-3 keyword-modal-input"
+                      placeholder="Note / Mot-clé..." onclick="event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+              <!-- Discussion -->
+              <div class="col-md-4">
+                <div class="card h-100 activity-type-card card-discussion" onclick="selectionnerTypeActivite(3)"
+                  data-bs-dismiss="modal">
+                  <div class="card-body text-center p-3">
+                    <h5 class="text-white mb-2">Discussion</h5>
+                    <p class="text-white small mb-0">Apprendre en formulant ses idées et questions, en écoutant et
+                      répondant aux arguments de tiers.</p>
+                    <input type="text" class="form-control form-control-sm mt-3 keyword-modal-input"
+                      placeholder="Note / Mot-clé..." onclick="event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+              <!-- Enquête -->
+              <div class="col-md-4">
+                <div class="card h-100 activity-type-card card-enquete" onclick="selectionnerTypeActivite(4)"
+                  data-bs-dismiss="modal">
+                  <div class="card-body text-center p-3">
+                    <h5 class="text-white mb-2">Enquête</h5>
+                    <p class="text-white small mb-0">Explorer, comparer et critiquer les ressources qui renvoient aux
+                      concepts et idées enseignés.</p>
+                    <input type="text" class="form-control form-control-sm mt-3 keyword-modal-input"
+                      placeholder="Note / Mot-clé..." onclick="event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+              <!-- Pratique -->
+              <div class="col-md-4">
+                <div class="card h-100 activity-type-card card-pratique" onclick="selectionnerTypeActivite(5)"
+                  data-bs-dismiss="modal">
+                  <div class="card-body text-center p-3">
+                    <h5 class="text-white mb-2">Pratique</h5>
+                    <p class="text-white small mb-0">S’entraîner et utiliser la rétroaction (enseignant, pairs ou
+                      activité elle-même) pour progresser.</p>
+                    <input type="text" class="form-control form-control-sm mt-3 keyword-modal-input"
+                      placeholder="Note / Mot-clé..." onclick="event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+              <!-- Production -->
+              <div class="col-md-4">
+                <div class="card h-100 activity-type-card card-production" onclick="selectionnerTypeActivite(6)"
+                  data-bs-dismiss="modal">
+                  <div class="card-body text-center p-3">
+                    <h5 class="text-white mb-2">Production</h5>
+                    <p class="text-white small mb-0">Consolider ses acquis par une production sur des supports variés
+                      (bilans, rapports, créations).</p>
+                    <input type="text" class="form-control form-control-sm mt-3 keyword-modal-input"
+                      placeholder="Note / Mot-clé..." onclick="event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Modal de sélection de l'outil -->
+    <div class="modal fade" id="toolSelectionModal" tabindex="-1" aria-labelledby="toolSelectionModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div id="tool-modal-header" class="modal-header text-white">
+            <h5 class="modal-title" id="toolSelectionModalLabel"><i class="fa-solid fa-tools me-2"></i>Choisir un outil
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="tool-selection-container">
+              <div class="row mb-3">
+                <div class="col-12">
+                  <h6 class="fw-bold border-bottom pb-2"><i class="fa-solid fa-graduation-cap me-2"></i>Activités &
+                    Ressources Moodle</h6>
+                  <div id="moodle-tools" class="d-flex flex-wrap gap-2 pt-2"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <h6 class="fw-bold border-bottom pb-2"><i class="fa-solid fa-cubes me-2"></i>Contenus H5P</h6>
+                  <div id="h5p-tools" class="d-flex flex-wrap gap-2 pt-2"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <h6 class="fw-bold border-bottom pb-2"><i class="fa-brands fa-microsoft me-2"></i>Microsoft 365 &
+                    Teams</h6>
+                  <div id="microsoft-tools" class="d-flex flex-wrap gap-2 pt-2"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <h6 class="fw-bold border-bottom pb-2"><i class="fa-brands fa-google me-2"></i>Google Classroom</h6>
+                  <div id="google-tools" class="d-flex flex-wrap gap-2 pt-2"></div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <h6 class="fw-bold border-bottom pb-2"><i class="fa-solid fa-globe me-2"></i>Outils Externes</h6>
+                  <div id="externes-tools" class="d-flex flex-wrap gap-2 pt-2"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <button type="button" class="btn btn-outline-secondary w-100"
+                    onclick="window.toolSelector.selectTool('Autre')">
+                    <i class="fa-solid fa-plus me-2"></i>Autre (Préciser...)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </body>
 <!-- Appel des fonctions javascript-->
 <!-- Scripts IA -->
@@ -902,12 +610,14 @@
 <script type="text/javascript" src="scripts/ui/generatorModal.js"></script>
 <script type="text/javascript" src="scripts/ui/checklistModal.js"></script>
 <script type="text/javascript" src="scripts/ui/sequenceInfo.js"></script>
+<script type="text/javascript" src="scripts/ui/timeline.js"></script>
+<script type="text/javascript" src="scripts/ui/toolSelector.js"></script>
+<script type="text/javascript" src="scripts/ui/chartsManager.js"></script>
 
 <!-- Scripts existants -->
 <script type="text/javascript" src="scripts/TypeDeCartes.js"></script>
 <script type="text/javascript" src="scripts/DragAndDrop.js"></script>
 <script type="text/javascript" src="scripts/Graphes.js"></script>
-<script type="text/javascript" src="scripts/ExportExcel.js"></script>
 <script type="text/javascript" src="scripts/importExport.js"></script>
 <script type="text/javascript" src="scripts/autoResizeTextarea.js"></script>
 

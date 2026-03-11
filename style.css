@@ -258,6 +258,22 @@
 
 .titre-carte {
   color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.95rem;
+  margin: 5px 0;
+}
+
+/* Fusion visuelle des deux premières colonnes pour l'aspect "carte" */
+.ligne td:first-child {
+  border-right: none !important;
+  padding-right: 0 !important;
+}
+
+.ligne td:nth-child(2) {
+  border-left: none !important;
+  padding-left: 0 !important;
 }
 
 .cardDepot {
@@ -562,4 +578,388 @@ tr.drag-over-indicator {
 #tableau td,
 #dropzone td {
   vertical-align: top;
+}
+
+/* ============================================
+   TIMELINE STYLES
+   ============================================ */
+.timeline-container-wrapper {
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-top: 1rem;
+}
+
+.timeline-header {
+  border-bottom: 1px solid #dee2e6;
+  padding: 10px 15px;
+}
+
+.timeline-content {
+  min-height: 100px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  display: flex;
+  align-items: center;
+  padding: 25px 15px;
+}
+
+.timeline-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  max-width: 180px;
+  padding: 15px 10px;
+  margin: 0 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border: 3px solid transparent;
+  flex-shrink: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.timeline-item.active {
+  border-color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.05);
+  transform: scale(1.05);
+}
+
+.timeline-item img {
+  height: 45px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.timeline-item .activity-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-item .activity-index {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #343a40;
+  color: white;
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* Connecteurs entre les items */
+.timeline-item:not(:last-child)::after {
+  content: '\f061';
+  /* FontAwesome arrow-right */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #adb5bd;
+  font-size: 1.2rem;
+}
+
+.timeline-empty-msg {
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #6c757d;
+  padding: 40px;
+}
+
+/* Modale de sélection */
+.activity-type-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  overflow: hidden;
+}
+
+.activity-type-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.activity-type-card .card-body {
+  transition: background-color 0.3s ease;
+}
+
+.activity-type-card:hover .card-body {
+  filter: brightness(1.1);
+}
+
+.activity-type-card small {
+  display: block;
+  opacity: 0.9;
+}
+
+.tool-cell {
+  transition: background-color 0.2s;
+  padding: 10px !important;
+  vertical-align: middle !important;
+}
+
+.tool-cell:hover {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0d6efd !important;
+}
+
+#tool-selection-container .btn {
+  margin-bottom: 5px;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+/* Styles pour les boutons d'insertion dans la timeline */
+/* Cachés par défaut, apparaissent uniquement au survol de la timeline */
+.timeline-insert-btn {
+  width: 28px;
+  height: 28px;
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 5;
+  opacity: 0;
+  margin: 0 -14px;
+  flex-shrink: 0;
+}
+
+/* Apparition au survol de la zone timeline parent */
+.timeline-content:hover .timeline-insert-btn {
+  opacity: 0.35;
+}
+
+.timeline-insert-btn:hover {
+  opacity: 1 !important;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.6);
+}
+
+.timeline-insert-btn i {
+  font-size: 0.65rem;
+}
+
+/* Feedback visuel pour le Drag & Drop de la timeline */
+.timeline-item.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+  cursor: grabbing;
+}
+
+.timeline-item.drag-over {
+  border-left: 4px solid #0d6efd;
+  padding-left: 10px;
+}
+
+/* Effet de flash lors du scroll vers une ligne */
+.highlight-flash {
+  animation: flash-bg 2s ease-out;
+}
+
+@keyframes flash-bg {
+  0% {
+    background-color: rgba(13, 110, 253, 0.2);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Style pour les barres de défilement (Scrollbar) */
+.timeline-content::-webkit-scrollbar {
+  height: 8px;
+}
+
+.timeline-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.timeline-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.timeline-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* --- Styles pour l'insertion dans le tableau --- */
+/* Ligne fantôme invisible qui apparaît au survol de la ligne adjacente */
+.row-insert-container td {
+  height: 6px;
+  padding: 0 !important;
+  border: none !important;
+  position: relative;
+  background: transparent;
+}
+
+.row-insert-container td::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(13, 110, 253, 0.4) 15%, rgba(13, 110, 253, 0.4) 85%, transparent);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  z-index: 5;
+}
+
+.row-insert-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 24px;
+  height: 24px;
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  border: none;
+  z-index: 20;
+}
+
+/* Affichage : survol de la ligne précédente, de l'entête (pour le 1er bouton) OU survol direct */
+tr.ligne:hover+.row-insert-container .row-insert-btn,
+thead:hover+tbody .row-insert-container:first-child .row-insert-btn,
+.row-insert-container:hover .row-insert-btn,
+tr.ligne:hover+.row-insert-container td::before,
+thead:hover+tbody .row-insert-container:first-child td::before,
+.row-insert-container:hover td::before {
+  opacity: 1;
+}
+
+tr.ligne:hover+.row-insert-container .row-insert-btn,
+thead:hover+tbody .row-insert-container:first-child .row-insert-btn,
+.row-insert-container:hover .row-insert-btn {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.row-insert-btn:hover {
+  background-color: #0b5ed7;
+  transform: translate(-50%, -50%) scale(1.2) !important;
+}
+
+.row-insert-btn i {
+  font-size: 0.6rem;
+  pointer-events: none;
+}
+
+/* Handle de drag amélioré */
+.handle {
+  cursor: grab;
+  color: #fff;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  display: inline-block;
+}
+
+.handle:hover {
+  opacity: 1;
+}
+
+/* Style pour le texte de rappel/mot-clé dans le tableau */
+.keyword-input {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 2px 5px;
+  border-radius: 4px;
+  width: 90%;
+  margin: 4px auto 0 auto;
+  display: block;
+}
+
+.keyword-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.keyword-input:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #fff;
+  outline: none;
+  box-shadow: none;
+  color: #fff;
+}
+
+.handle:active,
+tr.dragging .handle {
+  cursor: grabbing;
+}
+
+/* --- Styles pour les Graphiques --- */
+#charts-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 200px;
+  width: 100%;
+}
+
+.radar-wrapper {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .radar-wrapper {
+    height: 250px;
+    margin-bottom: 2rem;
+  }
+}
+
+.actions-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  min-height: 80px;
 }
