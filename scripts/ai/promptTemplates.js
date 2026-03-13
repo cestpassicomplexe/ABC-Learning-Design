@@ -84,6 +84,9 @@ ${params.domaine || 'Non spécifié'}
 **Modalités :**
 ${params.modalites || 'Mixte (présentiel/distanciel)'}
 
+**Outils privilégiés :**
+${params.outils || 'Laisser l\'IA choisir'}
+
 **Contraintes spécifiques :**
 ${params.contraintes || 'Aucune'}
 

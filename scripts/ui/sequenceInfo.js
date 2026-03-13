@@ -24,13 +24,8 @@ class SequenceInfo {
      * Initialiser les événements
      */
     init() {
-        // Auto-save sur changement
-        Object.values(this.fields).forEach(field => {
-            if (field && field.id !== 'sequence-duration') {
-                field.addEventListener('change', () => this.save());
-                field.addEventListener('input', () => this.save());
-            }
-        });
+        // Les écouteurs pour l'auto-save sont maintenant gérés centralement dans importExport.js
+        // sur l'ensemble du conteneur #sequence-info-card
 
         // Compteur de caractères pour le résumé
         if (this.fields.summary) {
@@ -42,8 +37,7 @@ class SequenceInfo {
             this.toggleBtn.addEventListener('click', () => this.toggle());
         }
 
-        // Charger les données sauvegardées
-        this.load();
+        // L'affichage initial est géré par la restauration globale du scénario dans importExport.js
 
         // Mettre à jour la durée au chargement
         this.updateDuration();
@@ -79,15 +73,22 @@ class SequenceInfo {
     }
 
     /**
-     * Basculer l'affichage du tableau
+     * Basculer l'affichage du volet de détails
      */
     toggle() {
+        const icon = this.toggleBtn.querySelector('i');
         if (this.cardBody.style.display === 'none') {
             this.cardBody.style.display = 'block';
-            this.toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
+            if (icon) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
         } else {
             this.cardBody.style.display = 'none';
-            this.toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+            if (icon) {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
         }
     }
 
@@ -161,28 +162,8 @@ class SequenceInfo {
         }
     }
 
-    /**
-     * Sauvegarder dans localStorage
-     */
-    save() {
-        const data = this.getData();
-        localStorage.setItem('abc-sequence-info', JSON.stringify(data));
-    }
-
-    /**
-     * Charger depuis localStorage
-     */
-    load() {
-        const saved = localStorage.getItem('abc-sequence-info');
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                this.setData(data);
-            } catch (error) {
-                console.error('Erreur chargement sequence info:', error);
-            }
-        }
-    }
+    // Les méthodes save() et load() ont été retirées au profit d'une sauvegarde
+    // globale centralisée dans importExport.js
 
     /**
      * Réinitialiser les données

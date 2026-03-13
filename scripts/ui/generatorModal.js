@@ -109,6 +109,46 @@ class GeneratorModal {
                   <div class="form-text">Sélectionnez une ou plusieurs modalités (Présentiel et/ou Distanciel)</div>
                 </div>
 
+                <!-- Outils Préférés -->
+                <div class="mb-3">
+                  <label class="form-label fw-bold">
+                    <i class="fa-solid fa-tools me-2"></i>Outils privilégiés pour la séquence
+                  </label>
+                  <div class="row">
+                    <div class="col-md-4 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input outil-opt" type="checkbox" id="toolMoodle" value="Moodle" checked>
+                        <label class="form-check-label" for="toolMoodle">Moodle</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input outil-opt" type="checkbox" id="toolH5P" value="H5P" checked>
+                        <label class="form-check-label" for="toolH5P">H5P</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input outil-opt" type="checkbox" id="toolTeams" value="Microsoft Teams">
+                        <label class="form-check-label" for="toolTeams">Teams / Microsoft</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input outil-opt" type="checkbox" id="toolGoogle" value="Google Workspace">
+                        <label class="form-check-label" for="toolGoogle">Google Workspace</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input outil-opt" type="checkbox" id="toolAucune" value="Aucun spécifique">
+                        <label class="form-check-label text-muted" for="toolAucune">Aucun (IA par défaut)</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-text">L'IA orientera la section "Outils" vers ces plateformes.</div>
+                </div>
+
                 <!-- Contraintes -->
                 <div class="mb-3">
                   <label for="contraintes" class="form-label fw-bold">
@@ -284,12 +324,18 @@ class GeneratorModal {
     if (document.getElementById('modalitePresentiel').checked) modalites.push('Présentiel');
     if (document.getElementById('modaliteDistanciel').checked) modalites.push('Distanciel');
 
+    const outilsPrefferes = [];
+    document.querySelectorAll('.outil-opt:checked').forEach(cb => {
+      outilsPrefferes.push(cb.value);
+    });
+
     return {
       objectifs: document.getElementById('objectifs').value,
       niveau: document.getElementById('niveau').value,
       duree: parseInt(document.getElementById('duree').value),
       domaine: document.getElementById('domaine').value,
       modalites: modalites.join(', ') || 'Mixte',
+      outils: outilsPrefferes.join(', ') || 'Aucun spécifique',
       contraintes: document.getElementById('contraintes').value
     };
   }
@@ -393,20 +439,33 @@ class GeneratorModal {
   /**
  * Ajouter la séquence au scénario
  */
-  handleAddToScenario() {
+  async handleAddToScenario() {
     if (!this.currentSequence || !this.currentSequence.activites) return;
 
     try {
-      // Nettoyer les placeholders initiaux
+      const dropzoneTbody = document.getElementById('dropzone');
+      if (!dropzoneTbody) {
+        alert('Erreur : Zone de dépôt introuvable');
+        return;
+      }
+
+      const hasExistingData = dropzoneTbody.rows.length > 0;
+      let mode = 'append'; // Par défaut ajout
+
+      if (hasExistingData) {
+        mode = await askUserChoice();
+        if (mode === 'cancel') return;
+      }
+
+      // Nettoyer les placeholders initiaux si présents
       const ligneAccueil = document.getElementById('ligne-accueil');
       if (ligneAccueil) {
         ligneAccueil.remove();
       }
 
-      const dropzoneTbody = document.getElementById('dropzone');
-      if (!dropzoneTbody) {
-        alert('Erreur : Zone de dépôt introuvable');
-        return;
+      // Vider le scénario si mode remplacement
+      if (mode === 'replace') {
+        dropzoneTbody.innerHTML = '';
       }
 
       // Mapper les types ABC LD vers les numéros de cartes
@@ -427,30 +486,16 @@ class GeneratorModal {
           return;
         }
 
-        // Trouver ou créer une ligne vide
-        let nouvelleLigne;
-        const ligneVideExistante = dropzoneTbody.querySelector('.dropzone');
-
-        if (ligneVideExistante) {
-          nouvelleLigne = ligneVideExistante.closest('tr');
-        } else {
-          nouvelleLigne = dropzoneTbody.insertRow();
-        }
+        // Insérer une nouvelle ligne à la fin du tableau
+        const nouvelleLigne = dropzoneTbody.insertRow(dropzoneTbody.rows.length);
 
         // Créer le contenu de la ligne
         this.creerLigneFromActivite(nouvelleLigne, cardNumber, activite);
-
-        // Ajouter une ligne vide pour la prochaine activité
-        if (index < this.currentSequence.activites.length - 1) {
-          if (typeof window.ajouterLigneVidePourDepot === 'function') {
-            window.ajouterLigneVidePourDepot(dropzoneTbody);
-          }
-        }
       });
 
-      // Ajouter une dernière ligne vide
-      if (typeof window.ajouterLigneVidePourDepot === 'function') {
-        window.ajouterLigneVidePourDepot(dropzoneTbody);
+      // Recréer les boutons d'insertion si le support existe
+      if (typeof window.refreshTableInsertionButtons === 'function') {
+        window.refreshTableInsertionButtons();
       }
 
       // Mettre à jour les graphiques
@@ -459,7 +504,11 @@ class GeneratorModal {
       }
 
       // Afficher un message de succès
-      alert(`✅ ${this.currentSequence.activites.length} activité(s) ajoutée(s) au scénario avec succès !`);
+      const msg = mode === 'replace' ? 
+        `✅ Scénario remplacé par la nouvelle séquence (${this.currentSequence.activites.length} activités).` :
+        `✅ ${this.currentSequence.activites.length} activité(s) ajoutée(s) à la suite du scénario existant !`;
+      
+      alert(msg);
 
       // Fermer le modal
       this.modal.hide();

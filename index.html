@@ -65,12 +65,16 @@
         Sauvegarder <i class="fa-solid fa-floppy-disk"></i>
       </button>
 
-      <!-- 2. Bouton Charger -->
-      <div class="me-2">
-        <input type="file" id="fichierImport" accept=".json" class="d-none">
-        <button type="button" id="boutonImporter" class="btn btn-secondary">
+      <!-- 2. Menu déroulant pour le Chargement -->
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           Charger <i class="fa-solid fa-file-arrow-up"></i>
         </button>
+        <ul class="dropdown-menu">
+           <li><a class="dropdown-item" href="#" id="boutonImporter"><i class="fa-solid fa-file-code me-2"></i>Depuis un fichier (.json)</a></li>
+           <li><a class="dropdown-item" href="#" id="boutonImporterTexte" data-bs-toggle="modal" data-bs-target="#importTextModal"><i class="fa-solid fa-paste me-2"></i>Depuis le texte / presse-papiers</a></li>
+        </ul>
+        <input type="file" id="fichierImport" accept=".json" class="d-none">
       </div>
 
       <!-- 3. Menu déroulant pour les Exports et la Copie -->
@@ -126,8 +130,8 @@
           <li>
             <hr class="dropdown-divider">
           </li>
-          <li><a class="dropdown-item" href="scripts/ai/prompt_system.md" target="_blank"><i
-                class="fa-solid fa-code me-2"></i>Voir le Prompt Système</a></li>
+          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#manualPromptModal"><i
+                class="fa-solid fa-code me-2"></i>Générer un Prompt Manuel</a></li>
         </ul>
       </div>
     </div>
@@ -188,97 +192,146 @@
           <!-- Modal Body -->
           <div class="modal-body">
             <div class="container-fluid">
-              <div class="row">
-                <div class="col-sm-2"><img src="./images/prof.png" style="height:120px" alt="Illustration professeur">
+              <div class="row align-items-center mb-4">
+                <div class="col-sm-2 text-center">
+                  <img src="./images/prof.png" style="height:120px" alt="Illustration professeur">
                 </div>
                 <div class="col-sm-10">
-                  <h5><em>Cet outil vous aide à organiser les tâches d'apprentissages que vous souhaitez mettre en
-                      oeuvre ("Qu'est ce que les élèves vont faire ?"). <br /> Sélectionnez d'abord le type de tâche ;
-                      vous pourrez ensuite identifer l'activité Moodle la plus adaptée.</em></h5>
+                  <h5 class="fw-bold">Le modèle ABC Learning Design</h5>
+                  <p>
+                    <em>Cet outil est basé sur la taxonomie <strong>ABC Learning Design</strong> développée par Diana Laurillard (UCL).
+                    Il vous aide à structurer votre cours en vous concentrant sur les activités d'apprentissage réelles de vos étudiants.</em>
+                  </p>
                 </div>
               </div>
-              <img src="./images/notice_ABC.png" style="width:100%" alt="">
+
+              <!-- Conception Manuelle -->
+              <h5 class="fw-bold text-primary border-bottom pb-2 mt-4"><i class="fa-solid fa-hand me-2"></i>Conception Manuelle</h5>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <p class="small text-muted">
+                    La méthode se base sur 6 types d'apprentissage (Acquisition, Enquête, Discussion, Collaboration, Pratique, Production). 
+                    Cliquez sur <strong>"Ajouter une activité"</strong> dans la ligne du temps pour organiser votre séquence de cours, puis personnalisez votre séquence à l'aide du tableau de scénarisation en y renseignant les consignes, outils, durées, etc.<br>
+                    <strong>Le conseil pédagogique :</strong> Variez les types d'apprentissage pour éviter la monotonie et engagez les apprenants !
+                  </p>
+                </div>
+              </div>
+
+              <!-- Conception avec IA -->
+              <h5 class="fw-bold text-success border-bottom pb-2 mt-4"><i class="fa-solid fa-robot me-2"></i>Conception avec l'Assistant IA</h5>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <h6 class="fw-bold text-secondary"><i class="fa-solid fa-key me-2"></i>Génération Intégrée (via Clé API)</h6>
+                  <p class="small text-muted">
+                    Dans le menu <em>"Assistant IA > Configuration IA"</em>, vous pouvez pour le moment renseigner uniquement une clé API <strong>Gemini</strong>.
+                    Une fois configurée, allez dans <em>"Générer une séquence"</em>. Précisez vos objectifs, le niveau, la durée, et les plateformes privilégiées (Moodle, Teams...).
+                    L'IA va automatiquement générer et prévisualiser une séquence équilibrée que vous pourrez insérer d'un simple clic au tableau.
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="fw-bold text-secondary"><i class="fa-solid fa-copy me-2"></i>Génération Externe (Copié-collé)</h6>
+                  <p class="small text-muted">
+                    Si vous n'avez pas de clé API ou utilisez une autre IA, allez dans <em>"Assistant IA > Générer un Prompt Manuel"</em>. Ce menu va préparer pour vous un texte ultra-précis ("Prompt") basé sur vos contraintes.<br>
+                    <strong>Comment faire ?</strong> Copiez ce texte généré, collez-le dans ChatGPT, Claude ou l'IA de votre choix. L'IA va vous générer en réponse un bloc de code au format `.json`.
+                    Copiez ce JSON, revenez sur cet outil, et utilisez <em>"Charger > Depuis le texte / presse-papiers"</em> pour importer instantanément le scénario généré.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Sauvegarde et Export -->
+              <h5 class="fw-bold text-warning border-bottom pb-2 mt-4"><i class="fa-solid fa-share-nodes me-2"></i>Sauvegarde et Exports</h5>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <p class="small text-muted">
+                    N'oubliez pas d'enregistrer votre travail en cliquant sur <strong>Sauvegarder</strong>. Vous pourrez aussi exporter votre tableau sous différents formats (Word, Excel, Markdown, ou HTML).<br><br>
+                    <strong class="text-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i>Attention :</strong> L'import (Charger) ne fonctionne <strong>qu'au format JSON</strong> original. Il n'est pas possible de réintégrer un scénario que vous auriez exporté puis modifié au format Excel, Word ou HTML.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tableau d'informations de la séquence -->
+    <!-- Section : Informations de la séquence (version allégée) -->
     <div class="card shadow-sm mb-3" id="sequence-info-card">
-      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">
-          <i class="fa-solid fa-info-circle me-2"></i>Informations de la Séquence
-        </h5>
-        <button type="button" class="btn btn-sm btn-light" id="toggle-sequence-info">
-          <i class="fa-solid fa-chevron-up"></i>
-        </button>
+      <div class="card-header bg-white border-bottom-0 py-2">
+        <div class="row align-items-center g-2">
+          <div class="col-auto">
+            <span class="text-primary fw-bold me-2"><i class="fa-solid fa-info-circle"></i></span>
+          </div>
+          <!-- Nom de la séquence -->
+          <div class="col-md-5">
+            <input type="text" class="form-control form-control-sm border-0 bg-light fw-bold" id="sequence-name"
+              placeholder="Nom de la séquence pédagogique...">
+          </div>
+          <!-- Niveau -->
+          <div class="col-md-2">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text bg-transparent border-0 text-muted"><i class="fa-solid fa-graduation-cap"></i></span>
+              <select class="form-select form-select-sm border-0 bg-light" id="sequence-level">
+                <option value="">Niveau...</option>
+                <option value="Débutant">Débutant</option>
+                <option value="Intermédiaire">Intermédiaire</option>
+                <option value="Avancé">Avancé</option>
+                <option value="Expert">Expert</option>
+              </select>
+            </div>
+          </div>
+          <!-- Durée -->
+          <div class="col-md-2">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text bg-transparent border-0 text-muted"><i class="fa-solid fa-clock"></i></span>
+              <input type="text" class="form-control form-control-sm border-0 bg-light text-center" id="sequence-duration" value="0 min" readonly title="Durée calculée automatiquement">
+            </div>
+          </div>
+          <!-- Bouton de déploiement -->
+          <div class="col text-end">
+            <button type="button" class="btn btn-sm btn-outline-secondary border-0" id="toggle-sequence-info" title="Plus d'informations">
+              <i class="fa-solid fa-chevron-down"></i> <small>Détails</small>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="card-body" id="sequence-info-body">
+      
+      <div class="card-body border-top" id="sequence-info-body" style="display: none;">
         <!-- Ma séquence en 140 caractères -->
         <div class="row">
-          <div class="col-md-12 mb-2">
-            <label class="form-label fw-bold d-flex justify-content-between">
-              <span><i class="fa-solid fa-comment-dots me-1"></i>Ma séquence en 140 caractères</span>
-              <small class="text-muted"><span id="sequence-summary-count">0</span> / 140</small>
+          <div class="col-md-12 mb-3">
+            <label class="form-label small fw-bold text-muted d-flex justify-content-between">
+              <span><i class="fa-solid fa-comment-dots me-1"></i>Ma séquence en 140 caractères (résumé)</span>
+              <small><span id="sequence-summary-count">0</span> / 140</small>
             </label>
-            <input type="text" class="form-control" id="sequence-summary" maxlength="140"
-              placeholder="Résumez votre séquence en une phrase courte (utile pour le partage ou l'export)">
+            <input type="text" class="form-control form-control-sm" id="sequence-summary" maxlength="140"
+              placeholder="Résumez votre séquence en une phrase courte...">
           </div>
         </div>
+        
         <div class="row">
-          <div class="col-md-6 mb-2">
-            <label class="form-label fw-bold">
-              <i class="fa-solid fa-heading me-1"></i>Nom de la séquence
-            </label>
-            <input type="text" class="form-control" id="sequence-name"
-              placeholder="Ex: Introduction à la programmation Python">
-          </div>
-          <div class="col-md-3 mb-2">
-            <label class="form-label fw-bold">
-              <i class="fa-solid fa-graduation-cap me-1"></i>Niveau
-            </label>
-            <select class="form-select" id="sequence-level">
-              <option value="">Non spécifié</option>
-              <option value="Débutant">Débutant</option>
-              <option value="Intermédiaire">Intermédiaire</option>
-              <option value="Avancé">Avancé</option>
-              <option value="Expert">Expert</option>
-            </select>
-          </div>
-          <div class="col-md-3 mb-2">
-            <label class="form-label fw-bold">
-              <i class="fa-solid fa-clock me-1"></i>Durée totale
-              <i class="fa-solid fa-circle-info ms-1 text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
-                title="Cette durée est calculée automatiquement en additionnant les durées de toutes les activités ajoutées ci-dessous."
-                style="font-size: 0.9em; cursor: help;"></i>
-            </label>
-            <input type="text" class="form-control" id="sequence-duration" value="0 min" readonly>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 mb-2">
-            <label class="form-label fw-bold">
+          <div class="col-md-12 mb-3">
+            <label class="form-label small fw-bold text-muted">
               <i class="fa-solid fa-bullseye me-1"></i>Objectifs d'apprentissage
             </label>
-            <textarea class="form-control" rows="3" id="sequence-objectives"
-              placeholder="À la fin de cette séquence, les apprenants seront capables de...&#10;- Expliquer les concepts clés&#10;- Appliquer les techniques apprises&#10;- Analyser des situations concrètes"></textarea>
+            <textarea class="form-control form-control-sm" rows="3" id="sequence-objectives"
+              placeholder="À la fin de cette séquence, les apprenants seront capables de..."></textarea>
           </div>
         </div>
+        
         <div class="row">
           <div class="col-md-6 mb-2">
-            <label class="form-label fw-bold">
+            <label class="form-label small fw-bold text-muted">
               <i class="fa-solid fa-users me-1"></i>Public cible
             </label>
-            <input type="text" class="form-control" id="sequence-audience"
-              placeholder="Ex: Étudiants L1 informatique, Professionnels en formation continue">
+            <input type="text" class="form-control form-control-sm" id="sequence-audience"
+              placeholder="Ex: Étudiants L1 informatique...">
           </div>
           <div class="col-md-6 mb-2">
-            <label class="form-label fw-bold">
+            <label class="form-label small fw-bold text-muted">
               <i class="fa-solid fa-list-check me-1"></i>Prérequis
             </label>
-            <input type="text" class="form-control" id="sequence-prerequisites"
-              placeholder="Ex: Bases en algorithmique, Notions de mathématiques">
+            <input type="text" class="form-control form-control-sm" id="sequence-prerequisites"
+              placeholder="Ex: Bases en algorithmique...">
           </div>
         </div>
       </div>
@@ -597,7 +650,148 @@
         </div>
       </div>
     </div>
+    <!-- Modal d'import de texte JSON -->
+    <div class="modal fade" id="importTextModal" tabindex="-1" aria-labelledby="importTextModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary text-white">
+            <h5 class="modal-title" id="importTextModalLabel"><i class="fa-solid fa-paste me-2"></i>Importer un scénario depuis du texte</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Collez ci-dessous le contenu de votre fichier <code>.json</code> pour charger le scénario.</p>
+            <div class="mb-3">
+              <textarea class="form-control" id="import-json-text" rows="10" placeholder="Collez le texte JSON ici..."></textarea>
+            </div>
+            <div class="alert alert-info py-2 mb-0">
+              <i class="fa-solid fa-shield-halved me-2"></i>Le contenu importé est sécurisé et empêche toute injection de code malveillant (XSS).
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" id="btn-valider-import-texte">Importer le scénario</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal pour générer le prompt manuel interactif -->
+    <div class="modal fade" id="manualPromptModal" tabindex="-1" aria-labelledby="manualPromptModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="manualPromptModalLabel"><i class="fa-solid fa-code me-2"></i>Générer un Prompt Manuel</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+             <p>Ajustez les paramètres de votre séquence, et le prompt se mettra à jour automatiquement. Copiez ce texte pour l'utiliser dans ChatGPT, Claude ou l'IA de votre choix.</p>
+             <div class="row">
+               <div class="col-md-3">
+                 <h6 class="fw-bold"><i class="fa-solid fa-sliders me-2"></i>Paramètres</h6>
+                 <div class="mb-2">
+                   <label class="form-label mb-0 small">Objectifs :</label>
+                   <textarea class="form-control form-control-sm" id="mp-objectifs" rows="3"></textarea>
+                 </div>
+                 <div class="mb-2">
+                   <label class="form-label mb-0 small">Niveau :</label>
+                   <input type="text" class="form-control form-control-sm" id="mp-niveau" value="Intermédiaire">
+                 </div>
+                 <div class="mb-2">
+                   <label class="form-label mb-0 small">Durée (min) :</label>
+                   <input type="number" class="form-control form-control-sm" id="mp-duree" value="90">
+                 </div>
+                 <div class="mb-2">
+                   <label class="form-label mb-0 small">Domaine :</label>
+                   <input type="text" class="form-control form-control-sm" id="mp-domaine" placeholder="Ex: Informatique">
+                 </div>
+                 <div class="mb-2">
+                   <label class="form-label mb-0 small fw-bold">Modalités :</label>
+                   <div class="form-check small" style="font-size: 0.8em;">
+                     <input class="form-check-input mp-modalite-opt" type="checkbox" value="Présentiel" checked id="mpModPres">
+                     <label class="form-check-label" for="mpModPres">Présentiel</label>
+                   </div>
+                   <div class="form-check small" style="font-size: 0.8em;">
+                     <input class="form-check-input mp-modalite-opt" type="checkbox" value="Distanciel" checked id="mpModDist">
+                     <label class="form-check-label" for="mpModDist">Distanciel</label>
+                   </div>
+                 </div>
+                 <div class="mb-2">
+                   <label class="form-label mb-0 small fw-bold">Outils privilégiés :</label>
+                   <div class="form-check small" style="font-size: 0.8em;">
+                     <input class="form-check-input mp-outil-opt" type="checkbox" value="Moodle" checked id="mpOutMoodle">
+                     <label class="form-check-label" for="mpOutMoodle">Moodle</label>
+                   </div>
+                   <div class="form-check small" style="font-size: 0.8em;">
+                     <input class="form-check-input mp-outil-opt" type="checkbox" value="H5P" checked id="mpOutH5P">
+                     <label class="form-check-label" for="mpOutH5P">H5P</label>
+                   </div>
+                   <div class="form-check small" style="font-size: 0.8em;">
+                     <input class="form-check-input mp-outil-opt" type="checkbox" value="Microsoft Teams" id="mpOutTeams">
+                     <label class="form-check-label" for="mpOutTeams">Teams</label>
+                   </div>
+                   <div class="form-check small" style="font-size: 0.8em;">
+                     <input class="form-check-input mp-outil-opt" type="checkbox" value="Google Workspace" id="mpOutGoogle">
+                     <label class="form-check-label" for="mpOutGoogle">Google</label>
+                   </div>
+                   <div class="form-check small" style="font-size: 0.8em;">
+                     <input class="form-check-input mp-outil-opt" type="checkbox" value="Aucun spécifique" id="mpOutAucun">
+                     <label class="form-check-label" for="mpOutAucun">Aucun (IA)</label>
+                   </div>
+                 </div>
+                 <div class="mb-2">
+                   <label class="form-label mb-0 small">Contraintes :</label>
+                   <textarea class="form-control form-control-sm" id="mp-contraintes" rows="2" placeholder="Aucune"></textarea>
+                 </div>
+               </div>
+               <div class="col-md-9">
+                 <div class="d-flex justify-content-between align-items-center mb-2">
+                   <h6 class="fw-bold mb-0">Prompt à copier :</h6>
+                   <button type="button" class="btn btn-sm btn-outline-primary" id="btn-copy-mp">
+                     <i class="fa-solid fa-copy me-1"></i>Copier le Prompt
+                   </button>
+                 </div>
+                 <textarea id="mp-result-prompt" class="form-control bg-light" style="height: 500px; font-family: monospace; font-size: 0.85rem;" readonly></textarea>
+                 <div id="mp-copy-alert" class="alert alert-success py-1 px-2 mt-2 d-none" style="font-size: 0.85rem;">
+                   <i class="fa-solid fa-check me-2"></i>Prompt copié dans le presse-papiers !
+                 </div>
+               </div>
+             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+  </div>
+
+  <!-- Modal de confirmation pour Action Import/IA (Ajouter / Écraser) -->
+  <div class="modal fade" id="importChoiceModal" tabindex="-1" aria-hidden="true" style="z-index: 1060;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>Contenu existant détecté</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-4 text-center">
+          <p class="fs-5">Le scénario actuel contient déjà des activités. Que souhaitez-vous faire ?</p>
+          <div class="text-muted small">Les informations globales (titre, objectifs) seront préservées en mode "Ajouter".</div>
+        </div>
+        <div class="modal-footer justify-content-center border-0 pb-4">
+          <button type="button" class="btn btn-outline-secondary px-4 me-2" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark me-2"></i>Annuler
+          </button>
+          <button type="button" class="btn btn-primary px-4 me-2" id="btn-choice-append">
+            <i class="fa-solid fa-plus me-2"></i>Ajouter à la fin
+          </button>
+          <button type="button" class="btn btn-danger px-4" id="btn-choice-replace">
+            <i class="fa-solid fa-trash-can me-2"></i>Tout écraser
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 <!-- Appel des fonctions javascript-->
 <!-- Scripts IA -->
@@ -609,6 +803,7 @@
 <script type="text/javascript" src="scripts/ui/aiConfigModal.js"></script>
 <script type="text/javascript" src="scripts/ui/generatorModal.js"></script>
 <script type="text/javascript" src="scripts/ui/checklistModal.js"></script>
+<script type="text/javascript" src="scripts/ui/manualPromptModal.js"></script>
 <script type="text/javascript" src="scripts/ui/sequenceInfo.js"></script>
 <script type="text/javascript" src="scripts/ui/timeline.js"></script>
 <script type="text/javascript" src="scripts/ui/toolSelector.js"></script>

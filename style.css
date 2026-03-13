@@ -581,6 +581,45 @@ tr.drag-over-indicator {
 }
 
 /* ============================================
+   SEQUENCE INFO STYLES (COMPACT VERSION)
+   ============================================ */
+#sequence-info-card .card-header {
+  border-left: 5px solid var(--bs-primary);
+  transition: background-color 0.2s;
+}
+
+#sequence-info-card .card-header:hover {
+  background-color: #f1f3f5 !important;
+}
+
+#sequence-info-card input.form-control-sm,
+#sequence-info-card select.form-select-sm {
+  font-size: 0.85rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+#sequence-name {
+  color: var(--bs-primary);
+  font-size: 1rem !important;
+}
+
+#sequence-name::placeholder {
+  font-weight: normal;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+#sequence-info-card .input-group-text {
+  padding-right: 0.5rem;
+  padding-left: 0.2rem;
+}
+
+#toggle-sequence-info:hover {
+  color: var(--bs-primary);
+}
+
+/* ============================================
    TIMELINE STYLES
    ============================================ */
 .timeline-container-wrapper {

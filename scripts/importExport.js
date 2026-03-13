@@ -5,7 +5,7 @@
  * Parcourt le tableau et retourne un array d'objets, chaque objet représentant une ligne.
  * C'est le "cerveau" qui alimente toutes les fonctions d'export et de copie.
  */
-function getTableData() {
+function getTableData(includeSequenceInfo = false) {
     const data = [];
     const rows = document.querySelectorAll('#dropzone tr.ligne');
 
@@ -38,6 +38,13 @@ function getTableData() {
             ressources: row.cells[8]?.querySelector('textarea')?.value || '',
         });
     });
+
+    if (includeSequenceInfo) {
+        return {
+            sequenceInfo: sequenceInfo ? sequenceInfo.getData() : {},
+            activites: data
+        };
+    }
 
     return data;
 }
@@ -96,11 +103,7 @@ function downloadFile(filename, content, mimeType) {
 // --- Fonctions par format ---
 
 function exportJSON() {
-    const data = getTableData();
-    const sequenceData = {
-        sequenceInfo: sequenceInfo ? sequenceInfo.getData() : {},
-        activites: data
-    };
+    const sequenceData = getTableData(true);
     const content = JSON.stringify(sequenceData, null, 2);
     const filename = sequenceInfo?.getData().name ?
         `${sequenceInfo.getData().name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json` :
@@ -616,10 +619,115 @@ function copyMarkdown() {
 
 
 /**
- * ===================================================================================
- * FONCTION D'IMPORT (Lecture de fichier JSON)
- * ===================================================================================
+ * Affiche le modal de choix (Écraser / Ajouter) et retourne le choix via une promesse
  */
+function askUserChoice() {
+    return new Promise((resolve) => {
+        const modalEl = document.getElementById('importChoiceModal');
+        const modal = new bootstrap.Modal(modalEl);
+        
+        const appendBtn = document.getElementById('btn-choice-append');
+        const replaceBtn = document.getElementById('btn-choice-replace');
+        
+        const cleanup = () => {
+            appendBtn.onclick = null;
+            replaceBtn.onclick = null;
+            modalEl.removeEventListener('hidden.bs.modal', onHidden);
+        };
+
+        const onHidden = () => {
+            cleanup();
+            resolve('cancel');
+        };
+
+        appendBtn.onclick = () => {
+            cleanup();
+            modal.hide();
+            resolve('append');
+        };
+
+        replaceBtn.onclick = () => {
+            cleanup();
+            modal.hide();
+            resolve('replace');
+        };
+
+        modalEl.addEventListener('hidden.bs.modal', onHidden);
+        modal.show();
+    });
+}
+
+async function processImportData(jsonData) {
+    try {
+        // Support ancien format (array) et nouveau format (object avec sequenceInfo)
+        let data, seqInfo;
+        if (Array.isArray(jsonData)) {
+            data = jsonData;
+            seqInfo = null;
+        } else {
+            data = jsonData.activites || [];
+            seqInfo = jsonData.sequenceInfo || null;
+        }
+
+        if (!Array.isArray(data)) throw new Error("Format invalide : données d'activités introuvables.");
+
+        const dropzone = document.getElementById('dropzone');
+        const hasExistingData = dropzone && dropzone.rows.length > 0;
+        let mode = 'replace'; 
+
+        if (hasExistingData) {
+            mode = await askUserChoice();
+            if (mode === 'cancel') return; // L'utilisateur a annulé
+        }
+
+        // Charger les infos de séquence si présentes (uniquement en mode remplacement ou si vides)
+        if (seqInfo && typeof sequenceInfo !== 'undefined' && sequenceInfo) {
+            if (mode === 'replace') {
+                sequenceInfo.setData(seqInfo);
+            } else {
+                // En mode ajout, on ne remplit que ce qui est vide
+                const current = sequenceInfo.getData();
+                const updated = { ...current };
+                if (!current.name) updated.name = seqInfo.name;
+                if (!current.level) updated.level = seqInfo.level;
+                if (!current.objectives) updated.objectives = seqInfo.objectives;
+                sequenceInfo.setData(updated);
+            }
+        }
+
+        // Vider le tableau existant si on est en mode remplacement
+        if (mode === 'replace' && dropzone) {
+            dropzone.innerHTML = '';
+        }
+
+        // Créer les nouvelles lignes à partir des données importées
+        data.forEach(rowData => creerLigneDeTableau(rowData));
+
+        // Mettre à jour les graphiques et la durée
+        if (typeof actugraph === 'function') actugraph();
+        if (typeof sequenceInfo !== 'undefined' && sequenceInfo) {
+            sequenceInfo.updateDuration();
+        }
+        
+        // Refaire les boutons d'insertion
+        if (window.refreshTableInsertionButtons) {
+            window.refreshTableInsertionButtons();
+        }
+        
+        // Fermer le modal si ouvert
+        const modalEl = document.getElementById('importTextModal');
+        if (modalEl) {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+            document.getElementById('import-json-text').value = '';
+        }
+
+        alert(mode === 'replace' ? "Scénario remplacé avec succès !" : "Activités ajoutées au scénario avec succès !");
+        
+    } catch (error) {
+        alert("Erreur lors de l'importation : " + error.message);
+    }
+}
 
 function handleImport(event) {
     const file = event.target.files[0];
@@ -629,43 +737,9 @@ function handleImport(event) {
     reader.onload = function (e) {
         try {
             const jsonData = JSON.parse(e.target.result);
-
-            // Support ancien format (array) et nouveau format (object avec sequenceInfo)
-            let data, seqInfo;
-            if (Array.isArray(jsonData)) {
-                data = jsonData;
-                seqInfo = null;
-            } else {
-                data = jsonData.activites || [];
-                seqInfo = jsonData.sequenceInfo || null;
-            }
-
-            if (!Array.isArray(data)) throw new Error("Format de fichier invalide.");
-
-            if (confirm("Voulez-vous remplacer le scénario actuel par celui du fichier ?")) {
-                // Charger les infos de séquence si présentes
-                if (seqInfo && sequenceInfo) {
-                    sequenceInfo.setData(seqInfo);
-                }
-
-                // Vider le tableau existant (sauf la dernière ligne vide)
-                const dropzone = document.getElementById('dropzone');
-                while (dropzone.rows.length > 1) {
-                    dropzone.deleteRow(0);
-                }
-
-                // Créer les nouvelles lignes à partir des données importées
-                data.forEach(rowData => creerLigneDeTableau(rowData));
-
-                // Mettre à jour les graphiques et la durée
-                actugraph();
-                if (sequenceInfo) {
-                    sequenceInfo.updateDuration();
-                }
-            }
-
+            processImportData(jsonData);
         } catch (error) {
-            alert("Erreur lors de la lecture du fichier : " + error.message);
+            alert("Erreur lors de la lecture du fichier json : " + error.message);
         } finally {
             // Réinitialiser l'input pour pouvoir réimporter le même fichier si besoin
             event.target.value = '';
@@ -674,67 +748,195 @@ function handleImport(event) {
     reader.readAsText(file);
 }
 
+function handleTextImport() {
+    const text = document.getElementById('import-json-text').value;
+    if (!text || !text.trim()) {
+        alert("Veuillez d'abord coller le contenu JSON de votre scénario.");
+        return;
+    }
+    try {
+        const jsonData = JSON.parse(text);
+        processImportData(jsonData);
+    } catch (error) {
+        alert("Le texte fourni n'est pas un JSON valide. Veuillez vérifier et réessayer. Erreur : " + error.message);
+    }
+}
+
 /**
  * Recrée une ligne <tr> complète dans le tableau à partir d'un objet de données.
- * Cette fonction est le miroir de `handleDragEnd` de votre fichier DragAndDrop.js.
+ * Utilise creerContenuLigne pour s'assurer que la structure est identique et sécurisée
+ * contre les failles XSS (utilisation de .value au lieu de .innerHTML).
  */
 function creerLigneDeTableau(data) {
     const dropzoneTbody = document.getElementById('dropzone');
-    const targetRow = dropzoneTbody.insertRow(dropzoneTbody.rows.length - 1);
-
+    
+    // Insérer à la fin du tableau
+    const targetRow = dropzoneTbody.insertRow(dropzoneTbody.rows.length);
     targetRow.className = 'ligne text-center';
 
     const typeMapping = {
-        'Acquisition': { class: 'card-acquisition', num: '1', icon: './images/acquisition.png' },
-        'Collaboration': { class: 'card-collaboration', num: '2', icon: './images/collaboration.png' },
-        'Discussion': { class: 'card-discussion', num: '3', icon: './images/discussion.png' },
-        'Enquête': { class: 'card-enquete', num: '4', icon: './images/enquete.png' },
-        'Pratique - Entrainement': { class: 'card-pratique', num: '5', icon: './images/pratique.png' },
-        'Production': { class: 'card-production', num: '6', icon: './images/production.png' }
+        'Acquisition': '1',
+        'Collaboration': '2',
+        'Discussion': '3',
+        'Enquête': '4',
+        'Pratique - Entrainement': '5',
+        'Production': '6',
+        'Pratique': '5',
+        'Pratique/Entraînement': '5'
     };
-    const cardInfo = typeMapping[data.typeApprentissage] || { class: 'bg-light', num: '0', icon: '' };
+    
+    // Récupère l'ID numérique du type de carte (supporte 'typeApprentissage' de l'export et 'type' de l'IA)
+    const rawType = (data.typeApprentissage || data.type || '').trim();
+    
+    // Détection robuste (insensible à la casse et aux accents/variations)
+    let cardNumber = '1'; // Défaut : Acquisition
+    const lowerType = rawType.toLowerCase();
+    
+    if (lowerType.includes('acqui')) cardNumber = '1';
+    else if (lowerType.includes('collab')) cardNumber = '2';
+    else if (lowerType.includes('discus')) cardNumber = '3';
+    else if (lowerType.includes('enqu') || lowerType.includes('investig')) cardNumber = '4';
+    else if (lowerType.includes('pratiq') || lowerType.includes('train')) cardNumber = '5';
+    else if (lowerType.includes('produc')) cardNumber = '6';
+    else {
+        // Fallback sur le mapping exact si aucune correspondance partielle n'est trouvée
+        cardNumber = typeMapping[rawType] || '1';
+    }
+    
+    if (typeof window.creerContenuLigne === 'function') {
+        // Cette fonction crée toute la structure HTML blindée
+        window.creerContenuLigne(targetRow, cardNumber, data.outil || '', data.keyword || '');
+        
+        const cells = targetRow.cells;
+        
+        // Sécurité : On utilise .value pour éviter toute injection HTML / XSS
+        const objectiveValue = data.objectifs || data.objectif;
+        if (objectiveValue) {
+            const textarea = cells[2].querySelector('textarea');
+            if (textarea) textarea.value = objectiveValue;
+        }
+        
+        if (data.consignes) {
+            const textarea = cells[4].querySelector('textarea');
+            if (textarea) textarea.value = data.consignes;
+        }
+        
+        if (data.duree || data.duree === 0) {
+            const input = cells[5].querySelector('input');
+            if (input) input.value = data.duree;
+        }
+        
+        if (data.modalite) {
+            const select = cells[6].querySelector('select');
+            if (select) {
+                const search = data.modalite.toLowerCase();
+                Array.from(select.options).forEach((opt, i) => {
+                    if (opt.text.toLowerCase().includes(search) || search.includes(opt.text.toLowerCase())) {
+                        select.selectedIndex = i;
+                    }
+                });
+            }
+        }
+        
+        if (data.evaluation) {
+            const select = cells[7].querySelector('select');
+            if (select) {
+                const search = data.evaluation.toLowerCase();
+                // Mapping simple pour les termes courants
+                let searchTerms = [search];
+                if (search === 'aucune' || search === 'non') searchTerms.push('non évalué');
+                if (search.startsWith('format')) searchTerms.push('formatif');
+                if (search.startsWith('sommat')) searchTerms.push('sommative');
 
-    // --- Cellule 1: Poignée et Suppression ---
-    let cell1 = targetRow.insertCell();
-    cell1.innerHTML = `
-        <div class="d-flex justify-content-around align-items-center h-100">
-            <i class="fa-solid fa-grip-vertical" draggable="true" style="cursor: grab;"></i>
-            <button class="btn" onclick="supprimer(this);"><i class="fa-solid fa-trash"></i></button>
-        </div>`;
-    cell1.classList.add(cardInfo.class);
-    const handle = cell1.querySelector('.fa-grip-vertical');
-    handle.addEventListener('dragstart', window.handleDragStart2);
-    handle.addEventListener('dragend', window.handleDragEnd2);
-
-    // --- Cellule 2: Type d'Apprentissage (avec l'icône) ---
-    const cellTypeApprentissage = targetRow.insertCell();
-    cellTypeApprentissage.classList.add(cardInfo.class);
-    // *** CORRECTION FINALE : Le &nbsp; a été retiré de l'intérieur du <h6> ***
-    cellTypeApprentissage.innerHTML = `
-        <div class="d-flex flex-row align-items-center p-1">
-            <img src="${cardInfo.icon}" style="height:30px;" class="">
-            <h6 class="titre-carte w-75 ps-2 mb-0">${data.typeApprentissage}</h6>
-        </div>
-    `;
-    cellTypeApprentissage.id = `card${cardInfo.num}-${new Date().getTime()}`;
-    cellTypeApprentissage.addEventListener('click', function () { window.declencherModification(this); });
-
-    // --- Autres cellules ---
-    targetRow.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="L'apprenant sera capable de...">${data.objectifs}</textarea>`;
-    targetRow.insertCell().innerText = data.outil;
-    targetRow.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="Instructions pour l'activité...">${data.consignes}</textarea>`;
-    targetRow.insertCell().innerHTML = `<input type='number' class='form-control' value='${data.duree}' min='0' onchange='actugraph();'>`;
-
-    const cellModalite = targetRow.insertCell();
-    cellModalite.innerHTML = `<select class='form-select' onchange="actugraph();"><option>Présentiel / Individuel</option><option>Présentiel / En groupe</option><option>Présentiel / Classe entière</option><option>Distanciel Synchrone / Individuel</option><option>Distanciel Synchrone / En groupe</option><option>Distanciel Synchrone / Classe entière</option><option>Distanciel Asynchrone / Individuel</option><option>Distanciel Asynchrone / En groupe</option></select>`;
-    cellModalite.querySelector('select').value = data.modalite;
-
-    const cellEvaluation = targetRow.insertCell();
-    cellEvaluation.innerHTML = `<select class='form-select' onchange="actugraph();"><option>Non évalué</option><option>Formatif (auto-corrigé)</option><option>Formatif (par les pairs)</option><option>Formatif (enseignant)</option><option>Sommative (notée)</option><option>Certificative</option></select>`;
-    cellEvaluation.querySelector('select').value = data.evaluation;
-
-    targetRow.insertCell().innerHTML = `<textarea class='form-control ligne' placeholder="Lien, PDF, matériel...">${data.ressources}</textarea>`;
+                Array.from(select.options).forEach((opt, i) => {
+                    const optText = opt.text.toLowerCase();
+                    if (searchTerms.some(term => optText.includes(term) || term.includes(optText))) {
+                        select.selectedIndex = i;
+                    }
+                });
+            }
+        }
+        
+        if (data.ressources) {
+            const textarea = cells[8].querySelector('textarea');
+            if (textarea) textarea.value = data.ressources;
+        }
+    } else {
+        console.error("Impossible de créer la ligne : window.creerContenuLigne est introuvable");
+    }
 }
+
+/**
+ * ===================================================================================
+ * SAUVEGARDE AUTOMATIQUE (LocalStorage)
+ * ===================================================================================
+ */
+
+// Rendre les fonctions accessibles globalement
+window.saveScenarioToLocalStorage = function() {
+    try {
+        const sequenceData = getTableData(true);
+        sequenceData.lastSaved = new Date().toISOString();
+        localStorage.setItem('abc-autosave-scenario', JSON.stringify(sequenceData));
+    } catch (e) {
+        console.error('Erreur lors de la sauvegarde automatique:', e);
+    }
+};
+
+window.loadScenarioFromLocalStorage = function() {
+    try {
+        const saved = localStorage.getItem('abc-autosave-scenario');
+        if (!saved) return;
+
+        const jsonData = JSON.parse(saved);
+        if (!jsonData) return;
+
+        // On vérifie si on a soit des activités, soit des infos de séquence
+        const hasActivities = jsonData.activites && jsonData.activites.length > 0;
+        const hasSeqInfo = jsonData.sequenceInfo && Object.values(jsonData.sequenceInfo).some(v => v !== '' && v !== 0);
+
+        if (!hasActivities && !hasSeqInfo) return;
+
+        // On ne demande pas confirmation au chargement initial de la page si le tableau est vide
+        const dropzone = document.getElementById('dropzone');
+        const hasExistingRows = dropzone && dropzone.querySelectorAll('tr.ligne').length > 0;
+
+        if (!hasExistingRows) {
+            // Charger les infos de séquence
+            if (jsonData.sequenceInfo && sequenceInfo) {
+                sequenceInfo.setData(jsonData.sequenceInfo);
+            }
+
+            // Charger les activités
+            jsonData.activites.forEach(rowData => creerLigneDeTableau(rowData));
+
+            // Mise à jour UI
+            if (typeof actugraph === 'function') actugraph();
+            if (sequenceInfo) sequenceInfo.updateDuration();
+            if (window.refreshTableInsertionButtons) window.refreshTableInsertionButtons();
+            
+            console.log('Dernière session restaurée avec succès');
+        }
+    } catch (e) {
+        console.error('Erreur lors du chargement de la sauvegarde automatique:', e);
+    }
+};
+
+// Fonction de debounce pour éviter de sauvegarder trop souvent
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+window.debouncedSave = debounce(window.saveScenarioToLocalStorage, 1000);
+
 
 
 /**
@@ -759,8 +961,36 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('copy-md').addEventListener('click', copyMarkdown);
 
     // Logique d'importation/chargement
-    document.getElementById('boutonImporter').addEventListener('click', () => {
+    document.getElementById('boutonImporter')?.addEventListener('click', (e) => {
+        e.preventDefault();
         document.getElementById('fichierImport').click();
     });
-    document.getElementById('fichierImport').addEventListener('change', handleImport);
+    
+    document.getElementById('fichierImport')?.addEventListener('change', handleImport);
+    
+    document.getElementById('btn-valider-import-texte')?.addEventListener('click', handleTextImport);
+
+    // --- Initialisation Auto-save ---
+    
+    // Charger la session précédente
+    setTimeout(loadScenarioFromLocalStorage, 500); // Petit délai pour laisser les autres scripts s'initialiser
+
+    // Écouter les changements dans le tableau pour sauvegarder
+    const dropzone = document.getElementById('dropzone');
+    if (dropzone) {
+        const observer = new MutationObserver(() => debouncedSave());
+        observer.observe(dropzone, {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
+
+        // Écouter aussi les changements de valeurs dans les inputs/selects
+        dropzone.addEventListener('input', debouncedSave);
+        dropzone.addEventListener('change', debouncedSave);
+    }
+
+    // Écouter les changements dans les infos de séquence
+    document.getElementById('sequence-info-card')?.addEventListener('input', debouncedSave);
+    document.getElementById('sequence-info-card')?.addEventListener('change', debouncedSave);
 });
