@@ -2,7 +2,7 @@
  * Configuration des providers IA
  * Définit les endpoints, modèles et paramètres pour chaque provider
  * 
- * DERNIÈRE MISE À JOUR : Novembre 2025
+ * DERNIÈRE MISE À JOUR : Mars 2026
  * 
  * Pour mettre à jour les modèles :
  * 1. Consulter https://ai.google.dev/gemini-api/docs/models/gemini
@@ -16,8 +16,7 @@ const AI_PROVIDERS = {
         name: 'Google Gemini',
         models: [
             { id: 'gemini-flash-latest', name: 'Gemini Flash (Recommandé)', recommended: true },
-            { id: 'gemini-flash-lite-latest', name: 'Gemini Flash Lite (Rapide, Gratuit)' },
-            { id: 'gemini-pro-latest', name: 'Gemini Pro (Puissant)' }
+            { id: 'gemini-flash-lite-latest', name: 'Gemini Flash Lite (Rapide, Gratuit)' }
         ],
         endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/',
         defaultModel: 'gemini-flash-latest',
