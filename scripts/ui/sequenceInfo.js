@@ -177,7 +177,9 @@ class SequenceInfo {
             audience: '',
             prerequisites: ''
         });
-        this.save();
+        if (typeof window.saveScenarioToLocalStorage === 'function') {
+            window.saveScenarioToLocalStorage();
+        }
     }
 
     /**

@@ -304,8 +304,10 @@ class GeneratorModal {
           document.getElementById('sequence-level').value = params.niveau;
         }
 
-        // Sauvegarder les changements
-        sequenceInfo.save();
+        // Sauvegarder les changements via la fonction globale
+        if (typeof window.saveScenarioToLocalStorage === 'function') {
+          window.saveScenarioToLocalStorage();
+        }
       }
 
       // Afficher les résultats
